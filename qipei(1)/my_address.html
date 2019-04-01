@@ -1,0 +1,135 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>我的地址</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script>
+		    document.documentElement.style.fontSize =document.documentElement.clientWidth/750*40 +"px";
+		</script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/common.css" />
+		<link rel="stylesheet" href="css/my_address.css" />
+		<script type="text/javascript" src="js/art-template.js"></script>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-icon mui-icon-left-nav mui-pull-left" onclick="back_page()"></a>
+		    <h1 class="mui-title">我的地址</h1>
+		    <a class="mui-btn mui-btn-blue mui-btn-link mui-pull-right" href="add_address.html">添加新地址</a>
+		</header>
+		<div class="mui-content" id="content"></div>
+		
+		<script type="text/html" id="text">
+			{{if state==0}}
+				<div class="add_body1">
+			    	<img  src="img/no_add.png"/>
+			    	<p class="body1_p">你还没有收货地址哟~添加一个吧！</p>
+			    </div>
+			{{else}}
+				<div class="add_body">
+					{{each data as value i}}
+				    	<div class="add_content" onclick="choice_address(this)">
+				    		<div class="add_title">
+				    			 <span>{{value.username}}</span>
+				    			 <span class="font_span">{{value.phone}}</span>
+				    		</div>
+				    		<div class="add">
+					    		<div class="add_div">
+					    			{{if value.default==1}}
+					    			<div class="muoren">默认</div>
+					    			{{/if}}
+					    			{{value.city}}{{value.address}}
+					    		</div>
+					    		<div class="add_right" onclick="update_address({{value.id}})">编辑</div>
+				    		</div>
+				    	</div>
+		    		{{/each}}	
+			    </div>
+		    {{/if}}	
+		</script>
+		
+		<script type="text/javascript" src="js/common.js" ></script>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript" src="js/jquery-3.3.1.min.js" ></script>
+		<script type="text/javascript">
+			mui.init()
+			var session=window.sessionStorage;
+	      	//登录时返回的用户数据
+	      	var user_info;
+	      	//进入我的地址页面的状态，0为设置页面进入，1为确认订单页面进入；
+			var my_address_state;
+			//地址所有数据
+			var address_datas;
+	      	$(function(){
+	      		user_info=session.getItem("user_info");
+      			user_info=JSON.parse(user_info);
+      			my_address_state=session.getItem("my_address_state");
+      			$.ajax({
+      				type:"post",
+      				url:"http://qipei.liebianzhe.com/api/user/address_list",
+      				async:true,
+      				data:{
+      					token:user_info.token,
+      				},
+      				success:function(data){
+      					console.info(data);
+      					
+      					var html=template("text",data);
+      					document.getElementById("content").innerHTML=html;
+      					address_datas=data.data;
+      				},
+      				error:function(data){
+      					console.info("获取失败！")
+      				}
+      			});
+	      	})
+	      	//点击选择确认订单的地址
+	      	function choice_address(address_this){
+	      		if(my_address_state==1){
+	      			var address;
+	      			var index=$(address_this).index();
+	      			for (var i=0;i<address_datas.length;i++) {
+	      				address=address_datas[index];
+	      			}
+	      			console.info(address);
+	      			session.setItem("address_data",JSON.stringify(address));
+	      			window.location.href="confirm_order.html";
+	      		}else{
+	      			return false;
+	      		}
+	      	}
+	      	function update_address(id){
+	      		$.ajax({
+	      			type:"post",
+	      			url:"http://qipei.liebianzhe.com/api/user/set_address",
+	      			async:true,
+	      			data:{
+	      				token:user_info.token,
+	      				type:5,
+	      				id:id
+	      			},
+	      			success:function(data){
+	      				console.info(data);
+	      				data=JSON.stringify(data);
+	      				session.setItem("address_info",data);
+	      				window.location.href="edit_address.html";
+	      			},
+	      			error:function(data){
+	      				console.info("查看地址失败！")
+	      			}
+	      		});
+	      	}
+	      	function back_page(){
+	      		if(my_address_state==0){
+	      			window.location.href="set_up.html";
+	      		}else if(my_address_state==1){
+	      			window.location.href="confirm_order.html";
+	      		}
+	      	}
+		</script>
+	</body>
+
+</html>

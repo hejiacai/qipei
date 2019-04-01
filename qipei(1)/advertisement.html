@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>广告</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script>
+		    document.documentElement.style.fontSize =document.documentElement.clientWidth/750*40 +"px";
+		</script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/common.css" />
+		<link rel="stylesheet" href="css/advertisement.css" />
+		<style>
+			.mui-bar{
+      			background: none;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-transparent">
+		    <a class=" mui-icon mui-icon-left-nav mui-pull-left" href="index.html"></a>
+		    <!--<h1 class="mui-title">广告</h1>-->
+		</header>
+		<div class="mui-content" id="content">
+		    
+		</div>
+		
+		<script type="text/html" id="text">
+			<img src="{{top_picurl}}" class="gg_banner"/>
+		    <div class="gg_body">
+		    	<!--<div class="gg_title">
+		    		{{title}}
+		    	</div>-->
+		    	<div class="gg_content">
+		    		{{#content}}
+		    	</div>
+		    </div>
+		</script>
+		
+		<script type="text/javascript" src="js/common.js" ></script>
+		<script type="text/javascript" src="js/art-template.js"></script>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript" src="js/jquery-3.3.1.min.js" ></script>
+		<script type="text/javascript">
+			mui.init();
+			
+			$(function(){
+				var session=window.sessionStorage;
+				var news_data;
+				news_data=session.getItem("news_data");
+				
+				news_data=JSON.parse(news_data);
+				console.info(news_data);
+				var html=template("text",news_data);
+				document.getElementById("content").innerHTML=html;
+			})
+			
+			function jump_login(){
+				window.location.href="login.html";
+			}
+		</script>
+	</body>
+
+</html>

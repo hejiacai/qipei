@@ -1,0 +1,211 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>商品分类</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script>
+		    document.documentElement.style.fontSize =document.documentElement.clientWidth/750*40 +"px";
+		</script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/common.css" />
+		<link rel="stylesheet" href="css/commodity_classify.css" />
+		
+	</head>
+
+	<body>
+		<header class="static_header">
+			<div class="header_left">
+				<a class="mui-icon mui-icon-left-nav mui-pull-left" href="index.html"></a>
+			</div>
+			<div class="header_content">
+				<input type="text" placeholder="搜索您要找的商品" class="select_input"/>
+			</div>
+		</header>
+		<div class="mui-content" >
+			<section class="section_body" >
+				 <section class="section_left" id="content"></section>
+				<section class="section_right_body" id="content1"></section>
+			</section>
+		</div>
+		<!--<footer class="footer">
+			<div class="footer_body">
+				<a href="index.html">
+					<div class="footer_div">
+						<img  src="img/shouye.png" class="shouye"/>
+						<span >首页</span>
+					</div>
+				</a>
+				<a href="commodity_classify.html">
+					<div class="footer_div">
+						<img  src="img/fnelei1.png" class="fenlei"/>
+						<span class="footer_active">分类</span>
+					</div>
+				</a>
+				<a href="release.html">
+					<div class="footer_div1">
+						<img  src="img/fabu.png" class="fabu"/>
+						<span>发布</span>
+					</div>
+				</a>
+				<a href="shopping_cart.html">
+					<div class="footer_div">
+						<img  src="img/gouwuche.png" class="gouwuche"/>
+						<span>购物车</span>
+					</div>
+				</a>
+				<a href="personal.html">
+					<div class="footer_div">
+						<img  src="img/my.png" class="wode"/>
+						<span >我的</span>
+					</div>
+				</a>
+			</div>
+		</footer>-->
+		
+		<script type="text/html" id="text">
+		   
+		    	{{each data as value i}}
+		    		{{if data[i]==data[0]}}
+		    			<div class="left_content left_active" onclick="spfl(this)" data-id = "{{value.id}}">{{value.name}}</div>
+		    		{{else}}
+		    			<div class="left_content" onclick="spfl(this,{{value.id}})" data-id = "{{value.id}}">{{value.name}}</div>
+		    		{{/if}}
+		    		
+		    	{{/each}}
+		    
+		</script>
+		<script type="text/html" id="text1">
+			{{each data as value i}}
+			{{if data[i]==data[0]}}
+				<section class="section_right">
+			    	<img  src="{{value.cover}}" class="fnelei_banner"/>
+			    	<div class="right_body">
+		    		{{each data[i].scate as sp s}}
+			    		<a onclick="goods_list({{sp.id}})">
+				    		<div class="right_content">
+				    			<img src="{{sp.cover}}"/>
+				    			<span>{{sp.name}}</span>
+				    		</div>
+			    		</a>
+		    		{{/each}}
+			    		
+			    </section>
+			    {{else}}
+			    <section class="section_right" style="display: none;">
+			    	<img  src="{{value.cover}}" class="fnelei_banner"/>
+			    	<div class="right_body">
+		    		{{each data[i].scate as sp s}}
+			    		<a onclick="goods_list({{sp.id}})">
+				    		<div class="right_content">
+				    			<img src="{{sp.cover}}"/>
+				    			<span>{{sp.name}}</span>
+				    		</div>
+			    		</a>
+		    		{{/each}}
+			    		
+			    </section>
+		    {{/if}}
+		    {{/each}}
+		</script>
+		
+		<script type="text/javascript" src="js/art-template.js"></script>
+		<script type="text/javascript" src="js/jquery-3.3.1.min.js" ></script>
+		<script type="text/javascript" src="js/common.js" ></script>
+		<script src="js/mui.min.js"></script>
+		<script>
+		    document.documentElement.style.fontSize =document.documentElement.clientWidth/750*40 +"px";
+		</script>
+		<script type="text/javascript">
+			
+			mui.init()
+			var session=window.sessionStorage;
+	      	//登录时返回的用户数据
+	      	var user_info;
+	      	//获取分类id
+	      	var fl_id;
+	      	
+			$(function(){
+				user_info=session.getItem("user_info");
+      			user_info=JSON.parse(user_info);
+      			fl_id=session.getItem("fl_id");
+      			console.info(fl_id);
+      			var datas;
+      			$.ajax({
+      				type:"post",
+      				url:"http://qipei.liebianzhe.com/api/user/goods_cate",
+      				data:{
+      					token:user_info.token,
+      				},
+      				async:false,
+      				success:function(data){
+      					console.info(data);
+      					if(data.state==1){
+	      					datas=data.data;
+	      					var html=template("text",data);
+							document.getElementById("content").innerHTML=html;
+							var html1=template("text1",data);
+							document.getElementById("content1").innerHTML=html1;
+    					}
+      				},
+      				error:function(data){
+      					console.info("获取商品分类失败！")
+      				}
+      			});
+      			if(fl_id!=""||fl_id!=null){
+      				var ids;
+      				for (var i=0;i<datas.length;i++) {
+      					ids=$(".left_content").eq(i).data("id");
+      					if(ids==fl_id){
+      						$(".left_content").eq(i).addClass('left_active').siblings().removeClass('left_active');
+      						$(".section_right_body .section_right").eq(i).show().siblings().hide();      					}
+      				}
+      				session.removeItem("fl_id");
+      			}
+			})
+			function spfl(fl_this,fl_ids){
+				//通过 .index()方法获取元素下标，从0开始，赋值给某个变量
+		        var _index = $(fl_this).index();
+		        fl_id=fl_ids;
+			    //让内容框的第 _index 个显示出来，其他的被隐藏
+		        $(".section_right_body .section_right").eq(_index).show().siblings().hide();
+				$(fl_this).addClass('left_active').siblings().removeClass('left_active');
+			}
+			function goods_list(id){
+				console.info(id);
+				$.ajax({
+					type:"post",
+					url:"http://qipei.liebianzhe.com/api/user/goods_list",
+					async:true,
+					data:{
+						token:user_info.token,
+						id:id
+					},
+					success:function(data){
+						console.info(data);
+						//存入商品详情数据
+						var goods_list=JSON.stringify(data);
+						//判断进入二级列表的状态，0为点击分类进入，1为点击搜索框进入；
+      					var second_type=0;
+      					session.setItem("fl_id",fl_id);
+      					session.setItem("second_type",second_type);
+						session.setItem("goods_list",goods_list)
+						window.location.href="second_classification.html";
+					},
+					error:function(data){
+						console.info("获取商品详情失败！")
+					}
+				});
+			}
+			//查询商品
+	      	$(".select_input").on('tap',function(){
+	      		//判断进入二级列表的状态，0，2为点击分类进入，1为点击搜索框进入；
+	      		var second_type=2;
+	      		session.setItem("second_type",second_type);
+	      		window.location.href="second_classification.html";
+	      	})	
+		</script>
+	</body>
+
+</html>

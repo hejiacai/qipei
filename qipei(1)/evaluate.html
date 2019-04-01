@@ -1,0 +1,258 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>评价</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script>
+		    document.documentElement.style.fontSize =document.documentElement.clientWidth/750*40 +"px";
+		</script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/common.css" />
+		<link rel="stylesheet" href="css/evaluate.css" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-icon mui-icon-left-nav mui-pull-left" href="my_order.html"></a>
+		    <h1 class="mui-title">评价</h1>
+		    <a class="mui-btn mui-btn-blue mui-btn-link mui-pull-right" onclick="sub()">保存</a>
+		</header>
+		<div class="mui-content" id="content"></div>
+		
+		
+		
+		
+
+		
+		<script type="text/html" id="text">
+			{{each data.goods as value i}}
+			<div class="evaluate_body" data-spid = "{{value.id}}">
+				<div class="evaluate_title">
+					<img src="{{value.cover}}" class="sp_tx"/>
+					<div class="label">
+					{{each data.label as value1 i1}}
+						<div class="label_div">
+							<div class="label_div_lname">{{value1.lname}}</div>
+							<div class="score_right">
+								<img src="img/xing1.png" data-id = "{{value1.id}}"/>
+				    		 	<img src="img/xing1.png" data-id = "{{value1.id}}"/>
+				    		 	<img src="img/xing1.png" data-id = "{{value1.id}}"/>
+				    		 	<img src="img/xing1.png" data-id = "{{value1.id}}" />
+				    		 	<img src="img/xing1.png" data-id = "{{value1.id}}"/>
+							</div>
+						</div>
+					{{/each}}
+					</div>
+				</div>
+				<div class="textarea_div">
+		    		<textarea class="evaluate_textarea" placeholder="请输入评价内容" onchange="evaluate_textarea(this)"></textarea>
+		    	</div>
+		    	<div class="evaluate_img">
+		    		<div class="evaluate_img_div">
+		    			<img src="img/upload_img4.png" />
+	    				<div  class="mui_uploader">
+	    					<input  type="file" accept="image/*" id="upload{{i}}" enctype="multipart/form-data"  onchange="evaluate_img(this)" />
+	    				</div>
+		    		</div>
+		    	</div>
+			</div>
+			{{/each}}
+		</script>
+		
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript" src="js/common.js" ></script>
+		<script type="text/javascript" src="js/art-template.js"></script>
+		<script type="text/javascript" src="js/jquery-3.3.1.min.js" ></script>
+		<script type="text/javascript">
+			mui.init();
+			var session=window.sessionStorage;
+            var user_info;
+            //获取订单号
+            var pj_ordernum;
+			//评价页面数据
+			var pj_datas;
+			//提交的数据
+			var datas={};
+			//控制按钮
+			var sub_type=1;
+			
+			$(function(){
+				user_info= session.getItem("user_info"),
+                user_info = JSON.parse(user_info);
+                pj_ordernum= session.getItem("pj_ordernum"),
+                $.ajax({
+                	type:"post",
+                	url:"http://qipei.liebianzhe.com/api/user/get_label",
+                	async:false,
+                	data:{
+                		token:user_info.token,
+                		ordernum:pj_ordernum
+                	},
+                	success:function(data){
+                		console.info(data);
+                		
+                		var html=template("text",data);
+						document.getElementById("content").innerHTML=html;
+						pj_datas=data.data;
+						for (var i=0;i<pj_datas.goods.length;i++) {
+							//所有东西的数组；
+							window["sz"+i]=[];
+							//图片地址
+							window["img_address"+i]=[];
+							//评价内容
+							window["input_content"+i]="" ;	
+							//标签
+							window["label"+i]={};
+						}
+						console.info(window);
+//						for (var i=0;i<pj_datas.label.length;i++) {
+//							
+//						}
+                	},
+                	error:function(){
+                		console.info("获取评价标签");
+                	}
+                });
+                
+                
+				$(".score_right img").on('tap',function(){
+					var index=$(this).index();
+					//星级
+					var grade;
+					//标签id
+					var lable_id;
+					var e=$(this).parents(".evaluate_body").index();
+					if($(this).attr('src')=='img/xing1.png'){
+						$(this).attr('src','img/xing.png');
+						grade=index+1;
+						lable_id=this.dataset.id;
+						for(var i=0;i<index;i++){
+							$(this).siblings().eq(i).attr('src','img/xing.png');
+						}
+					}else if($(this).attr('src')=='img/xing.png'){
+						grade=index+1;
+						for(var i=index;i<=4;i++){
+							$(this).siblings().eq(i).attr('src','img/xing1.png');
+						}
+					}
+					window["label"+e][lable_id]=grade;
+					console.info(window["label"+e]);
+				})
+			})
+			
+			function evaluate_img(img_this){
+				let formData = new FormData();
+				var file=img_this.files[0];
+				formData.append('file',file);
+				mui.ajax("http://qipei.liebianzhe.com/api/index/upload", {
+					data: formData,
+					async: false,
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					cache: false,
+					contentType: false,
+					processData: false,
+					success: function(data) {
+						data=JSON.parse(data);
+						console.info(data);
+						if(data.state == 1){
+							file=data.data[0].name;
+							var i=$(img_this).parents(".evaluate_body").index();
+							var div=document.createElement('div');
+							div.classList.add("file_div","file_img");
+							$(img_this).parents(".evaluate_img_div").before(div);
+							var i1=($(".file_img").length)-1;
+							
+							
+							var span=document.createElement('span');
+							span.classList.add("mui-icon","mui-icon-close", "icon_span");
+							span.addEventListener('tap',function(){
+								$(this).parent(".file_img").remove();
+								var src=$(this).siblings("img").src;
+								window["img_address"+i].splice($.inArray(''+src+'',window["img_address"+i]),1);
+								console.info(window["img_address"+i]);
+							});
+							$(".file_img").eq(i1).html(span);
+							var img=document.createElement('img');
+							img.src='http://qipei.liebianzhe.com/static/upload/'+file;
+							$(".file_img").eq(i1).children(".icon_span").after(img);	
+							
+							
+							window["img_address"+i].push(file);
+							console.info(window["img_address"+i]);
+						}else{
+							mui.toast(data.msg);
+						}
+							
+					},
+					error:function(){
+						console.info("上传图片失败！");
+					}
+				})
+			}
+			function evaluate_textarea(text_this){
+				var i=$(text_this).parents(".evaluate_body").index();
+				window["input_content"+i]=$(text_this).val();
+				console.info(window["input_content"+i]);
+			}
+			function sub(){
+//				var id=pj_datas.goods.id;
+//				console.info(id);
+				if(sub_type==1){
+					for (var i=0;i<pj_datas.goods.length;i++) {
+						if(window["content"+i] !="" && window["img_address"+i].length!=0 && typeof(window["label"+i])!='undefined'){
+							window["sz"+i].push(window["input_content"+i]);
+							window["sz"+i].push(window["img_address"+i]);
+							window["sz"+i].push(window["label"+i]);
+//							console.info(window["sz"+i]);
+							datas[pj_datas.goods[i].id]=window["sz"+i];
+							sub_type=0;
+						}else{
+							mui.toast("请填写完评论~~");
+							console.info("aaa");
+							return false;
+						}
+					}
+					console.info(datas);
+					
+					if(typeof(datas)!= 'undefined'){
+						datas=JSON.stringify(datas);
+						$.ajax({
+							type:"post",
+							url:"http://qipei.liebianzhe.com/api/user/order_status",
+							async:false,
+							data:{
+								token:user_info.token,
+								ordernum:pj_ordernum,
+								type:3,
+								data:datas
+							},
+							success:function(data){
+								console.info(data);
+								if(data.state==1){
+									mui.toast("评价成功~~");
+									setTimeout("jump_page()",2500);
+								}
+							},
+							error:function(){
+								console.info("评论失败~");
+							}
+						});
+					}else{
+						mui.toast("请填写完评论~~");
+						console.info("bbbb");
+						return false;
+					}
+				}else{
+					return false;
+				}
+			}
+			function jump_page(){
+				window.location.href="my_order.html";
+			}
+		</script>
+	</body>
+
+</html>

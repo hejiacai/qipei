@@ -1,0 +1,399 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>我要发布</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script>
+		    document.documentElement.style.fontSize =document.documentElement.clientWidth/750*40 +"px";
+		</script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link href="css/mui.picker.css" rel="stylesheet" />
+		<link href="css/mui.picker.min.css" rel="stylesheet" />
+    	<link href="css/mui.poppicker.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/common.css" />
+		<link rel="stylesheet" href="css/release.css" />
+		<style>
+			#abq,#abq1{
+				width: 100%;
+				height: auto;
+				min-height: 4.4rem;
+				display: flex;
+				flex-wrap: wrap;
+			}
+		</style>
+	</head>
+
+	<body>
+		
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-icon mui-icon-left-nav mui-pull-left" href="index.html"></a>
+		    <h1 class="mui-title">我要发布</h1>
+		</header>
+		<div class="mui-content">
+		    <div class="release_body">
+		    	<div class="release_content">
+		    		<span>请输入门店名称</span>
+		    		<input type="text" placeholder="请输入标题" class="title" style="width: 65%;"/>
+		    	</div>
+		    	<div class="release_content">
+		    		<div class="content_left">服务时间</div>
+		    		<div class="content_right choice_add1">
+		    			<div class="add_box1">请选择服务时间</div>
+		    			<img src="img/add_jiantou.png" />
+		    		</div>
+		    	</div>
+		    	<!--<div class="release_content">
+		    		<span>留言</span>
+		    		<input type="text" placeholder="请输入留言" class="liuyan"/>
+		    	</div>-->
+		    	<div class="add_content">
+		    		<div class="content_left">所在地区</div>
+		    		<div class="content_right">
+		    			<div class="add_box choice_add">请选择所在地区</div>
+		    			<img src="img/add_jiantou.png" />
+		    		</div>
+		    	</div>
+		    	<div class="add_content">
+		    		<div class="content_left">详细地址</div>
+		    		<div class="content_right">
+		    			<input type="text" placeholder="请输入详细地址" class="address"/>
+		    		</div>
+		    	</div>
+		    	<div class="recharge_content1">
+		    		<p>上传门头照</p>
+		    		<div class="content1_upload">
+		    			<a href="#picture" id="abq">
+			    			<div class="upload_div" id="upload_img1">
+			    				<img src="img/img_upload.png" />
+			    				<!--<input type="file" accept="image/*" multiple  id="upload_img" name="file" enctype="multipart/form-data"  onchange="upload_img(this)"/>-->
+			    				<!--<input  type="file" accept="image/*" id="upload_img" name="file"   enctype="multipart/form-data" onchange="upload_img()" />-->
+			    			</div>
+		    			</a>
+		    		</div>
+		    	</div>
+		    	<!--<div class="recharge_content1">
+		    		<p>上传视频</p>
+		    		<div class="content1_upload" >
+		    			<a href="#picture1" id="abq1" onclick="dy_video()">
+			    			<div class="upload_div" id="upload_video1">
+			    				<img src="img/img_upload.png" class="add_video"/>
+			    				<!--<input type="file" accept="image/*" multiple  id="upload_img" name="file" enctype="multipart/form-data"  onchange="upload_img(this)"/>-->
+			    				<!--<input  type="file" accept="video/*" capture="camcorder" name="file1" id="upload_video"   enctype="multipart/form-data" onchange="update_video()">-->
+			    			<!--</div>
+		    			</a>
+		    		</div>
+		    	</div>-->
+		    	<div class="recharge_content2">
+		    		<p>请输入问题描述</p>
+		    		<textarea placeholder="问题描述" class="desc"></textarea>
+		    	</div>
+		    	
+		    </div>
+		    <div class="div_button">
+		    	<a  onclick="sub()">
+		    		<button type="button">立即发布</button>
+		    	</a>
+		    </div>
+		</div>
+		
+		<div id="picture" class="mui-popover mui-popover-bottom mui-popover-action ">
+		     <!--可选择菜单--> 
+		    <ul class="mui-table-view">
+		      <li class="mui-table-view-cell">
+		        <a href="#" class="input_file">
+		        	上传照片
+		        	<input  type="file" accept="image/*" id="upload_img" name="file"   enctype="multipart/form-data" onchange="upload_img()" />
+		        </a>
+		      </li>
+		    </ul>
+		    <!-- 取消菜单 -->
+		    
+		    <ul class="mui-table-view">
+		      <li class="mui-table-view-cell">
+		        <a href="#picture">
+		        	取消
+		        </a>
+		      </li>
+		    </ul>
+		</div>
+		<!--<div id="picture1" class="mui-popover mui-popover-bottom mui-popover-action ">
+		     <!--可选择菜单--> 
+		    <!--<ul class="mui-table-view">
+		      <li class="mui-table-view-cell">
+		        <a href="#" class="input_file" >
+		        	上传视频
+		        	<input  type="file" accept="video/*"  name="file1" id="upload_video" capture="camcorder"    onchange="update_video()">
+		        </a>
+		      </li>
+		    </ul>
+		    <!-- 取消菜单 -->
+		    
+		    <!--<ul class="mui-table-view">
+		      <li class="mui-table-view-cell">
+		        <a href="#picture1">
+		        	取消
+		        </a>
+		      </li>
+		    </ul>
+		</div>-->
+		
+		
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript" src="js/jquery-3.3.1.min.js" ></script>
+		<script type="text/javascript" src="js/common.js" ></script>
+		<script type="text/javascript" src="js/art-template.js"></script>
+		<script type="text/javascript" src="js/mui.picker.js" ></script>
+		<script type="text/javascript" src="js/mui.picker.min.js" ></script>
+		<script type="text/javascript" src="js/mui.poppicker.js" ></script>
+		<script type="text/javascript" src="js/city.data-3.js" ></script>
+		<script type="text/javascript">
+			var file;
+			var files=[];
+			var videos;
+			var session=window.sessionStorage;
+            var user_info;
+            var i;
+            $(function(){
+            	user_info= session.getItem("user_info"),
+                user_info = JSON.parse(user_info);
+                if(user_info.issm==1){
+                	mui.toast("您还没有进行实名验证，请先实名认证~");
+                	session.setItem("rz_state",0);
+                	setTimeout(function(){
+                		window.location.href="certification.html";
+                	},1500)
+                }
+               
+                
+                
+                
+                mui.init();
+                var _getParam = function(obj, param) {
+		            return obj[param] || '';
+		        };
+		        var cityPicker3 = new mui.PopPicker({
+		            layer: 3,
+		            buttons:['','确定']
+		        });
+		        cityPicker3.setData(cityData3);
+		        var choiceAdd = document.querySelector('.choice_add');
+		        var addBox = document.querySelector('.add_box');
+		        choiceAdd.addEventListener('tap', function(event) {
+		            cityPicker3.show(function(items) {
+		                addBox.innerText = _getParam(items[0], 'text') + " " + _getParam(items[1], 'text') + " " + _getParam(items[2], 'text');
+		                $(".add_box").css('color','black');
+		            });
+		        }, false);
+		        $('.mui-poppicker-header').prepend('请选择区域')
+            })
+            
+//          function back_page(){
+//          	
+//          }
+			//调用摄像头
+//			function dy_video(){
+//				console.info("a");
+//				var u = navigator.userAgent, app = navigator.appVersion;
+//              var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端或者uc浏览器
+//              if (isAndroid) {
+//                  js.dy_videos(1);
+//              }
+//			}
+            
+			function sub(){
+				var title= $(".title").val();
+				var servicetime=$(".add_box1").text();
+				console.info(servicetime);
+//				var liuyan=$(".liuyan").val();
+				var desc=$(".desc").val();
+				var address=$(".address").val();
+				var city=$(".add_box").text();
+				console.info(files,videos);
+				if(title=="" || servicetime=="请选择服务时间"  || desc==""   || address=="" || city=="请选择所在地区"){
+					mui.toast("请填写完所有资料~");
+				}else if(files.length==0){
+					mui.toast("请上传图片~");
+				}else{
+					files=JSON.stringify(files);
+//					videos=JSON.stringify(videos);
+					$.ajax({
+						type:"post",
+						url:"http://qipei.liebianzhe.com/api/user/release_help",
+						async:true,
+						data:{
+							token:user_info.token,
+							title:title,
+							servicetime:servicetime,
+//							liuyan:liuyan,
+							pic:files,
+							desc:desc,
+							address:address,
+							city:city,
+						},
+						success:function(data){
+							console.info(data);
+							var release_info=data;
+							session.setItem("release_info",JSON.stringify(release_info));
+							window.location.href="release_info.html";
+						},
+						error:function(){
+							console.info("发布请求失败~");
+						}
+					});
+				}
+				
+			}
+			//上传图片
+			function upload_img(){
+				let formData = new FormData();
+				file = document.getElementById("upload_img").files[0];
+				formData.append('file',file);
+				mui.ajax("http://qipei.liebianzhe.com/api/index/upload", {
+					data: formData,
+					async: false,
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					cache: false,
+					contentType: false,
+					processData: false,
+					success: function(data) {
+						data=JSON.parse(data);
+						console.info(data);
+						if(data.state == 1){
+							if(data.data.length>0){
+								file=data.data[0].name;
+								var div=document.createElement('div');
+								div.classList.add("file_div","file_img");
+								$("#upload_img1").before(div);
+								i=($(".file_img").length)-1;
+								console.info(i);
+								var span=document.createElement('span');
+								span.classList.add("mui-icon","mui-icon-close", "icon_span");
+								span.addEventListener('tap',function(){
+									$(this).parent(".file_img").remove();
+									var src=$(this).siblings("img").src;
+									files.splice($.inArray(''+src+'',files),1);
+								});
+								$(".file_img").eq(i).html(span);
+	            				var img=document.createElement('img');
+								img.src='http://qipei.liebianzhe.com/static/upload/'+file;
+								$(".file_img").eq(i).children(".icon_span").after(img);	
+								files.push(file);
+							}
+						}else{
+							mui.toast(data.msg);
+						}
+							
+					},
+					error:function(){
+						console.info("上传图片失败！");
+					}
+				})		
+						
+			}
+			
+			//上传视频
+			function update_video(){
+				let formData = new FormData();
+				var file1= document.getElementById("upload_video").files[0];
+				file = document.getElementById("upload_video").files[0];
+				formData.append('file',file);
+				mui.ajax("http://qipei.liebianzhe.com/api/index/upload", {
+					data: formData,
+					async: false,
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					cache: false,
+					contentType: false,
+					processData: false,
+					success: function(data) {
+						data=JSON.parse(data);
+						console.info(data);
+						if(data.state == 1){
+							if(data.data.length>0){
+								file=data.data[0].name;
+							
+//								var div=document.createElement('div');
+//								div.classList.add("file_div","file_video");
+//								$("#upload_video1").before(div);
+//								$("#upload_video1").hide();
+//								$("#abq1").attr("href","#");
+//								i=($(".file_video").length)-1;
+//								console.info(i);
+//								var span=document.createElement('span');
+//								span.classList.add("mui-icon","mui-icon-close", "icon_span");
+//								span.addEventListener('tap',function(){
+//									$(this).parent(".file_video").remove();
+//									$("#upload_video1").show();
+//									$("#abq1").attr("href","#picture1");
+//									var src=$(this).siblings("video").src;
+//									files.splice($.inArray(''+src+'',files),1);
+//								});
+//								$(".file_video").eq(i).html(span);
+//							
+//								var video=document.createElement('video');
+//								var source =document.createElement('source');
+//								source.src='http://qipei.liebianzhe.com/static/upload/'+file;
+//								video.poster='http://qipei.liebianzhe.com/static/upload/'+file;
+//								$(video).append(source);
+//								video.src='http://qipei.liebianzhe.com/static/upload/'+file;
+//								$(".file_video").eq(i).children(".icon_span").after(video);	
+								mui.toast("上传视屏成功~~");
+								$("#picture1,.mui-backdrop").hide();
+//								$(".recharge_content1")
+								videos=file;
+								console.info(videos);
+							}
+						}else{
+							mui.toast(data.msg);
+						}
+							
+					},
+					error:function(){
+						console.info("上传图片失败！");
+					}
+				})		
+						
+			}
+			
+			
+			
+			//点击选择日期
+			var choiceAdd1 = document.querySelector('.choice_add1');
+	        var addBox1 = document.querySelector('.add_box1');
+	        var year=new Date().getFullYear();
+	      	choiceAdd1.addEventListener('tap', function() {
+	      		var dtpicker  = new  mui.DtPicker({
+	      			type:'date',
+	      			"beginYear":2010,
+//        			"endYear":year,//区间内的日期
+//      			"beginDate": new Date(2010,01,01),//设置开始日期  
+        			"endDate": 2050,//设置结束日期    //真正的是10.21
+//      			layer: 3,
+//		            buttons:['','确定']
+	      		});
+				dtpicker .show(function(rs) {
+						/*
+						 * rs.value 拼合后的 value
+						 * rs.text 拼合后的 text
+						 * rs.y 年，可以通过 rs.y.vaue 和 rs.y.text 获取值和文本
+						 * rs.m 月，用法同年
+						 * rs.d 日，用法同年
+						 * rs.h 时，用法同年
+						 * rs.i 分（minutes 的第二个字母），用法同年
+						 */
+						addBox1.innerText = rs.y.text + '-' + rs.m.text + '-' + rs.d.text;
+						$(".add_box1").css('color','black');
+						/*
+						 * 返回 false 可以阻止选择框的关闭
+						 * return false;
+						 */
+						 dtpicker.dispose();
+				});
+			}, false);
+		</script>
+	</body>
+
+</html>

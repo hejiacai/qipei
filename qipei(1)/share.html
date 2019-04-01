@@ -1,0 +1,105 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>分享平台</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script>
+		    document.documentElement.style.fontSize =document.documentElement.clientWidth/750*40 +"px";
+		</script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/common.css" />
+		<link rel="stylesheet" href="css/share.css" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-icon mui-icon-left-nav mui-pull-left" href="personal.html"></a>
+		    <h1 class="mui-title">分享平台</h1>
+		</header>
+		<div class="mui-content" >
+			<div class="share_body" id="content">
+				
+				
+				<!--<div class="share_content" onclick="fenxiang(1)">
+					<img src="img/fenxiang2.png" />
+					<span>代理分享</span>
+				</div>-->
+			</div>
+		</div>
+		
+		<script type="text/html" id="text">
+			{{if vip==2}}
+				<div class="share_content" onclick="fenxiang(2)">
+					<img src="img/fenxiang1.png" />
+					<span>平台分享</span>
+				</div>
+			{{else if vip==3}}
+				<div class="share_content" onclick="fenxiang(2)">
+					<img src="img/fenxiang1.png" />
+					<span>平推分享</span>
+				</div>
+				<div class="share_content" onclick="fenxiang(1)">
+					<img src="img/fenxiang2.png" />
+					<span>门店分享</span>
+				</div>
+			{{else if vip==4}}
+				<div class="share_content" onclick="fenxiang(3)">
+					<img src="img/fenxiang1.png" />
+					<span>代理分享</span>
+				</div>
+				<div class="share_content" onclick="fenxiang(1)">
+					<img src="img/fenxiang2.png" />
+					<span>门店分享</span>
+				</div>
+			{{else if vip==5}}
+				<div class="share_content" onclick="fenxiang(4)">
+					<img src="img/fenxiang1.png" />
+					<span>市代理分享</span>
+				</div>
+				<div class="share_content" onclick="fenxiang(3)">
+					<img src="img/fenxiang3.png" />
+					<span>代理分享</span>
+				</div>
+				<div class="share_content" onclick="fenxiang(1)">
+					<img src="img/fenxiang2.png" />
+					<span>门店分享</span>
+				</div> 
+			{{else if vip==6}}
+				<div class="share_content" onclick="fenxiang(5)">
+					<img src="img/fenxiang1.png" />
+					<span>分享推广</span>
+				</div>
+				<div class="share_content" onclick="setting()">
+					<img src="img/fenxiang4.png" />
+					<span>权限设置</span>
+				</div> 
+			{{/if}}
+		</script>
+		
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript" src="js/common.js" ></script>
+		<script type="text/javascript" src="js/art-template.js"></script>
+		<script type="text/javascript" src="js/jquery-3.3.1.min.js" ></script>
+		<script type="text/javascript">
+			mui.init();
+			var session=window.sessionStorage;
+			var user_info;
+			$(function(){
+				user_info=session.getItem("user_info");
+				user_info=JSON.parse(user_info);
+				var html=template("text",user_info);
+				document.getElementById("content").innerHTML=html;
+			})
+			function setting(){
+				window.location.href="purview_setting.html";
+			}
+			function fenxiang(fenxiang_state){
+				session.setItem("fenxiang_state",fenxiang_state);
+				window.location.href="qr_code.html";
+			}
+		</script>
+	</body>
+
+</html>

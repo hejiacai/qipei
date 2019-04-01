@@ -1,0 +1,48 @@
+body,.mui-content{
+	background-color: #F8F8F8;
+}
+.set_body{
+	width: 100%;
+	height: 5.05rem;
+	background-color: white;
+	padding-left: 0.75rem;
+	padding-right: 0.75rem;
+	
+}
+.set_content{
+	width: 100%;
+	height: 2.5rem;
+	border-bottom: 1px solid #F0EEEE;
+	display: flex;
+    align-items: center;
+}
+.set_content:last-child{
+	border-bottom: none;
+}
+.set_content_left{
+	width: 3.5rem;
+	font-size: 0.75rem;
+}
+.set_content input{
+	width: 70%;
+	font-size: 0.75rem;
+	margin: 0;
+	border: none;
+}
+.div_button{
+	width: 100%;
+	height: 2.45rem;
+	text-align: center;
+	margin-top: 7rem;
+}
+.div_button button{
+	font-size: 0.9rem;
+    color: white;
+    height: 100%;
+    width: 15.1rem;
+    border-radius: 25px;
+    background: -webkit-linear-gradient(left, #4679EE , #2EAFFC);
+    background: -o-linear-gradient(right, #4679EE, #2EAFFC);
+    background: -moz-linear-gradient(right, #4679EE, #2EAFFC);
+    background: linear-gradient(to right, #4679EE , #2EAFFC);
+}

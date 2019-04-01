@@ -1,0 +1,121 @@
+body,.mui-content{
+	background-color: #F9F9F8;
+}
+.mui-bar{
+	border-bottom: 1px solid #F0F1F1;
+}
+.mui-segmented-control.mui-segmented-control-inverted{
+    width: 100%;
+    height: 2.6rem;
+    background-color: white;
+}
+.mui-segmented-control.mui-scroll-wrapper .mui-scroll{
+	width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around
+}
+.mui-slider .mui-segmented-control.mui-segmented-control-inverted~.mui-slider-group .mui-slider-item{
+	border: none;
+}
+.mui-table-view{
+	background-color: #F9F9F8;
+}
+.mui-table-view-cell{
+	background-color: white;
+	width: 16.5rem;
+	height: 6.9rem;
+	margin: 0 auto;
+	padding: 0;	
+	margin-top: 0.5rem;
+	border-radius: 5px;
+}
+.mui-segmented-control.mui-scroll-wrapper .mui-control-item{
+	height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    line-height: 2.5rem;
+    padding: 0;
+}
+.mui-segmented-control.mui-segmented-control-inverted .mui-control-item.mui-active{
+	color: black;
+	border-bottom: 3px solid #4876EC !important;
+}
+.mui-table-view-cell:after{
+	height: 0;
+}
+.yhj{
+	width: 100%;
+	height: 4.525rem;
+	display: flex;
+    justify-content: space-between;
+    padding-left: 5%;
+    padding-right: 5%;
+    align-items: center;
+    background-size: 100% 100% !important;
+}
+.yhj_div_left{
+	font-size: 0.75rem;
+	color: white;
+	
+}
+.yhj_div_left p{
+	color: white;
+	font-size: 1.2rem;
+    margin-bottom: 0.3rem;
+}
+.yhj_div_right{
+	color: white;
+	font-size: 0.9rem;
+}
+.yhj_div_right_span{
+	font-size: 1.5rem;
+}
+.yhj_content{
+	width: 100%;
+	height: 1.975rem;
+	display: flex;
+}
+.content_left{
+	width: 50%;
+	height: 100%;
+	font-size: 0.6rem;
+	color: #989898;
+	padding-left: 0.5rem;
+	display: flex;
+	align-items: center;
+}
+.content_right{
+	width: 50%;
+	height: 100%;
+	font-size: 0.6rem;
+	color: #60b7eb;
+	padding-right: 1.15rem;
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+}
+.guoqi{
+	color: #979797;
+}
+
+
+
+/*优化选项卡*/
+.mui-slider-indicator.mui-segmented-control{
+	position: fixed;
+    bottom: auto;
+    top: 6.5%;
+}
+.mui-control-content{
+	display: none !important;
+}
+.mui-control-content.mui-active{
+	display: block !important;
+}
+.mui-slider .mui-slider-group{
+	margin-top: 3rem;
+}

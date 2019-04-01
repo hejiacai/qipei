@@ -1,0 +1,255 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>二级分类</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script>
+		    document.documentElement.style.fontSize =document.documentElement.clientWidth/750*40 +"px";
+		</script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/common.css" />
+		<link rel="stylesheet" href="css/second_classification.css" />
+		<script type="text/javascript" src="js/common.js" ></script>
+	</head>
+
+	<body>
+	<header class="static_header">
+		<a onclick="back_page()">
+			<div class="header_left">
+				<img src="img/return1.png" />
+			</div>
+		</a>
+		<div class="header_content">
+			<input type="text" placeholder="搜索您需要的内容" class="select_input" maxlength="18"/>
+		</div>
+		<div class="header_right">搜索</div>
+	</header>
+	<section>
+		<div class="tjsp_body" id="content"></div>
+	</section>
+	
+		<script type="text/html" id="text">
+			{{each data as value i}}
+			<div class="tjsp_content" onclick="goods_detail({{value.id}})">
+				<div class="content_left">
+					<img  src="{{value.cover}}"/>
+				</div>
+				<div class="content_right">
+					<span class="font_span2">{{value.goods_name}}</span>
+					<span class="font_span">{{value.desc}}</span>
+					{{if vip>=2}}
+					<span class="font_span1">￥{{value.price}}</span>
+					{{/if}}
+				</div>
+			</div>
+			{{/each}}
+		</script>
+		<script type="text/html" id="text1">
+			{{if state==1}}
+			{{each data as value i}}
+				<div class="tjsp_content" onclick="goods_detail({{value.id}})">
+					<div class="content_left">
+						<img  src="{{value.cover}}"/>
+					</div>
+					<div class="content_right">
+						<span class="font_span2">{{value.goods_name}}</span>
+						<span class="font_span">{{value.desc}}</span>
+						{{if vip>=2}}
+						<span class="font_span1">￥{{value.price}}</span>
+						{{/if}}
+					</div>
+				</div>
+			{{/each}}
+			{{else if state==0}}
+				<div class="tjsp_content1">
+					{{msg}}
+				</div>
+			{{/if}}
+		</script>
+		
+		<script type="text/html" id="text2">
+			<div class="tips1">
+				热搜:
+			</div>
+			<div class="hot_content">
+				{{each hot as v vi}}
+					<div class="hot_div" onclick="search(this,1)">{{v.title}}</div>
+				{{/each}}
+			</div>
+			<div class="tips">
+				历史搜索记录
+			</div>
+			<div class="tjsp_content2_body">
+				{{each history as value i}}
+					<div class="tjsp_content2" onclick="search(this,0)">
+						<span class="search_content">{{value.title}}</span>
+					</div>
+				{{/each}}
+			</div>
+		</script>
+		
+		<script src="js/mui.min.js"></script>
+		
+		<script type="text/javascript" src="js/art-template.js"></script>
+		<script type="text/javascript" src="js/jquery-3.3.1.min.js" ></script>
+		<script type="text/javascript">
+			mui.init();
+			var session=window.sessionStorage;
+	      	//登录时返回的用户数据
+	      	var user_info;
+	      	//商品详情的数据
+	      	var goods_list;
+	      	//判断进入二级列表的状态，0为点击分类进入，1为点击搜索框进入；
+      		var second_type;
+	      	$(function(){
+	      		user_info=session.getItem("user_info");
+      			user_info=JSON.parse(user_info);
+      			goods_list=session.getItem("goods_list");
+      			goods_list=JSON.parse(goods_list);
+      			second_type=session.getItem("second_type");
+      			console.info(goods_list);
+      			if(second_type==0){
+      				goods_list["vip"]=user_info.issm;
+      				var html=template("text",goods_list);
+      				document.getElementById("content").innerHTML=html;
+      			}else if(second_type==1){
+      				$.ajax({
+						type:"post",
+						url:"http://qipei.liebianzhe.com/api/user/search_history",
+						async:true,
+						data:{
+							token:user_info.token,
+						},
+						success:function(data){
+							console.info(data);
+							if(data.state==1){
+								data["vip"]=user_info.issm;
+								var html=template("text2",data);
+	      						document.getElementById("content").innerHTML=html;
+							}
+						},
+						error:function(data){
+							console.info("获取搜索历史记录失败！")
+						}
+					});
+      			}
+      			
+	      	})
+	      	//input 获取焦点触发搜索记录
+	      	$(".select_input").on('input',function(){
+	      		var content=$(".select_input").val();
+	      		if(content==""){
+	      			$.ajax({
+						type:"post",
+						url:"http://qipei.liebianzhe.com/api/user/search_history",
+						async:true,
+						data:{
+							token:user_info.token,
+						},
+						success:function(data){
+							console.info(data);
+							if(data.state==1){
+								var html=template("text2",data);
+	      						document.getElementById("content").innerHTML=html;
+							}
+						},
+						error:function(data){
+							console.info("获取搜索历史记录失败！")
+						}
+					});
+	      		}
+	      	})
+	      	//点击进入商品详情
+	      	function goods_detail(gid){
+				$.ajax({
+					type:"post",
+					url:"http://qipei.liebianzhe.com/api/user/goods_detail",
+					async:true,
+					data:{
+						token:user_info.token,
+						gid:gid
+					},
+					success:function(data){
+						console.info(data);
+						if(data.state==1){
+							//进入商品详情页面状态，0为首页的推荐商品，1为列表
+			      			var commodity_details_state=1;
+			      			session.setItem("commodity_details_state",commodity_details_state);
+							//存入商品详情数据
+							var goods_detail=JSON.stringify(data.data);
+							session.setItem("goods_detail",goods_detail)
+							tj_state=0
+							session.setItem("tj_state",tj_state);
+							window.location.href="commodity_details.html";
+						}else{
+							mui.toast(data.msg);	
+						}
+					},
+					error:function(data){
+						console.info("获取商品详情失败！")
+					}
+				});
+			}
+	      	//查询商品
+	      	function search(title,ststae){
+	      		var title;
+	      		if(ststae==0){
+	      			title=$(title).children(".search_content").text();
+	      		}else if(ststae==1){
+	      			title=$(title).text();
+	      		}
+	      		$.ajax({
+	    			type:"post",
+	    			url:"http://qipei.liebianzhe.com/api/user/search_goods",
+	    			async:true,
+	    			data:{
+	    				token:user_info.token,
+	    				title:title
+	    			},
+	    			success:function(data){
+	    				console.info(data);
+	    				$(".search").show();
+	    				var html=template("text1",data);
+      					document.getElementById("content").innerHTML=html;
+	    			},
+	    			error:function(){
+	    				console.info("查询失败！")
+	    			}
+	    		});
+	      	}
+	      	//查询商品
+	      	$(".header_right").on('tap',function(){
+	    		var title=$(".select_input").val();
+	    		$.ajax({
+	    			type:"post",
+	    			url:"http://qipei.liebianzhe.com/api/user/search_goods",
+	    			async:true,
+	    			data:{
+	    				token:user_info.token,
+	    				title:title
+	    			},
+	    			success:function(data){
+	    				console.info(data);
+	    				$(".search").show();
+	    				var html=template("text1",data);
+      					document.getElementById("content").innerHTML=html;
+	    			},
+	    			error:function(){
+	    				console.info("查询失败！")
+	    			}
+	    		});
+	      	
+	      	})
+	      	function back_page(){
+	      		if(second_type==0 || second_type==2){
+	      			window.location.replace("commodity_classify.html");
+	      		}else if(second_type==1){
+	      			window.location.replace("index.html");
+	      		}
+	      	}
+		</script>
+	</body>
+
+</html>

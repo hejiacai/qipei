@@ -1,0 +1,200 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>设置密码</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script>
+		    document.documentElement.style.fontSize =document.documentElement.clientWidth/750*40 +"px";
+		</script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/common.css" />
+		<link rel="stylesheet" href="css/forget_pwd.css" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class=" mui-icon mui-icon-left-nav mui-pull-left" href="reg.html"></a>
+		</header>
+		<div class="mui-content">
+			<section class="forget_body">
+				<p class="login_title">设置</p>
+				<div class="forget_content">
+					<input  type="password" placeholder="请输入6-12位密码" id="pwd" oninput="if(value.length>12)value=value.slice(0,12)" />
+					<input  type="password" placeholder="请确定新密码" id="repwd" oninput="if(value.length>12)value=value.slice(0,12)"/>
+				</div>
+				<div class="div_button div_button1">
+					<button type="button" onclick="next_step1()">下一步</button>
+				</div>
+			</section>
+		</div>
+		<script type="text/javascript" src="js/jquery-3.3.1.min.js" ></script>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+            mui.init();
+            var session=window.sessionStorage;
+            var local=window.localStorage;
+            var share_datas;
+            var id;
+			var share_type;
+			var user_info;
+            $(function(){
+            	share_datas=session.getItem("share_datas");
+				share_datas=JSON.parse(share_datas);
+				if(share_datas=="" || share_datas==null){
+					id=null;
+					share_type=null;
+				}else{
+					id=share_datas.id;
+					share_type=share_datas.share_type;
+				}
+            })
+            $.getUrlParam = function (name) {
+                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+                var r = window.location.search.substr(1).match(reg);
+                if (r != null) return unescape(r[2]);
+                return null;
+            }
+            function next_step1(){
+                var key = $.getUrlParam('key'),
+                    pwd = $("#pwd").val(),
+                    repwd = $("#repwd").val(),
+					phone = $.getUrlParam('phone')
+				;
+                console.log(phone);
+                if (pwd==""||pwd==null){
+                    mui.toast("请设置密码");
+                    return false;
+                } else if (repwd==""||repwd==null){
+                    mui.toast("请再次输入密码");
+                    return false;
+                } else if(pwd.length<6){
+                	mui.toast("密码不能小于六位数~~");
+                	return false;
+                }
+                console.info(share_datas);
+                console.info(key,phone,pwd,repwd)
+                if(share_datas.wx_state==1){
+                	id="";
+                	share_type="";
+                	$.ajax({
+                		type:"post",
+                		url:"http://qipei.liebianzhe.com/api/login/set_password",
+                		async:true,
+                		data:{
+                			key: key,
+                			phone:phone,
+                			password:pwd,
+                			repassword:repwd
+                		},
+                		success:function(data){
+                			console.info(data);
+                			if(data.state==1){
+                				$.ajax({
+                                	type:"post",
+                                	url:"http://qipei.liebianzhe.com/api/login/login",
+                                	async:true,
+                                	data:{
+										type:1,
+										phone:share_datas.phone,
+										password:pwd,
+										id:id,
+										share_type:share_type
+									},
+									success:function(data){
+										if(data.state==1){
+											mui.toast("设置密码成功~");
+											local.setItem("phone",share_datas.phone);
+											local.setItem("pwd",pwd);
+											//判断能否自动登录的状态；0为否，1为是;
+											login_state=1;
+											local.setItem("login_state",login_state);
+											user_info=JSON.stringify(data.data);
+											session.setItem("user_info",user_info);
+											login_url();
+										}else{
+											mui.toast(data.msg);
+										}
+									},
+									error:function(){
+										console.info("登录请求失败~");
+									}
+                                });
+                			}else{
+                				mui.toast(data.msg);
+                			}
+                		},
+                		error:function(){
+                			console.info("请求失败~~");
+                		}
+                	});
+                }else{
+	                $.ajax({
+	                    url:"http://qipei.liebianzhe.com/api/login/register",
+	                    data:{key:key,type:2,password:pwd,repassword:repwd,phone:phone,id:id,share_type:share_type},
+	                    type:"post",
+	                    success:function (data) {
+	                    	console.info(data);
+	                        if (data.state==0){
+	                            mui.toast(data.msg);
+	                        } else{
+	                    		mui.toast(data.msg);
+	                    		if(id==null || share_type==null){
+	                    			setTimeout("jump()",2500);
+	                    		}else{
+	                    			
+	                    			download_app();
+	                    		}
+	                        }
+	                    }
+	                })
+                }
+                
+            }
+            function jump() {
+				window.location.href="login_one.html";
+            }
+            $(window).resize(function(){
+                document.documentElement.style.fontSize =document.documentElement.clientWidth/750*40 +"px";
+            });
+            function download_app(){
+				var u = navigator.userAgent, app = navigator.appVersion;
+                var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; //android终端或者uc浏览器
+                var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+                if (isAndroid) {
+                	window.location.href="https://www.pgyer.com/tcTk";
+                }
+                if (isiOS) {
+                	window.location.href="https://www.pgyer.com/HkGn";
+                }
+			}
+            function login_url(){
+				user_info=JSON.parse(user_info);
+				var u = navigator.userAgent, app = navigator.appVersion;
+                var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; //android终端或者uc浏览器
+                var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+                if (isAndroid) {
+                	var urls='http://qipei.liebianzhe.com/qipei/index.html?token='+user_info.token+'';
+                    js.urls(urls);
+                	setTimeout(function(){
+                    	window.location.replace("index.html");
+                    },2500);
+//					window.android.urls('http://qipei.liebianzhe.com/qipei/index.html?token='+user_info.token+'');
+                }
+                if (isiOS) {
+//                  var url={ "url":'http://qipei.liebianzhe.com/qipei/index.html?token='+user_info.token+''};
+//                  window.webkit.messageHandlers.urls.postMessage({"ure":123});
+//                  setTimeout('jump()',2500);
+					var num={ "url":'http://qipei.liebianzhe.com/qipei/index.html?token='+user_info.token+''};
+					window.webkit.messageHandlers.loginold.postMessage(num);
+					setTimeout(function(){
+                    	window.location.replace("index.html");
+                    },2500);
+                }
+			}
+		</script>
+
+	</body>
+
+</html>

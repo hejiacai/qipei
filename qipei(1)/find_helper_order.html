@@ -1,0 +1,176 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>找帮手-订单</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script>
+		    document.documentElement.style.fontSize =document.documentElement.clientWidth/750*40 +"px";
+		</script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/common.css" />
+		<link rel="stylesheet" href="css/my_dispatch.css" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-icon mui-icon-left-nav mui-pull-left" href="index.html"></a>
+		    <h1 class="mui-title">找帮手</h1>
+		    <a class="mui-icon  mui-pull-right" href="release.html">
+		    	<img src="img/fabu_img.png" class="fabu_img"/>
+		    </a>
+		</header>
+		<div class="mui-content" id="content"></div>
+		
+		<script type="text/html" id="text">
+			{{each data as value i}}
+			<div class="dispatch_body">
+		    	<div class="dispatch_left">
+		    		<img src="http://qipei.liebianzhe.com/static/upload/{{value.pic}}"/>
+		    	</div>
+		    	<div class="dispatch_right">
+		    		<p>{{value.title}}</p>
+		    		<div class="dispatch_info">
+		    			<div class="info_left">
+		    				<img src="img/time.png"/>
+		    				<span>{{value.servicetime}}</span>
+		    			</div>
+		    			<div class="info_right">
+		    				<img src="img/weizhi.png"/>
+		    				<span>{{value.city}}</span>
+		    			</div>
+		    		</div>
+		    		<div class="div_button">
+		    				<button type="button" class="white yjd" onclick="select_details({{value.id}})">查看详情</button>
+		    			<!--<a href="find_helper.html">-->
+		    				<!--<button type="button" class="blue zw" onclick="lgjd({{value.id}})">立即接单</button>-->
+		    			<!--</a>-->
+		    		</div>
+		    	</div>
+		    </div>
+		    {{/each}}
+		</script>
+		
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript" src="js/common.js" ></script>
+		<script type="text/javascript" src="js/art-template.js"></script>
+		<script type="text/javascript" src="js/jquery-3.3.1.min.js" ></script>
+		<script type="text/javascript">
+			mui.init();
+			var session=window.sessionStorage;
+            var user_info;
+            
+			$(function(){
+				user_info= session.getItem("user_info"),
+                user_info = JSON.parse(user_info);
+                $.ajax({
+                	type:"post",
+                	url:"http://qipei.liebianzhe.com/api/user/help_list",
+                	async:true,
+                	data:{
+                		token:user_info.token,
+                		type:0
+                	},
+                	success:function(data){
+                		console.info(data);
+                		
+                		if(data.state==1){
+	                		var html =template("text",data);
+							document.getElementById("content").innerHTML = html;
+                		}else{
+                			mui.toast(data.msg);
+                		}
+                	},
+                	error:function(){
+                		console.info("查看找人帮列表请求失败~");
+                	}
+                });
+			})
+			//点击查看详情
+			function select_details(id){
+				$.ajax({
+					type:"post",
+					url:"http://qipei.liebianzhe.com/api/user/meet_help",
+					async:true,
+					data:{
+						token:user_info.token,
+						type:2,
+						id:id
+					},
+					success:function(data){
+						console.info(data);
+						if(data.state==1){
+							var help_details=data.data;
+							//查看接单详情，0为接单列表，1为我的接单
+							session.setItem("select_master_details",0);
+							session.setItem("help_details",JSON.stringify(help_details));
+							window.location.href="master_details.html";
+						}else{
+							mui.toast(data.msg);
+						}
+					},
+					error:function(){
+						console.info("查看详情请求失败~");
+					}
+				});
+			}
+			
+			//点击立即接单
+            function lgjd(id){
+            	//进入接单成功页面，0为找帮手列表进入，1为找帮手详情进入
+				var helper_state=0;
+            	if(user_info.ismw==1){
+            		session.setItem("helper_state",helper_state);
+            		window.location.href="help_uncertified.html";
+            	}else if(user_info.ismw==2){
+            		$.ajax({
+						type:"post",
+						url:"http://qipei.liebianzhe.com/api/user/meet_help",
+						async:false,
+						data:{
+							token:user_info.token,
+							type:1,
+							id:id
+						},
+						success:function(data){
+							console.info(data);
+							if(data.state==1){
+								session.setItem("helper_state",helper_state);
+								$.ajax({
+									type:"post",
+									url:"http://qipei.liebianzhe.com/api/user/meet_help",
+									async:false,
+									data:{
+										token:user_info.token,
+										type:2,
+										id:id
+									},
+									success:function(data){
+										console.info(data);
+										if(data.state==1){
+											var help_details=data.data;
+											session.setItem("help_details",JSON.stringify(help_details));
+										}else{
+											mui.toast(data.msg);
+										}
+									},
+									error:function(){
+										console.info("查看详情请求失败~");
+									}
+								});
+								window.location.href="find_helper.html";
+							}else{
+								mui.toast(data.msg);
+							}
+						},
+						error:function(){
+							console.info("查看详情请求失败~");
+						}
+					});
+            	}
+            }
+		</script>
+	</body>
+
+</html>

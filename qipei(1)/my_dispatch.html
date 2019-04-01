@@ -1,0 +1,215 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>我的派单</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script>
+		    document.documentElement.style.fontSize =document.documentElement.clientWidth/750*40 +"px";
+		</script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/common.css" />
+		<link rel="stylesheet" href="css/my_dispatch.css" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-icon mui-icon-left-nav mui-pull-left" href="personal.html"></a>
+		    <h1 class="mui-title">我的派单</h1>
+		</header>
+		<div class="mui-content" id="content">
+		    
+		    <!--<div class="dispatch_body">
+		    	<div class="dispatch_left">
+		    		<img src="img/pd_img.png"/>
+		    	</div>
+		    	<div class="dispatch_right">
+		    		<p>德国马牌CPC2  225/55R17</p>
+		    		<div class="dispatch_info">
+		    			<div class="info_left">
+		    				<img src="img/time.png"/>
+		    				<span>2015-09-10</span>
+		    			</div>
+		    			<div class="info_right">
+		    				<img src="img/weizhi.png"/>
+		    				<span>上海</span>
+		    			</div>
+		    		</div>
+		    		<div class="div_button">
+		    			<button type="button" class="white yjd">已接单</button>
+		    			<button type="button" class="white qewc">确认完成</button>
+		    			<a href="see_master.html">
+		    				<button type="button" class="blue ck">查看接单师傅</button>
+		    			</a>
+		    		</div>
+		    	</div>
+		    </div>
+		    <div class="dispatch_body">
+		    	<div class="dispatch_left">
+		    		<img src="img/pd_img.png"/>
+		    	</div>
+		    	<div class="dispatch_right">
+		    		<p>德国马牌CPC2  225/55R17</p>
+		    		<div class="dispatch_info">
+		    			<div class="info_left">
+		    				<img src="img/time.png"/>
+		    				<span>2015-09-10</span>
+		    			</div>
+		    			<div class="info_right">
+		    				<img src="img/weizhi.png"/>
+		    				<span>上海</span>
+		    			</div>
+		    		</div>
+		    		<div class="div_button">
+		    			<button type="button" class="white yjd">已完成</button>
+		    		</div>
+		    	</div>
+		    </div>
+		    <div class="dispatch_body">
+		    	<div class="dispatch_left">
+		    		<img src="img/pd_img.png"/>
+		    	</div>
+		    	<div class="dispatch_right">
+		    		<p>德国马牌CPC2  225/55R17</p>
+		    		<div class="dispatch_info">
+		    			<div class="info_left">
+		    				<img src="img/time.png"/>
+		    				<span>2015-09-10</span>
+		    			</div>
+		    			<div class="info_right">
+		    				<img src="img/weizhi.png"/>
+		    				<span>上海</span>
+		    			</div>
+		    		</div>
+		    		<div class="div_button">
+		    			<button type="button" class="white yjd">已接单</button>
+		    			<button type="button" class="blue ck">查看接单师傅</button>
+		    		</div>
+		    	</div>
+		    </div>-->
+		</div>
+		
+		<script type="text/html" id="text">
+			{{each data as value i}}
+			<div class="dispatch_body">
+		    	<div class="dispatch_left">
+		    		<img src="http://qipei.liebianzhe.com/static/upload/{{value.pic}}"/>
+		    	</div>
+		    	<div class="dispatch_right">
+		    		<p>{{value.title}}</p>
+		    		<div class="dispatch_info">
+		    			<div class="info_left">
+		    				<img src="img/time.png"/>
+		    				<span>{{value.servicetime}}</span>
+		    			</div>
+		    			<div class="info_right">
+		    				<img src="img/weizhi.png"/>
+		    				<span>{{value.city}}</span>
+		    			</div>
+		    		</div>
+		    		<div class="div_button">
+		    			{{if value.status==1}}
+		    			<button type="button" class="blue zw">暂未接单</button>
+		    			{{else if value.status==2}}
+		    			<button type="button" class="white yjd">已接单</button>
+		    			<button type="button" class="white qewc" onclick="complete({{value.id}})">确认完成</button>
+	    				<button type="button" class="blue ck" onclick="select_master({{value.id}})">查看接单师傅</button>
+		    			{{else if value.status==3}}
+		    			<button type="button" class="white yjd">已完成</button>
+		    			{{/if}}
+		    		</div>
+		    	</div>
+		    </div>
+		    {{/each}}
+		</script>
+		
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript" src="js/common.js" ></script>
+		<script type="text/javascript" src="js/art-template.js"></script>
+		<script type="text/javascript" src="js/jquery-3.3.1.min.js" ></script>
+		<script type="text/javascript">
+			mui.init();
+			var session=window.sessionStorage;
+            var user_info;
+			$(function(){
+				user_info= session.getItem("user_info"),
+                user_info = JSON.parse(user_info);
+                $.ajax({
+                	type:"post",
+                	url:"http://qipei.liebianzhe.com/api/user/help_list",
+                	async:true,
+                	data:{
+                		token:user_info.token,
+                		type:1
+                	},
+                	success:function(data){
+                		console.info(data);
+                		
+                		if(data.state==1){
+	                		var html =template("text",data);
+							document.getElementById("content").innerHTML = html;
+                		}else{
+                			mui.toast(data.msg);
+                		}
+                	},
+                	error:function(){
+                		console.info("查看找人帮列表请求失败~");
+                	}
+                });
+			})
+			//点击查看接单师傅
+			function select_master(id){
+				$.ajax({
+					type:"post",
+					url:"http://qipei.liebianzhe.com/api/user/meet_help",
+					async:true,
+					data:{
+						token:user_info.token,
+						type:4,
+						id:id
+					},
+					success:function(data){
+						console.info(data);
+						if(data.state==1){
+							var master_details=data.data;
+//							console.info(master_details);
+							session.setItem("master_details",JSON.stringify(master_details));
+							window.location.href="see_master.html";
+						}else{
+							mui.toast(data.msg);
+						}
+					},
+					error:function(){
+						console.info("查看详情请求失败~");
+					}
+				});
+			}
+			//点击完成发布任务
+			function complete(id){
+				$.ajax({
+					type:"post",
+					url:"http://qipei.liebianzhe.com/api/user/meet_help",
+					async:true,
+					data:{
+						token:user_info.token,
+						type:3,
+						id:id
+					},
+					success:function(data){
+						console.info(data);
+						if(data.state==1){
+							window.location.reload();
+						}else{
+							mui.toast(data.msg);
+						}
+					},
+					error:function(){
+						console.info("完成情请求失败~");
+					}
+				});
+			}
+		</script>
+	</body>
+
+</html>

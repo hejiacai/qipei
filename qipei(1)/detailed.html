@@ -1,0 +1,108 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>提现明细</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script>
+		    document.documentElement.style.fontSize =document.documentElement.clientWidth/750*40 +"px";
+		</script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/common.css" />
+		<link rel="stylesheet" href="css/detailed.css" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-icon mui-icon-left-nav mui-pull-left" href="my_wallet.html"></a>
+		    <h1 class="mui-title">提现明细</h1>
+		</header>
+		<div class="mui-content">
+		    <div class="detailed_body"  id="content1"></div>
+		    <div class="no_more">没有更多了</div>
+		</div>
+
+		<script type="text/html" id="content">
+			{{each data as value i}}
+			<div class="detailed_content" {{if value.type==3}} onclick="reason({{value.id}})"{{/if}} >
+				<div class="content_left">
+					<img  src="img/tx_img.png" class="tx_img"/>
+					<div class="left_div">
+						<p>
+							{{value.name}}
+							{{if value.type==3}}
+								{{if value.status==1}}
+								<span>（提现中）</span>
+								{{else if value.status==2}}
+								<span class="font_span">（提现成功）</span>
+								{{else if value.status==3}}
+								<span class="font_span1">（提现失败）</span>
+								{{/if}}
+							{{/if}}
+						</p>
+						<span class="tx_time">{{value.createtime}}</span>
+					</div>
+				</div>
+				{{if value.status==1}}
+				<span>-{{value.price}}</span>
+				{{else if value.status==2}}
+				<span>+{{value.price}}</span>
+				{{else if value.status==3}}
+				<span>-{{value.price}}</span>
+				{{/if}}
+			</div>
+			{{/each}}
+		</script>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript" src="js/common.js" ></script>
+		<script type="text/javascript" src="js/jquery-3.3.1.min.js" ></script>
+		<script type="text/javascript" src="js/art-template.js"></script>
+		<script type="text/javascript">
+			mui.init()
+            var session=window.sessionStorage;
+            var user_info ;
+            $(function () {
+                user_info = session.getItem("user_info"),
+                user_info = JSON.parse(user_info);
+                $.ajax({
+					url:"http://qipei.liebianzhe.com/api/user/putforward",
+					type:"post",
+					data:{token:user_info.token},
+					success:function (res) {
+					    console.info(res);
+                        var content = template("content",res);
+                        document.getElementById("content1").innerHTML=content;
+                    }
+				})
+            });
+            function reason(id){
+            	$.ajax({
+            		type:"post",
+            		url:"http://qipei.liebianzhe.com/api/user/put_detail",
+            		async:true,
+            		data:{
+            			token:user_info.token,
+            			id:id
+            		},
+            		success:function(data){
+            			console.info(data);
+            			if(data.state==1){
+            				//判断页面进入状态，0位提现，1位提现详细
+            				var put_forward=1;
+            				//详情原因
+            				var put_detailed_info=data.data;
+            				session.setItem("put_forward",put_forward)
+            				session.setItem("put_detailed_info",JSON.stringify(put_detailed_info));
+							window.location.href="put_forward_one.html";           				
+            			}
+            		},
+            		error:function(){
+            			console.info("查看提现详情失败！")
+            		}
+            	});
+            }
+		</script>
+	</body>
+
+</html>

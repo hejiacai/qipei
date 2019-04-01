@@ -1,0 +1,25 @@
+.mui-bar{
+	border-bottom: none;
+}
+.gg_banner{
+	width: 100%;
+	height: 14.7rem;
+}
+.gg_body{
+	width: 100%;
+	padding-left: 0.75rem;
+	padding-right: 0.75rem;
+	
+}
+.gg_title{
+	width: 100%;
+	font-size: 0.9rem;
+}
+.gg_content{
+	width: 100%;
+	font-size: 0.75rem;
+	margin-top: 0.5rem;
+}
+.gg_content img{
+	width: 100%;
+}

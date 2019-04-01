@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>我的钱包</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script>
+		    document.documentElement.style.fontSize =document.documentElement.clientWidth/750*40 +"px";
+		</script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/common.css" />
+		<link rel="stylesheet" href="css/my_wallet.css" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-transparent">
+		    <a class=" mui-icon mui-icon-left-nav mui-pull-left" href="personal.html"></a>
+		    <h1 class="mui-title">我的钱包</h1>
+		</header>
+		<div class="mui-content">
+		    <img id="img1" src="img/wallet_banner.png" class="wallet_banner"/>
+		    <div class="wallet_info">
+		    	<div class="total">
+		    		<p class="zonger">总额</p>
+		    		<p class="money"></p>
+		    	</div>
+		    	<div class="wallet_bottom">
+		    		<div class="wallet_left">
+		    			<span>可提现金额</span>
+		    			<span class="money_span"></span>
+		    		</div>
+		    		<div class="wallet_right">
+		    			<a href="detailed.html"><span class="zjmx">资金明细</span></a>
+		    			<img src="img/return.png"/>
+		    		</div>
+		    	</div>
+		    </div>
+		    <div class="div_button">
+		    	<a href="recharge.html"><button type="button" class="cz_button">充值</button></a>
+		    	<a href="put_forward.html"><button type="button" class="tx_button">提现</button></a>
+		    </div>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript" src="js/common.js" ></script>
+		<script type="text/javascript" src="js/jquery-3.3.1.min.js" ></script>
+		<script type="text/javascript">
+			mui.init();
+            var session=window.sessionStorage;
+            $(function () {
+                var user_info=session.getItem("user_info"),
+                    information =JSON.parse(user_info);
+                    
+                $(".money").html(information.balance);
+                $(".money_span").html(information.available);
+            })
+		</script>
+	</body>
+
+</html>

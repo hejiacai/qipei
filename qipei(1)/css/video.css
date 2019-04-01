@@ -1,0 +1,76 @@
+.mui-bar{
+	border-bottom: 1px solid #AAAAAA;
+}
+.video_body{
+	width: 100%;
+	height: auto;
+	margin: 0 auto;
+	margin-top: 0.4rem;
+	text-align: center;
+}
+.search_div{
+	width: 100%;
+	display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+.video_body input{
+	width: 13.25rem;
+	height: 1.5rem;
+	border-radius: 20px;
+	background-color: #F1F1F1;
+	font-size: 0.7rem;
+	border: none;
+	margin: 0 ;
+	background-image: url(../img/sousuo.png) ;
+    background-size: 0.6rem 0.6rem;
+    background-repeat: no-repeat;
+    padding-left: 17%;
+    background-position: 10%;
+}
+.video_content{
+	width: 100%;
+	height: auto;
+	min-height: 11.05rem;
+	padding-left: 0.75rem;
+	padding-right: 0.75rem;
+	border-bottom: 1px solid #DCDCDC;
+	margin-top: 0.5rem;
+	position: relative;
+}
+.video_content img{
+	width: 100%;
+	height: 8.875rem;
+	border-radius: 5px;
+}
+.video_content p{
+	font-size: 0.75rem;
+	text-align: left;
+	margin-top: 0.3rem;
+}
+.video_play{
+    width: 2.7rem !important;
+    height: 2.625rem !important;
+    display: block;
+    position: absolute;
+    left: 50%;
+    top: 35%;
+    transform: translate(-50%,-50%);
+}
+.header_right{
+	width: 2.25rem;
+	height: 1.25rem;
+	background-color: #ff0000;
+	display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    border-radius: 5px;
+}
+.tjsp_content1{
+	width: 100%;
+	height: 5.95rem;
+	display: flex;
+    justify-content: center;
+    align-items: center;
+}

@@ -1,0 +1,223 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>系统消息</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script>
+		    document.documentElement.style.fontSize =document.documentElement.clientWidth/750*40 +"px";
+		</script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/common.css" />
+		<link rel="stylesheet" href="css/my_info.css" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-icon mui-icon-left-nav mui-pull-left" href="index.html"></a>
+		    <h1 class="mui-title">系统消息</h1>
+		</header>
+		<div class="mui-content" >
+			<div class="info_body" id="content"></div>
+			
+		    <div class="info_body1" style="display: none;">
+		    	<div class="info_content1">
+		    		<img src="img/info_img2.png" />
+		    		<span>暂无系统消息哟</span>
+		    	</div>
+		    </div>
+		</div>
+		<footer class="footer">
+			<div class="footer_body">
+				<a href="index.html">
+					<div class="footer_div">
+						<img  src="img/shouye.png" class="shouye"/>
+						<span >首页</span>
+					</div>
+				</a>
+				<a href="my_info.html">
+					<div class="footer_div">
+						<img  src="img/sousuo3.png" class="fenlei"/>
+						<img src="img/read_new.png" class="new_imgs"/>
+						<span class="footer_active">消息</span>
+					</div>
+				</a>
+				<a href="release.html">
+					<div class="footer_div1">
+						<img  src="img/fabu.png" class="fabu"/>
+						<span>发布</span>
+					</div>
+				</a>
+				<a href="shopping_cart.html">
+					<div class="footer_div">
+						<img  src="img/gouwuche.png" class="gouwuche"/>
+						<span>购物车</span>
+					</div>
+				</a>
+				<a href="personal.html">
+					<div class="footer_div">
+						<img  src="img/my.png" class="wode"/>
+						<span >我的</span>
+					</div>
+				</a>
+			</div>
+		</footer>
+		
+		<script type="text/html" id="text">
+			<ul id="OA_task_1" class="mui-table-view">
+				{{each data as value i}}
+				<li class="mui-table-view-cell" data-id = "{{value.id}}" onclick="info_details({{value.id}})">
+					<div class="mui-slider-right mui-disabled">
+						<a class="mui-btn mui-btn-red" >删除</a>
+					</div>
+					<div class="mui-slider-handle">
+						<div class="info_left">
+							<img src="img/info_img1.png" class="info_img"/>
+							{{if value.status==1}}
+							<img src="img/read_new.png" class="new_img"/>
+							{{/if}}
+						</div>
+						<div class="info_right">
+							<div class="info_title">
+								<span>{{value.title}}</span>
+								<span class="info_title_span">{{value.createtime}}</span>
+							</div>
+							<div class="info_content">{{value.desc}}</div>
+						</div>
+					</div>
+				</li>
+				{{/each}}
+			</ul>
+		</script>
+		
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript" src="js/art-template.js"></script>
+		<script type="text/javascript" src="js/jquery-3.3.1.min.js" ></script>
+		<script type="text/javascript" src="js/common.js" ></script>
+		<script type="text/javascript">
+			mui.init();
+			var session=window.sessionStorage;
+	      	//登录时返回的用户数据
+	      	var user_info;
+	      	
+			$(function(){
+				user_info=session.getItem("user_info");
+      			user_info=JSON.parse(user_info);
+      			$.ajax({
+	      			type:"post",
+	      			url:"http://qipei.liebianzhe.com/api/user/get_userinfo",
+	      			async:false,
+	      			data:{
+	      				token:user_info.token,
+	      			},
+	      			success:function(data){
+	      				console.info(data);
+	      				if(data.state==1){
+							user_info=data.data;
+							session.setItem("user_info",JSON.stringify(user_info));
+	      				}
+	      			},
+	      			error:function(data){
+	      				console.info("获取个人中心的数据失败！");
+	      			}
+	      		});
+	      		if(user_info.user_msg==1){
+      				$(".new_imgs").show();
+      			}else if(user_info.user_msg==0){
+      				$(".new_imgs").hide();
+      			}
+	      		
+      			$.ajax({
+					type:"post",
+					url:"http://qipei.liebianzhe.com/api/user/user_msg",
+					async:false,
+					data:{
+						token:user_info.token
+					},
+					success:function(data){
+						console.info(data);
+						if(data.state==1){
+							var html=template("text",data);
+							document.getElementById("content").innerHTML=html;
+							
+						}else if(data.state==0){
+							$(".info_body").hide();
+							$(".info_body1").show();
+							$(".mui-bar").css('border-bottom','none');
+						}
+					},
+					error:function(){
+						console.info("获取系统消息列表请求失败~");
+					}
+				});
+				$('#OA_task_1').on('tap', '.mui-btn', function(event) {
+					var elem = this;
+					var li = elem.parentNode.parentNode;
+					var id=$(elem).parents(".mui-table-view-cell").data("id");
+					console.info(id);
+					mui.confirm('确认删除该条记录？', '删除', btnArray, function(e) {
+						if (e.index == 0) {
+							
+							jQuery.ajax({
+								type:"post",
+								url:"http://qipei.liebianzhe.com/api/user/edit_msg",
+								async:true,
+								data:{
+									token:user_info.token,
+									type:2,
+									id:id
+								},
+								success:function(data){
+									console.info(data);
+									if(data.state==1){
+										li.parentNode.removeChild(li);
+										window.location.reload();
+									}else{
+										mui.toast(data.msg);
+									}
+									
+								},
+								error:function(){
+									console.info("删除系统消息请求失败~");
+								}
+							});
+						} else {
+							setTimeout(function() {
+								mui.swipeoutClose(li);
+							}, 0);
+						}
+					});
+				});
+				var btnArray = ['确认', '取消'];
+			});
+			
+			//点击查看系统信息详情
+			function info_details(id){
+				$.ajax({
+					type:"post",
+					url:"http://qipei.liebianzhe.com/api/user/edit_msg",
+					async:true,
+					data:{
+						token:user_info.token,
+						type:1,
+						id:id
+					},
+					success:function(data){
+						console.info(data);
+						if(data.state==1){
+							session.setItem("systemInfo_id",id);
+							window.location.href="my_info_details.html";
+						}else{
+							mui.toast(data.msg);
+						}
+					},
+					error:function(){
+						console.info("修改系统消息请求失败~");
+					}
+				});
+			}
+		</script>
+	</body>
+
+</html>

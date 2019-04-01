@@ -1,0 +1,159 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>提现</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script>
+		    document.documentElement.style.fontSize =document.documentElement.clientWidth/750*40 +"px";
+		</script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/common.css" />
+		<link rel="stylesheet" href="css/put_forward.css" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-icon mui-icon-left-nav mui-pull-left" href="my_wallet.html"></a>
+		    <h1 class="mui-title">提现</h1>
+		</header>
+		<div class="mui-content">
+		    <div class="tips">
+		    	提示：您当前账户余额金为：<span id="balance"></span>
+		    </div>
+		    <div class="tx_content">
+		    	<div class="tx_div">持卡人</div>
+		    	<input type="text" name="name" placeholder="请输入您的名字"/>
+		    </div>
+		    <div class="tx_content">
+		    	<div class="tx_div">卡号</div>
+		    	<input type="number" name="num" placeholder="请输入卡号"/>
+		    </div>
+		    <div class="tx_content">
+		    	<div class="tx_div">省市</div>
+		    	<input type="text" name="city" placeholder="请输入省份城市"/>
+		    </div>
+		    <div class="tx_content">
+		    	<div class="tx_div">分支行</div>
+		    	<input type="text" name="branch" placeholder="请输入分支行"/>
+		    </div>
+		    <div class="tx_content">
+		    	<div class="tx_div">手机号</div>
+		    	<input type="number" name="phone" placeholder="请输入手机号"/>
+		    </div>
+		    <div class="tx_content all_div">
+		    	<div class="tx_div">金额</div>
+		    	<input type="number" name="price" placeholder="请输入金额"/>
+		    	<span class="all" onclick="put_all()">全部提现</span>
+		    </div>
+		    <div class="tx_content">
+		    	<div class="tx_div">提现密码</div>
+		    	<input type="password" name="pwd" placeholder="请输入您的提现密码"/>
+		    </div>
+		    <div class="tx_content">
+		    	<div class="tx_div">身份证号</div>
+		    	<input type="number" name="id" placeholder="请输入您的身份证号"/>
+		    </div>
+		    <div class="div_button">
+		    	<!--<a href="put_forward_one.html">-->
+		    		<button type="button" onclick="putforward()">确定提现</button>
+		    	<!--</a>-->
+		    </div>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript" src="js/common.js" ></script>
+		<script type="text/javascript" src="js/jquery-3.3.1.min.js" ></script>
+		<script type="text/javascript">
+			mui.init();
+            var session=window.sessionStorage;
+            $(function () {
+                var user_info = session.getItem("user_info"),
+                    information = JSON.parse(user_info);
+                    
+                    
+                    
+                $("#balance").html(information.available);
+            });
+            function isPhoneNo(phone) {
+                var pattern = /^1[34578]\d{9}$/;
+                return pattern.test(phone);
+            }
+
+            function isCardNo(card) {
+                var pattern = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+                return pattern.test(card);
+            }
+
+
+			function putforward() {
+                var user_info = session.getItem("user_info"),
+                    information = JSON.parse(user_info);
+                var name = $("input[name='name']").val(),
+                    num = $("input[name='num']").val(),
+                    city = $("input[name='city']").val(),
+                    branch = $("input[name='branch']").val(),
+                    phone = $("input[name='phone']").val(),
+                    price = $("input[name='price']").val(),
+                    pwd = $("input[name='pwd']").val(),
+                    id = $("input[name='id']").val();
+                if (name==""||name==null){
+                    mui.toast("持卡人姓名不能为空");
+                    return false;
+				}else if (num==""||num==null){
+                    mui.toast("卡号不能为空");
+                    return false;
+				}else if (city=="" || city==null){
+                    mui.toast("省份不能为空");
+                    return false;
+				}else if (branch==""||branch==null){
+                    mui.toast("请填写分支行");
+                    return false;
+				}else if (phone==""||phone==null){
+                    mui.toast("请填写手机号");
+                    return false;
+                }else  if (isPhoneNo(phone) == false) {
+                    mui.toast("请填写正确的手机号");
+                    return false;
+                }else if (price==""||price==null){
+                    mui.toast("请输入提现金额");
+                    return false;
+                }else if (pwd==""||pwd==null){
+                    mui.toast("请输入密码");
+                    return false;
+                } else if (id==""||id==null){
+                    mui.toast("请输入身份证号");
+                    return false;
+                } else  if (isCardNo(id) == false){
+                	mui.toast("请输入正确的身份证号");
+                	return false;
+                }else{
+                    $.ajax({
+						url:"http://qipei.liebianzhe.com/api/user/in_put",
+						type:"post",
+						data:{token:information.token,price:price,username:name,cardnum:num,city:city,bline:branch,phone:phone,idcard:id,tpass:pwd},
+						success:function (data) {
+							//判断提现是否成功的状态0为失败，1为成功；
+							var put_forward_state=data;
+							//判断页面进入状态，0位提现，1位提现详细
+            				var put_forward=0;
+            				session.setItem("put_forward",put_forward);
+							session.setItem("put_forward_state",JSON.stringify(put_forward_state));
+                            window.location.href="put_forward_one.html";
+                       },
+                       error:function(){
+                       		console.info("提现失败！");
+                       }
+					})
+				}
+            }
+
+            function put_all() {
+                var user_info=session.getItem("user_info"),
+                    information =JSON.parse(user_info);
+                $("input[name='price']").val(information.available);
+            }
+		</script>
+	</body>
+
+</html>

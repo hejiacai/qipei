@@ -1,0 +1,402 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>我的订单</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script>
+		    document.documentElement.style.fontSize =document.documentElement.clientWidth/750*40 +"px";
+		</script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/common.css" />
+		<link rel="stylesheet" href="css/my_order.css" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-icon mui-icon-left-nav mui-pull-left" href="personal.html"></a>
+		    <h1 class="mui-title">我的订单</h1>
+		</header>
+		<div class="mui-content">
+		    <div id="slider" class="mui-slider">
+			    <div class="mui-scroll-wrapper mui-slider-indicator mui-segmented-control mui-segmented-control-inverted" id="segmented">
+	                <div class="mui-scroll">
+		                <a class="mui-control-item   item1mobile" href="#item1mobile">
+		                   	<span class="control-item">待付款</span>
+		                </a>
+		                <a class="mui-control-item  item2mobile" href="#item2mobile">
+		                   	 <span class="control-item">待发货</span>
+		                </a>
+		                <a class="mui-control-item item3mobile" href="#item3mobile">
+		                  	  <span class="control-item">待确认</span>
+		                </a>
+		                <a class="mui-control-item item4mobile" href="#item4mobile">
+                            <span class="control-item"> 待评论</span>
+		                </a>
+						 <a class="mui-control-item item5mobile" href="#item5mobile">
+                            <span class="control-item">已评价</span>
+		                </a>
+			    	</div>
+				</div>
+	            <div class="mui-slider-group">
+	            	<div id="item1mobile" class="mui-slider-item mui-control-content"> </div>
+	            	<div id="item2mobile" class="mui-slider-item mui-control-content "></div>
+	            	<div id="item3mobile" class="mui-slider-item mui-control-content "></div>
+	            	<div id="item4mobile" class="mui-slider-item mui-control-content "></div>
+	            	<div id="item5mobile" class="mui-slider-item mui-control-content "></div>
+	            </div>
+	            
+	        </div>
+		</div>
+		
+		<script type="text/html" id="text">
+            <ul class="mui-table-view">
+            	{{each list1 as value i}}
+                <li class="mui-table-view-cell">
+                    <div class="order_title">
+                    	<span class="order_time">{{value.createtime}}</span>
+                    	<span>待付款</span>
+                    </div>
+                    {{each value.goods as value1 i1}}
+                    <div class="order_content" onclick="goods_detail({{value1.goods_id}})">
+                    	<div class="content_left">
+                        	<img  src="{{value1.cover}}" class="shangping"/>
+                    	</div>
+                    	<div class="content_right">
+                    		<p class="sp_title">{{value1.goods_name}}</p>
+                    		<p class="sp_content">{{value1.desc}}</p>
+                    		<p class="sp_content1">
+                    			<span class="jiage">￥{{value1.totalprice}}</span>
+                    			<span class="number">数量：{{value1.goods_num}}</span>
+                    		</p>
+                    	</div>
+                    </div>
+                    {{/each}}
+                    <div class="order_button">
+                    	<button type="button" class="order_qx" onclick="order_qx({{value.ordernum}},this)">取消订单</button>
+                    	<button type="button" class="order_qd" onclick="order_fk({{value.ordernum}})">去付款</button>
+                    </div>
+                </li>
+                {{/each}}
+            </ul>
+        </script>   
+        <script type="text/html" id="text1">
+            <ul class="mui-table-view">
+            	{{each list2 as value i}}
+                <li class="mui-table-view-cell fahuo">
+                    <div class="order_title">
+                    	<span class="order_time">{{value.createtime}}</span>
+                    	<span>待发货</span>
+                    </div>
+                    {{each value.goods as value1 i1}}
+                    <div class="order_content">
+                    	<div class="content_left">
+                        	<img  src="{{value1.cover}}" class="shangping"/>
+                    	</div>
+                    	<div class="content_right">
+                    		<p class="sp_title">{{value1.goods_name}}</p>
+                    		<p class="sp_content">{{value1.desc}}</p>
+                    		<p class="sp_content1">
+                    			<span class="jiage">￥{{value1.totalprice}}</span>
+                    			<span class="number">数量：{{value1.goods_num}}</span>
+                    		</p>
+                    	</div>
+                    </div>
+                    {{/each}}
+                </li>
+                {{/each}}
+            </ul>
+        </script>  
+        <script type="text/html" id="text2">
+            <ul class="mui-table-view">
+            	{{each list3 as value i}}
+                <li class="mui-table-view-cell">
+                    <div class="order_title">
+                    	<span class="order_time">{{value.createtime}}</span>
+                    	<span>待确认</span>
+                    </div>
+                    {{each value.goods as value1 i1}}
+                    <div class="order_content">
+                    	<div class="content_left">
+                        	<img  src="{{value1.cover}}" class="shangping"/>
+                    	</div>
+                    	<div class="content_right">
+                    		<p class="sp_title">{{value1.goods_name}}</p>
+                    		<p class="sp_content">{{value1.desc}}</p>
+                    		<p class="sp_content1">
+                    			<span class="jiage">￥{{value1.totalprice}}</span>
+                    			<span class="number">数量：{{value1.goods_num}}</span>
+                    		</p>
+                    	</div>
+                    </div>
+                    {{/each}}
+                    <div class="order_button">
+                    	<button type="button" class="order_qd" onclick="order_qd({{value.ordernum}},this)">确认收货</button>
+                    </div>
+                </li>
+                {{/each}}
+            </ul>
+        </script>   
+        <script type="text/html" id="text3">
+        	<ul class="mui-table-view">
+        		{{each list4 as value i}}
+                <li class="mui-table-view-cell">
+                    <div class="order_title">
+                    	<span class="order_time">{{value.createtime}}</span>
+                    	<span>待评价</span>
+                    </div>
+                    {{each value.goods as value1 i1}}
+                    <div class="order_content">
+                    	<div class="content_left">
+                        	<img  src="{{value1.cover}}" class="shangping"/>
+                    	</div>
+                    	<div class="content_right">
+                    		<p class="sp_title">{{value1.goods_name}}</p>
+                    		<p class="sp_content">{{value1.desc}}</p>
+                    		<p class="sp_content1">
+                    			<span class="jiage">￥{{value1.totalprice}}</span>
+                    			<span class="number">数量：{{value1.goods_num}}</span>
+                    		</p>
+                    	</div>
+                    </div>
+                    {{/each}}
+                    <div class="order_button">
+                    	<a onclick="order_pj({{value.ordernum}})">
+                    		<button type="button" class="order_qd">立即评论</button>
+                    	</a>
+                    </div>
+                </li>
+                {{/each}}
+            </ul>
+        </script>   
+		<script type="text/html" id="text4">
+        	<ul class="mui-table-view">
+        		{{each list5 as value i}}
+                <li class="mui-table-view-cell" >
+                    <div class="order_title">
+                    	<span class="order_time">{{value.createtime}}</span>
+                    	<span>已评价</span>
+                    </div>
+                    {{each value.goods as value1 i1}}
+                    <div class="order_content" onclick="goods_detail({{value1.goods_id}})">
+                    	<div class="content_left">
+                        	<img  src="{{value1.cover}}" class="shangping"/>
+                    	</div>
+                    	<div class="content_right">
+                    		<p class="sp_title">{{value1.goods_name}}</p>
+                    		<p class="sp_content">{{value1.desc}}</p>
+                    		<p class="sp_content1">
+                    			<span class="jiage">￥{{value1.totalprice}}</span>
+                    			<span class="number">数量：{{value1.goods_num}}</span>
+                    		</p>
+                    	</div>
+                    </div>
+                    {{/each}}
+                </li>
+                {{/each}}
+            </ul>
+        </script>
+        
+		<script type="text/javascript" src="js/common.js" ></script>
+		<script type="text/javascript" src="js/art-template.js"></script>
+		<script type="text/javascript" src="js/jquery-3.3.1.min.js" ></script>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init()
+            var session=window.sessionStorage;
+            var user_info;
+            //订单的数据
+            var my_order;
+            $(function () {
+            	
+                user_info= session.getItem("user_info"),
+                user_info = JSON.parse(user_info);
+                $.ajax({
+					url:"http://qipei.liebianzhe.com/api/user/order_list",
+					data:{token:user_info.token},
+					async:false,
+					type:"post",
+					success:function (data) {
+					    console.log(data);
+					    my_order=data.data;
+					    var html=template("text",my_order);
+						document.getElementById("item1mobile").innerHTML=html;
+						var html1=template("text1",my_order);
+						document.getElementById("item2mobile").innerHTML=html1;
+						var html2=template("text2",my_order);
+						document.getElementById("item3mobile").innerHTML=html2;
+						var html3=template("text3",my_order);
+						document.getElementById("item4mobile").innerHTML=html3;
+						var html4=template("text4",my_order);
+						document.getElementById("item5mobile").innerHTML=html4;
+						
+                   },
+                   error:function(){
+                   		console.info("获取订单数据失败！");
+                   }
+				})
+                var index_order=session.getItem("index_order");
+                $(".mui-control-item,.mui-control-content").eq(index_order).addClass("mui-active");
+                $(".mui-slider-item").eq(index_order).addClass("mui-active");
+                var cwidth=document.body.clientWidth ;
+                cwidth=-(cwidth*index_order);
+//              $(".mui-slider-group").css('transform','translate3d('+cwidth+'px,0px,0px)');
+                console.info(index_order);
+                switch((index_order)*1){
+                	case 0:
+                		console.info(my_order.list1.length);
+	                	if(my_order.list1.length==0){
+						    	mui.toast("您还没有要付款的订单！");
+						    };
+	                	break;
+	                case 1:
+	                	if(my_order.list2.length==0){
+					    	mui.toast("您还没有要发货的订单！");
+					    };
+					 	break;
+					case 2:
+						if(my_order.list3.length==0){
+					    	mui.toast("您还没有要确认的订单！");
+					    };
+					 	break;
+					case 3:
+						if(my_order.list4.length==0){
+					    	mui.toast("您还没有要评论的订单！");
+					    };
+					 	break;
+                }
+				mui('.mui-slider').slider().stopped = true;
+//              session.removeItem("index_order");
+            });
+            
+            
+            //点击进入商品详情
+	      	function goods_detail(gid,event){
+				$.ajax({
+					type:"post",
+					url:"http://qipei.liebianzhe.com/api/user/goods_detail",
+					async:false,
+					data:{
+						token:user_info.token,
+						gid:gid
+					},
+					success:function(data){
+						console.info(data);
+						if(data.state==1){
+							//进入商品详情页面状态，0为首页的推荐商品，1为列表,2为购物车
+			      			var commodity_details_state=3;
+			      			session.setItem("commodity_details_state",commodity_details_state);
+							//存入商品详情数据
+							var goods_detail=JSON.stringify(data.data);
+							session.setItem("goods_detail",goods_detail)
+							tj_state=0;
+							session.setItem("tj_state",tj_state);
+							window.location.href="commodity_details.html";
+						}else{
+							mui.toast(data.msg);	
+						}
+					},
+					error:function(data){
+						console.info("获取商品详情失败！")
+					}
+				});
+				event.stopPropagation();
+			}
+            
+            
+            //点击取消订单
+            function order_qx(ordernum,self){
+            	$.ajax({
+            		type:"post",
+            		url:"http://qipei.liebianzhe.com/api/user/order_status",
+            		async:true,
+            		data:{
+            			token:user_info.token,
+            			ordernum:ordernum,
+            			type:1,
+            		},
+            		success:function(data){
+            			console.info(data);
+            			if(data.state==1){
+            				$(self).parents(".mui-table-view-cell").remove();
+            				mui.toast("取消订单成功！");
+            			}
+            		},
+            		error:function(){
+            			console.info("删除失败！");
+            		}
+            	});
+            }
+            
+            //去付款
+            function order_fk(ordernum){
+            	var order_state=2;
+            	session.setItem("ordernum",ordernum);
+            	session.setItem("order_state",order_state);
+            	window.location.href="confirm_order.html";
+            }
+            //确认订单
+            function order_qd(ordernum,self){
+            	$.ajax({
+            		type:"post",
+            		url:"http://qipei.liebianzhe.com/api/user/order_status",
+            		async:true,
+            		data:{
+            			token:user_info.token,
+            			ordernum:ordernum,
+            			type:2,
+            		},
+            		success:function(data){
+            			console.info(data);
+            			if(data.state==1){
+            				$(self).parents(".mui-table-view-cell").remove();
+//          				mui.toast("确认订单成功！");
+//          				jump_page();
+							window.location.reload();
+            			}
+            		},
+            		error:function(){
+            			console.info("删除失败！");
+            		}
+            	});
+            }
+            //去评论 
+            function order_pj(pj_ordernum){
+            	session.setItem("pj_ordernum",JSON.stringify(pj_ordernum));
+            	window.location.href="evaluate.html";
+            }
+            
+            $(".item1mobile").on('tap',function(){
+            	if(my_order.list1.length==0){
+			    	mui.toast("您还没有要付款的订单！");
+			    }
+            })
+            $(".item2mobile").on('tap',function(){
+            	if(my_order.list2.length==0){
+			    	mui.toast("您还没有要发货的订单！");
+			    }
+            })
+            $(".item3mobile").on('tap',function(){
+            	if(my_order.list3.length==0){
+			    	mui.toast("您还没有要确认的订单！");
+			    }
+            })
+            $(".item4mobile").on('tap',function(){
+            	if(my_order.list4.length==0){
+			    	mui.toast("您还没有要评论的订单！");
+			    }
+            })
+            $(".item5mobile").on('tap',function(){
+            	if(my_order.list5.length==0){
+			    	mui.toast("您还没有已评价的订单！");
+			    }
+            })
+            function jump_page(){
+            	window.location.href="my_order.html";
+            }
+            
+		</script>
+	</body>
+
+</html>

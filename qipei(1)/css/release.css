@@ -1,0 +1,225 @@
+.mui-bar {
+	background-color: #3898F7;
+	border-bottom: none;
+}
+body,.mui-content{
+	background-color: #3898F7;
+}
+.mui-icon,.mui-title{
+	color: white;
+}
+a:visited{
+	color: white;
+}
+.release_body{
+	width: 17.25rem;
+	height: auto;
+	min-height: 25.25rem;
+	background-color: white;
+	border-radius: 5px;	
+	margin: 0 auto;
+	margin-top: 0.4rem;
+	padding-left: 0.4rem;
+	padding-right: 0.4rem;
+	padding-bottom: 1rem;
+}
+.release_content{
+	width: 100%;
+	height: 3.15rem;
+	font-size: 0.75rem;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	border-bottom: 1px solid #DCDCDC;
+}
+.release_content input{
+	border: none;
+	margin: 0;
+	text-align: right;
+	width: 70%;
+	padding: 0;
+	font-size: 0.75rem;
+}
+.recharge_content1{
+	width: 100%;
+	height: auto;
+	min-height: 6.7rem;
+	margin-top: 0.75rem;
+}
+.recharge_content1 p{
+	font-size: 0.75rem;
+	margin-bottom: 0.75rem;
+}
+.content1_upload{
+	width: 100%;
+	height: auto;
+	min-height: 4.4rem;
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.content1_upload .file_div{
+	width: 3.8rem;
+	height: 4.4rem;
+	margin-right: 0.3rem;
+	margin-bottom: 0.3rem;
+	position: relative;
+}
+.file_div img,
+.file_div video{
+	width: 100%;
+	height: 100%
+}
+.icon_span{
+	position: absolute;
+    right: 0%;
+    color: red;
+    z-index: 99;
+}
+.upload_div{
+	width: 3.9rem;
+	height: 4.4rem;
+	position: relative;
+}
+.upload_div img{
+	width: 100%;
+	height: 100%;
+}
+.upload_div input{
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	opacity: 0;
+	top: 0;
+}
+.recharge_content2{
+	width: 100%;
+	height: 6.625rem;
+	margin-top: 0.7rem;
+	
+}
+.recharge_content2 p{
+	font-size: 0.75rem;
+	margin-bottom: 0.75rem;
+}
+.recharge_content2 textarea{
+	font-size: 0.65rem;
+	width: 100%;
+	height: 5rem;
+	border: none;
+	background-color: #F9F9F8;
+	padding-top: 0.3rem;
+	padding-left: 0.3rem;
+}
+.div_button{
+	width: 100%;
+	height: 2.45rem;
+	text-align: center;
+	margin-top: 1.25rem;
+	margin-bottom: 1rem;
+}
+.div_button button{
+	width: 15.15rem;
+	height: 100%;
+	background-color: white;
+	font-size: 0.9rem;
+	color: #4f7cf2;
+	border-radius: 25px;
+}
+.add_content{
+	height: 2.5rem;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	border-bottom: 1px solid #DFDFDF;
+}
+.content_left{
+	width: 4.5rem;
+	font-size: 0.75rem;
+}
+.content_right{
+	width: 11.95rem;
+	display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+.content_right input{
+	margin: 0;
+	border: none;
+	font-size: 0.75rem;
+	padding: 0;
+	text-align: right;
+}
+.add_box,.add_box1{
+	font-size: 0.75rem;
+	margin-right: 0.2rem;
+	color: #8F8F8F;
+}
+.content_right img{
+	width: 0.35rem;
+	height: 0.6rem;
+	margin-right: 0.2rem;
+}
+
+
+/*城市选择器*/
+.mui-poppicker-btn-cancel{
+    display: none;
+}
+.mui-poppicker-header{
+    background: #fff;
+    height: 2.5rem;
+    text-align: center;
+    color: #333333;
+    font-size: .75rem;
+    padding: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+.mui-poppicker-btn-ok{
+    position: absolute;
+    right: .75rem;
+    background: #fff;
+    border: 0.025rem solid #090909;
+    color: #090909;
+    border-radius: 5px;
+    width: 2.25rem;
+    height: 1.1rem;
+    padding: 0!important;
+    text-align: center;
+    line-height: 1rem;
+    font-size: .75rem;
+}
+.mui-picker{
+    background: #fff;
+    padding: 2rem 0;
+}
+.mui-poppicker-body{
+    border-top: 0.025rem solid #e3e3e3;
+}
+.mui-pciker-list li{
+    font-size: .65rem;
+    color: #cfcece;
+}
+.mui-poppicker-body{
+    height: 9.7rem;
+}
+.mui-pciker-rule-ft{
+    border-top: none;
+    border-bottom: none;
+}
+
+
+.input_file input{
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	opacity: 0;
+	-ms-filter: 'alpha(opacity=0)';
+	
+}

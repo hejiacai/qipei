@@ -1,0 +1,565 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>购物车</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script>
+		    document.documentElement.style.fontSize =document.documentElement.clientWidth/750*40 +"px";
+		</script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/common.css" />
+		<link rel="stylesheet" href="css/shopping_cart.css" />
+	</head>
+
+	<body>
+		<header class="shopping_header">
+			<div class="header_content">
+				<div class="header_content_left">
+					<div class="header_content_left_img">
+						<a href="index.html">
+							<img src="img/return2.png" />
+						</a>
+					</div>
+					<div class="header_content_left_div">
+						<span>购物车</span>
+						<p class="font_p">共<span class="len"></span>件商品</p>
+					</div>
+				</div>
+				<div class="header_content_right"></div>
+			</div>
+		</header>
+		<div style="position: relative;width: 100%;height: auto;">
+			<section class="shopping_body" id="content"></section>
+		</div>
+		
+		
+		<footer class="shopping_footer" style="bottom: 7%;display: none;">
+			<div class="shopping_footer_left">
+				<img src="img/guoxuan.png" class="all_guoxuan"/>
+				<span>全选</span>
+			</div>
+			<div class="shopping_footer_right">
+				<div>
+					<span>合计：</span>
+					<span class="font_p2">￥</span>
+					<span class="price1 all_price"></span>
+				</div>
+				<a>
+					<div class="settlement">结算</div>
+				</a>
+			</div>
+		</footer>
+		<footer class="manage_footer" style="bottom: 7%;">
+			<div class="shopping_footer_left">
+				<img src="img/guoxuan.png" class="all_guoxuan"/>
+				<span>全选</span>
+			</div>
+			<div class="manage_footer_right">
+				<div class="delete">删除</div>
+			</div>
+		</footer>
+		
+		<footer class="footer">
+			<div class="footer_body">
+				<a href="index.html">
+					<div class="footer_div">
+						<img  src="img/shouye.png" class="shouye"/>
+						<span>首页</span>
+					</div>
+				</a>
+				<a href="my_info.html">
+					<div class="footer_div">
+						<img  src="img/sousuo2.png" class="fenlei"/>
+						<img src="img/read_new.png" class="new_imgs"/>
+						<span>消息</span>
+					</div>
+				</a>
+				<a href="release.html">
+					<div class="footer_div1">
+						<img  src="img/fabu.png" class="fabu"/>
+						<span>发布</span>
+					</div>
+				</a>
+				<a href="shopping_cart.html">
+					<div class="footer_div">
+						<img  src="img/gouwuche1.png" class="gouwuche"/>
+						<span class="footer_active">购物车</span>
+					</div>
+				</a>
+				<a href="personal.html">
+					<div class="footer_div">
+						<img  src="img/my.png" class="wode"/>
+						<span >我的</span>
+					</div>
+				</a>
+			</div>
+		</footer>
+		
+		
+		<script id="text" type="text/html">
+			{{each data as value i}}
+			<div class="shopping_content" data-guoxuan="0" data-id = "{{value.goods_id}}" >
+				<img src="img/guoxuan.png" class="guoxuan" onclick="guoxuan(this,{{value.goods_id}})"/>
+				<img src="{{value.cover}}" class="sp_img" onclick="goods_detail({{value.goods_id}})"/>
+				<div class="shopping_content_div">
+					<div class="shopping_title">{{value.goods_name}}</div>
+					<div class="shopping_tips">{{value.desc}}</div>
+					<div class="shopping_content_price">
+						<p class="font_p2">
+							{{if vip==2}}
+			    			<span>￥</span>
+			    			<span class="price">{{value.goods_price*value.num}}</span>
+			    			{{/if}}
+			    		</p>
+				    	<div class="commodity_div_right">
+				    		<div class="div_button reduce" onclick="reduce(this)">-</div>
+				    		<input type="number" class="number_input" value="{{value.num}}" onchange="number_input(this)" onfocus="number_input1(this)"/>
+				    		<div class="div_button add" onclick="add(this)">+</div>
+					    </div>
+					</div>
+				</div>
+			</div>	
+			{{/each}}
+		</script>
+		
+		
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript" src="js/common.js" ></script>
+		<script type="text/javascript" src="js/art-template.js"></script>
+		<script type="text/javascript" src="js/jquery-3.3.1.min.js" ></script>
+		<script>
+		    document.documentElement.style.fontSize =document.documentElement.clientWidth/750*40 +"px";
+		</script>
+		<script type="text/javascript">
+			mui.init();
+//			结算的总价
+			var all_price=0;
+//			一种商品的总价
+			var prices;
+//			勾选的状态
+			var data_state;
+//			总共有几种商品
+			var len;
+//			商品的数量
+			var num;
+//			商品的价格
+			var price;
+			var session=window.sessionStorage;
+	      	//登录时返回的用户数据
+	      	var user_info;
+	      	//商品id
+	      	var goods_id;
+	      	var goods_ids=[];
+	      	//全选的状态 1为全选，默认为0
+	      	var all_state=0;
+	      	//购物车的数据
+	      	var shopping_cart;
+			$(function(){
+				user_info=session.getItem("user_info");
+      			user_info=JSON.parse(user_info);
+      			
+      			if(user_info.user_msg==1){
+      				$(".new_imgs").show();
+      			}else if(user_info.user_msg==0){
+      				$(".new_imgs").hide();
+      			}
+      			if(user_info.issm==2){
+      				$(".shopping_footer").css('display','flex');
+      				
+      			}
+				$.ajax({
+					type:"post",
+					url:"http://qipei.liebianzhe.com/api/user/car_list",
+					async:true,
+					data:{
+						token:user_info.token,
+						type:1
+					},
+					success:function(data){
+						console.info(data);
+						if(data.state==0){
+							len=0;
+							$(".len").text(len);
+							mui.toast("您的购物车还空空如也~快去添加吧！");
+						}else if(data.state==1){
+							if(user_info.issm==2){
+								$(".header_content_right").text("管理");
+							}
+							data["vip"]=user_info.issm;
+							var html=template("text",data);
+      						document.getElementById("content").innerHTML=html;
+      						$(".header_content_right").show();
+      						//获取商品的件数
+      						$(".len").text(data.data.length);
+      						len=data.data.length;
+      						shopping_cart=data.data;
+						}
+					},
+					error:function(data){
+						console.info("查看购物车失败！")
+					}
+				});
+				
+				$('.all_price').text(all_price);
+				
+				//点击管理时
+				$(".header_content_right").on('tap',function(){
+					if($(".header_content_right").text()=="管理"){
+						$(".shopping_footer").hide();
+						$(".manage_footer").css('display','flex');
+						$(".header_content_right").html("完成");
+					}else if($(".header_content_right").text()=="完成"){
+						//点击完成时
+						$(".shopping_footer").show();
+						$(".manage_footer").hide();
+						$(".header_content_right").html("管理");
+						//编辑完成是所传的数组
+	      				var gids={};
+						len=-($(".shopping_content").length);
+						for (var i=len;i<=0;i++) {
+							var id=$(".shopping_content").eq(i).data("id");
+							var g_num=$(".number_input").eq(i).val();
+							gids[id]=g_num;
+							console.info(gids);
+						}
+						gids=JSON.stringify(gids);
+						console.info(gids);
+						$.ajax({
+							type:"post",
+							url:"http://qipei.liebianzhe.com/api/user/car_list",
+							async:false,
+							data:{
+								token:user_info.token,
+								type:4,
+								gids:gids
+							},
+							success:function(data){
+								console.info(data);
+							},
+							error:function(data){
+								console.info("编辑失败！")
+							}
+						});
+					}
+				})
+	//			点击删除时
+				$(".delete").on('tap',function(){
+					var guoxuan_len=-($(".guoxuan").length);
+//					goods_ids=JSON.stringify(goods_ids);
+					var a="";
+					for (var i=0;i<goods_ids.length;i++) {
+//						evel("var param")+(i+1).toString()
+						a+=goods_ids[i]+",";
+						
+					}
+					a=a.substring(0,a.length-1);
+					console.info(a);
+					for(var i=guoxuan_len;i<=0;i++){
+						console.info(i);
+						if($(".guoxuan").eq(i).attr('src')=='img/guoxuan1.png'){
+							if(all_state==0){
+								var price=$(".price").eq(i).text();
+								all_price=all_price-price;
+	//							//单个删除
+								$.ajax({
+									type:"post",
+									url:"http://qipei.liebianzhe.com/api/user/car_list",
+									async:false,
+									data:{
+										token:user_info.token,
+										type:3,
+										gid:a
+									},
+									success:function(data){
+										console.info(data);										
+										guoxuan_len=-($(".guoxuan").length);
+										$(".shopping_content").eq(i).remove();
+										len=len-1;
+										$(".len").html(len);
+										
+										$(".all_price").html(all_price);
+									},
+									error:function(data){
+										console.info("删除失败！")
+									}
+								});
+//								break;
+							}else if(all_state==1){
+								len=0;
+								all_price=0;
+								//删除全部
+								$.ajax({
+									type:"post",
+									url:"http://qipei.liebianzhe.com/api/user/car_list",
+									async:false,
+									data:{
+										token:user_info.token,
+										type:5,
+									},
+									success:function(data){
+										console.info(data);
+										$(".shopping_content").eq(i).remove();
+										$(".len").html(len);
+										$(".all_price").html(all_price);
+									},
+									error:function(data){
+										console.info("删除失败！");
+									}
+								});
+								break;
+							}
+						}
+					}
+				})
+	//			点击全部选择时
+				$(".all_guoxuan").on('tap',function(){
+					var price_len=$(".price").length;
+					var e=1;
+					for (var i=0;i<price_len;i++) {
+						if($(".guoxuan").eq(i).attr('src')=='img/guoxuan.png'){
+							$(".guoxuan").eq(i).attr('src','img/guoxuan1.png');
+							price=($(".price").eq(i).html()*1);
+							all_price=all_price+price;
+							$(".shopping_content").eq(i).data("guoxuan","1");
+							$(".all_guoxuan").attr('src','img/guoxuan1.png');
+							goods_ids.push($(".shopping_content").eq(i).data("id"));
+							console.info(goods_ids);
+							e=e+1;
+						}else if($(".guoxuan").eq(i).attr('src')=='img/guoxuan1.png'){
+							$(".guoxuan").eq(i).attr('src','img/guoxuan.png');
+							$(".shopping_content").eq(i).data("guoxuan","0");
+							price=($(".price").eq(i).html()*1);
+							all_price=all_price-price;
+							$(".all_guoxuan").attr('src','img/guoxuan.png');
+
+							var xuan_id=$(".shopping_content").eq(i).data("id");
+							goods_ids=$.grep(goods_ids, function(element,index){
+							   return element !==xuan_id;
+							});
+							console.info(goods_ids);
+							e=e-1;
+						}
+					}
+					if(e==price_len.length){
+						all_state=1;
+					}else{
+						all_state=0;
+					}
+					$('.all_price').text(all_price);
+					
+					
+				})
+			})
+			
+			//点击进入商品详情
+	      	function goods_detail(gid){
+				$.ajax({
+					type:"post",
+					url:"http://qipei.liebianzhe.com/api/user/goods_detail",
+					async:false,
+					data:{
+						token:user_info.token,
+						gid:gid
+					},
+					success:function(data){
+						console.info(data);
+						if(data.state==1){
+							//进入商品详情页面状态，0为首页的推荐商品，1为列表,2为购物车
+			      			var commodity_details_state=2;
+			      			session.setItem("commodity_details_state",commodity_details_state);
+							//存入商品详情数据
+							var goods_detail=JSON.stringify(data.data);
+							session.setItem("goods_detail",goods_detail)
+							tj_state=0
+							session.setItem("tj_state",tj_state);
+							window.location.href="commodity_details.html";
+						}else{
+							mui.toast(data.msg);	
+						}
+					},
+					error:function(data){
+						console.info("获取商品详情失败！")
+					}
+				});
+			}
+			
+			//获取焦点时过去单价
+			function number_input1(input_this){
+				price=$(input_this).parents(".commodity_div_right").siblings(".font_p2").children(".price").html();
+				prices=price;
+				num=($(input_this).val()*1);
+				price=price/num;
+			}
+			//	当商品数量发生改变时
+			function number_input(input_this){
+				num=($(input_this).val()*1);
+				var price1=price*num;
+				$(input_this).parents(".commodity_div_right").siblings(".font_p2").children(".price").text(price1);
+				data_state=$(input_this).parents(".shopping_content").data("guoxuan");
+				if(data_state==1){
+					all_price=all_price-prices;
+					all_price=all_price*1+price1*1;
+					$('.all_price').text(all_price);
+				}
+			}
+			//点击勾选时
+			function guoxuan(guoxuan_this,id){
+				goods_id=id;
+				var price1=($(guoxuan_this).siblings(".shopping_content_div").children(".shopping_content_price").children(".font_p2").children(".price").html()*1);
+				if($(guoxuan_this).attr('src')=='img/guoxuan.png'){
+					$(guoxuan_this).attr('src','img/guoxuan1.png');
+					all_price=price1+all_price;
+					$('.all_price').text(all_price);
+					$(guoxuan_this).parent(".shopping_content").data("guoxuan","1");
+					goods_ids.push(id);
+					console.info(goods_ids);
+					
+				}else if($(guoxuan_this).attr('src')=='img/guoxuan1.png'){
+					var price1=($(guoxuan_this).siblings(".shopping_content_div").children(".shopping_content_price").children(".font_p2").children(".price").html()*1);
+					$(guoxuan_this).attr('src','img/guoxuan.png');
+					all_price=all_price-price1;
+					$('.all_price').text(all_price);
+					$(guoxuan_this).parent(".shopping_content").data("guoxuan","0");
+					goods_ids=$.grep(goods_ids, function(element,index){
+					   return element !==id;
+					});
+
+					console.info(goods_ids);
+				}
+			}
+			//加法
+			function add(add_this){
+				price=$(add_this).parents(".commodity_div_right").siblings(".font_p2").children(".price").html();
+				num=($(add_this).siblings(".number_input").val()*1);
+//				计算单价
+				price=price/num;
+				num=num+1;
+				$(add_this).siblings(".number_input").val(num);
+				var price1=price*num;
+				$(add_this).parents(".commodity_div_right").siblings(".font_p2").children(".price").text(price1);
+				data_state=$(add_this).parents(".shopping_content").data("guoxuan");
+				console.info(data_state);
+				if(data_state==1){
+					all_price=all_price*1+price*1;
+					$('.all_price').text(all_price);
+				}
+			}
+			//减法
+			function reduce(reduce_this){
+				price=$(reduce_this).parents(".commodity_div_right").siblings(".font_p2").children(".price").html();
+				num=($(reduce_this).siblings(".number_input").val()*1);
+//				计算单价
+				price=price/num;
+				num=num-1;
+				if(num<=0){
+					num =1;
+					$(reduce_this).siblings(".number_input").val(num);
+				}
+				$(reduce_this).siblings(".number_input").val(num);
+				var price1=price*num;
+				$(reduce_this).parents(".commodity_div_right").siblings(".font_p2").children(".price").text(price1);
+				data_state=$(reduce_this).parents(".shopping_content").data("guoxuan");
+				console.info(data_state);
+				if(data_state==1){
+					all_price=all_price*1-price*1;
+					$('.all_price').text(all_price);
+				}
+			}
+			$(".settlement").on('tap',function(){
+				if(user_info.issm==1){
+					mui.toast("请先通过门店验证，才能购买商品");
+					return false;
+				}
+				var guoxuan_len=$(".guoxuan").length;
+				var gid;
+				var num;
+				var goods_attr;
+				var gidarr={};
+				
+				var e=0;
+				for (var i=0;i<guoxuan_len;i++) {
+					if($(".guoxuan").eq(i).attr('src')=='img/guoxuan1.png'){
+						e=e+1;
+						gid=shopping_cart[i].goods_id;
+						num=$(".number_input").eq(i).val();
+						goods_attr=shopping_cart[i].goods_attr;
+						goods_attr=JSON.stringify(goods_attr);
+						var gidarr1=[];
+						gidarr1.push(num);
+						gidarr1.push(goods_attr);
+						gidarr[gid]=gidarr1;
+						console.info(gidarr);
+					}
+				}
+				console.info(e);
+				if(e==0){
+					mui.toast("请选择商品进行结算~");
+					return false;
+				}else if(e==1){
+					console.info(gidarr);
+					$.ajax({
+						type:"post",
+						url:"http://qipei.liebianzhe.com/api/user/trace_order",
+						async:false,
+						data:{
+							token:user_info.token,
+							type:1,
+							gid:gid,
+							num:num,
+							attribute:goods_attr
+						},
+						success:function(data){
+							console.info(data);
+							if(data.state==1){
+								var ordernum=data.ordernum;
+								session.setItem("ordernum",ordernum);
+								//从商品详情页进入确认订单页面的状态 为0，购物车为1，2为订单页面
+		      					var order_state=1;
+		      					session.setItem("order_state",order_state);
+								window.location.href="confirm_order.html";
+							}else{
+								mui.toast(data.msg);
+							}
+						},
+						error:function(data){
+							console.info("下单失败！");
+						}
+					});
+				}else if(e>=2){
+					gidarr=JSON.stringify(gidarr);
+					console.info(gidarr);
+					$.ajax({
+						type:"post",
+						url:"http://qipei.liebianzhe.com/api/user/trace_order",
+						async:false,
+						data:{
+							token:user_info.token,
+							type:2,
+							gidarr:gidarr
+						},
+						success:function(data){
+							console.info(data);
+							if(data.state==1){
+								var ordernum=data.ordernum;
+								session.setItem("ordernum",ordernum);
+								//从商品详情页进入确认订单页面的状态 为0，购物车为1，2为订单页面
+		      					var order_state=1;
+		      					session.setItem("order_state",order_state);
+								window.location.href="confirm_order.html";
+							}else{
+								mui.toast(data.msg);
+							}
+						},
+						error:function(data){
+							console.info("下单失败！");
+						}
+					});
+					
+				}
+			})
+		</script>
+	</body>
+
+</html>

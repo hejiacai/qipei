@@ -1,0 +1,225 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>编辑收货地址</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script>
+		    document.documentElement.style.fontSize =document.documentElement.clientWidth/750*40 +"px";
+		</script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link href="css/mui.picker.css" rel="stylesheet" />
+    	<link href="css/mui.poppicker.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/common.css" />
+		<link rel="stylesheet" href="css/edit_address.css" />
+		
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-icon mui-icon-left-nav mui-pull-left" href="my_address.html"></a>
+		    <h1 class="mui-title">编辑收货地址</h1>
+		</header>
+		<div class="mui-content">
+			<div id="content"></div>
+		    
+		    <div class="add_body delete_body">
+		    	<div class="add_content delete_content dianji">
+		    		删除收货地址
+		    	</div>
+		    </div>
+		    <div class="div_button">
+		    	<button type="button" class="submit_btn">保存</button>
+		    </div>
+		</div>
+		<!--弹框-->
+		<div class="tips_info">
+			<div class="warning">
+				<p class="warning_title">删除说货地址</p>
+				<p class="warning_info">
+					确定要删除当前收货地址吗？
+				</p>
+			</div>
+			<div class="tips_button ">
+				<div class="tips_button_div qx">
+					暂时不要
+				</div>
+				<div class="tips_button_div qd">
+					删除
+				</div>
+			</div>
+		</div>
+		<!--遮罩层-->
+		<div class="backdrop"></div>
+		
+		<script type="text/html" id="text">
+			<div class="add_body">
+				<div class="add_content">
+		    		<div class="content_left">收货人</div>
+		    		<div class="content_right">
+		    			<input type="text" value="{{data.username}}" class="name"/>
+		    		</div>
+		    	</div>
+		    	<div class="add_content">
+		    		<div class="content_left">手机号码</div>
+		    		<div class="content_right">
+		    			<input type="text" value="{{data.phone}}" class="phone"/>
+		    		</div>
+		    	</div>
+		    	<div class="add_content">
+		    		<div class="content_left">所在地区</div>
+		    		<div class="content_right">
+		    			<div class="add_box">{{data.city}}</div>
+		    			<img src="img/add_jiantou.png" class="choice_add"/>
+		    		</div>
+		    	</div>
+		    	<div class="add_content">
+		    		<div class="content_left">详细地址</div>
+		    		<div class="content_right">
+		    			<input type="text" value="{{data.address}}" class="address"/>
+		    		</div>
+		    	</div>
+	    	</div>
+	    	<div class="add_body" >
+				<div class="add_content default_content">
+		    		<div class="default_left">设为默认地址</div>
+		    		{{if data.default==1}}
+					    <div class="mui-switch mui-switch-mini mui-active" id="switch">
+					        <div class="mui-switch-handle"></div>
+					    </div>
+				    {{else if data.default==2}}
+					    <div class="mui-switch mui-switch-mini" id="switch">
+					        <div class="mui-switch-handle"></div>
+					    </div>
+				    {{/if}}	
+		    	</div>
+	    	</div>
+		</script>
+		
+		<script type="text/javascript" src="js/common.js" ></script>
+		<script type="text/javascript" src="js/art-template.js"></script>
+		<script type="text/javascript" src="js/jquery-3.3.1.min.js" ></script>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript" src="js/mui.picker.js" ></script>
+		<script type="text/javascript" src="js/mui.poppicker.js" ></script>
+		<script type="text/javascript" src="js/city.data-3.js" ></script>
+		<script type="text/javascript" src="js/tool.js" ></script>
+		<script type="text/javascript">
+			var session=window.sessionStorage;
+	      	//登录时返回的用户数据
+	      	var user_info;
+	      	//获取地址详细信息
+	      	var address_info;
+	      	//设置默认地址状态为1
+	      	
+			$(document).ready(function () {
+				user_info=session.getItem("user_info");
+      			user_info=JSON.parse(user_info);
+      			
+      			
+      			
+      			
+      			address_info=session.getItem("address_info");
+      			address_info=JSON.parse(address_info);
+				console.info(address_info);
+				var html=template("text",address_info);
+				document.getElementById("content").innerHTML=html;
+				mui_switch=address_info.data.default;
+				
+		        mui.init();
+		        var _getParam = function(obj, param) {
+		            return obj[param] || '';
+		        };
+		        var cityPicker3 = new mui.PopPicker({
+		            layer: 3,
+		            buttons:['','确定']
+		        });
+		        cityPicker3.setData(cityData3);
+		        var choiceAdd = document.querySelector('.choice_add');
+		        var addBox = document.querySelector('.add_box');
+		        choiceAdd.addEventListener('tap', function(event) {
+		            cityPicker3.show(function(items) {
+		                addBox.innerText = _getParam(items[0], 'text') + " " + _getParam(items[1], 'text') + " " + _getParam(items[2], 'text');
+		                //返回 false 可以阻止选择框的关闭
+		                //return false;
+		            });
+		        }, false);
+		        // var _btnPick = document.createElement('button')
+		        // $(_btnPick).addClass('mui-btn mui-btn-blue mui-poppicker-btn-ok')
+		        $('.mui-poppicker-header').prepend('请选择区域')
+		        $("#switch").click(function(){
+		        	$("#switch").toggleClass("mui-active");
+		        	if($("#switch").hasClass("mui-active")){
+		        		mui_switch=1;
+		        		console.info(mui_switch);
+		        	}else{
+		        		mui_switch=2;
+		        		console.info(mui_switch);
+		        	}
+		        })
+		        
+		    })
+//			点击编辑地址
+			$('.submit_btn').on('tap',function () {
+		        var username=$(".name").val();
+		        var phone=$(".phone").val();
+		        var city=$(".add_box").text();
+		        var address=$(".address").val();
+		        if(username=="" || phone=="" || address==""){
+		        	mui.toast("内容不能为空！");
+		        	return false;
+		        }
+	        	$.ajax({
+		        	type:"post",
+		        	url:"http://qipei.liebianzhe.com/api/user/set_address",
+		        	async:true,
+		        	data:{
+		        		token:user_info.token,
+		        		type:2,
+		        		username:username,
+		        		phone:phone,
+		        		city:city,
+		        		address:address,
+		        		default:mui_switch,
+		        		id:address_info.data.id
+		        	},
+		        	success:function(data){
+		        		console.info(data);
+		        		mui.toast("修改成功！");
+		        		setTimeout("jump()",2500);
+		        	},
+		        	error:function(data){
+		        		console.info("修改地址失败");
+		        	}
+		        });
+		    })
+			$(".qd").on('tap',function(){
+				$.ajax({
+					type:"post",
+					url:"http://qipei.liebianzhe.com/api/user/set_address",
+					async:true,
+					data:{
+						token:user_info.token,
+						type:4,
+						id:address_info.data.id,
+					},
+					success:function(data){
+						console.info(data);
+						$(".backdrop").toggleClass("tool_acitve");
+						$(".tips_info").toggleClass("tool_acitve");
+						mui.toast("删除成功！");
+						setTimeout("jump()",2500);
+					},
+					error:function(data){
+						console.info("删除失败！");
+					}
+				});
+			})
+			function jump(){
+				window.location.href="my_address.html";
+			}
+		</script>
+	</body>
+
+</html>

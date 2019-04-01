@@ -1,0 +1,157 @@
+body,.mui-content{
+	background-color: #F8F8F8;
+}
+.add_body{
+	width: 17.25rem;
+	background-color: white;
+	border-radius: 5px;
+	margin: 0 auto;
+	margin-top: 0.25rem;
+}
+.add_content{
+	height: 2.5rem;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	border-bottom: 1px solid #DFDFDF;
+	padding-left: 0.55rem;
+}
+.add_content:last-child{
+	border-bottom: none;
+}
+.content_left{
+	width: 4.5rem;
+	font-size: 0.75rem;
+}
+.content_right{
+	width: 11.95rem;
+	display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.content_right input{
+	margin: 0;
+	border: none;
+	font-size: 0.75rem;
+	padding: 0;
+}
+.add_box{
+	font-size: 0.75rem;
+}
+.add_box1{
+	font-size: 0.75rem;
+	color: #939393;
+}
+.add_box1_active{
+	color: black;
+}
+.content_right img{
+	width: 0.35rem;
+	height: 0.6rem;
+	margin-right: 0.2rem;
+}
+.default_left{
+	font-size: 0.75rem;
+	font-weight: bold;
+}
+.default_content{
+	justify-content: space-between;
+	padding-right: 0.2rem;
+}
+.delete_body{
+	margin-top: 0.6rem;
+}
+.delete_content{
+	color: #4876EC;
+	font-weight: bold;
+	font-size: 0.75rem;
+}
+.div_button{
+	width: 100%;
+	height: 2.4rem;
+	text-align: center;
+	margin-top: 3.05rem;
+}
+.div_button button{
+	height: 100%;
+	width: 15.15rem;
+	background: -webkit-linear-gradient(left, #4679EE , #2EAFFC); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(right, #4679EE, #2EAFFC); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(right, #4679EE, #2EAFFC); /* Firefox 3.6 - 15 */
+    background: linear-gradient(to right, #4679EE , #2EAFFC); /* 标准的语法 */
+   	border-radius: 25px;
+   	color: white;
+   	font-size: 0.9rem;
+}
+.warning_info{
+	margin-top: -0.5rem;
+}
+
+
+
+
+/*城市选择器*/
+.mui-poppicker-btn-cancel{
+    display: none;
+}
+.mui-poppicker-header{
+    background: #fff;
+    height: 2.5rem;
+    text-align: center;
+    color: #333333;
+    font-size: .75rem;
+    padding: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+.mui-poppicker-btn-ok{
+    position: absolute;
+    right: .75rem;
+    background: #fff;
+    border: 0.025rem solid #090909;
+    color: #090909;
+    border-radius: 5px;
+    width: 2.25rem;
+    height: 1.1rem;
+    padding: 0!important;
+    text-align: center;
+    line-height: 1rem;
+    font-size: .75rem;
+}
+.mui-picker{
+    background: #fff;
+    padding: 2rem 0;
+}
+.mui-poppicker-body{
+    border-top: 0.025rem solid #e3e3e3;
+}
+.mui-pciker-list li{
+    font-size: .65rem;
+    color: #cfcece;
+}
+.mui-poppicker-body{
+    height: 9.7rem;
+}
+.mui-pciker-rule-ft{
+    border-top: none;
+    border-bottom: none;
+}
+
+
+/*默认选择*/
+.mui-switch .mui-switch-handle{
+    width: .6rem;
+    height: .6rem;
+}
+.mui-switch.mui-active{
+    border-color: #e9ca05;
+    background-color: #e9ca05;
+}
+
+.mui-switch-mini{
+    width: 1.5rem;
+    height: .7rem;
+}

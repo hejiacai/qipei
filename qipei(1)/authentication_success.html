@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>实名认证</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script>
+		    document.documentElement.style.fontSize =document.documentElement.clientWidth/750*40 +"px";
+		</script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/common.css" />
+		<link rel="stylesheet" href="css/put_forward_one.css" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class=" mui-icon mui-icon-left-nav mui-pull-left" href="certification.html"></a>
+		    <h1 class="mui-title"></h1>
+		</header>
+		<div class="mui-content">
+		    <div class="fotward_body">
+		    	<div class="fotward_content">
+		    		<img src="img/fotward_yes.png"/>
+		    		<div class="font_span">
+		    			您的
+		    			<span class="rz"></span>
+		    			认证已提交请耐心等待
+		    		</div>
+		    		<span>预计1-2个工作日给您答复</span>
+		    	</div>
+		    	<div class="div_button">
+		    		<a href="index.html">
+		    			<button type="button">返回首页</button>
+		    		</a>
+		    	</div>
+		    </div>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript" src="js/jquery-3.3.1.min.js" ></script>
+		<script type="text/javascript">
+			mui.init();
+			$(function(){
+				var session=window.sessionStorage;
+				 //进入认证页面的状态；0位门店认证，1位师傅认证,2为代理；
+  				var rz_state=session.getItem("rz_state");
+  				if(rz_state==0){
+  					$(".mui-title").html("实名认证");
+  					$(".rz").html("实名");
+  				}else if(rz_state==1){
+  					$(".mui-title").html("师傅认证");
+  					$(".rz").html("师傅");
+  				}else if(rz_state==2){
+  					$(".mui-title").html("代理认证");
+  					$(".rz").html("代理");
+  				}
+  				
+  				
+			})
+		</script>
+	</body>
+
+</html>

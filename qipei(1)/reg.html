@@ -1,0 +1,196 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>注册</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script>
+		    document.documentElement.style.fontSize =document.documentElement.clientWidth/750*40 +"px";
+		</script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/common.css" />
+		<link rel="stylesheet" href="css/forget_pwd.css" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class=" mui-icon mui-icon-left-nav mui-pull-left" onclick="back_close()"></a>
+		</header>
+		<div class="mui-content">
+			<section class="forget_body">
+				<p class="login_title">注册</p>
+				<div class="forget_content">
+					<input type="number" autocomplete="off" oninput="if(value.length>11)value=value.slice(0,11)" id="phone" placeholder="请输入您的手机号码"/>
+					<div class="yzm_content">
+						<input type="number" autocomplete="off" id="code" placeholder="请输入验证码"/>
+						<div class="yzm_div send_code" onclick="get_code()">获取验证码</div>
+					</div>
+					<div class="agree">
+						<img  src="img/guoxuan.png" id="savePassword"/>
+						<span class="agree_span">
+							注册即代表同意
+							<a href="user_protocol.html">用户协议</a>
+						</span>
+					</div>
+				</div>
+				<div class="div_button">
+					<!--<a href="set_pwd.html">-->
+						<button type="button" onclick="next_step()">下一步</button>
+					<!--</a>-->
+				</div>
+			</section>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript" src="js/jquery-3.3.1.min.js" ></script>
+		
+	</body>
+	<script type="text/javascript">
+		mui.init();
+		var wx_id;
+		var share_type;
+		var opneid;
+		var share_id;
+		var share_datas={};
+		$(function(){
+			//微信
+			wx_id=getUrlParam("id");
+			opneid=getUrlParam("opneid");
+			
+		})
+		//点击同意勾选
+		$("#savePassword").on('tap',function(){
+			if($(this).attr('src')=="img/guoxuan.png"){
+				$(this).attr('src','img/guoxuan1.png');
+				
+			}else if($(this).attr('src')=="img/guoxuan1.png"){
+				$(this).attr('src','img/guoxuan.png');
+			}
+		})
+		function getUrlParam(name){
+			var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象var r = window.location.search.substr(1).match(reg);  //匹配目标参数if (r!=null) return unescape(r[2]); return null; //返回参数值} 
+			var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+			if (r!=null) return unescape(r[2]); return null; //返回参数值
+		}
+		
+		
+		function get_code() {
+		    var phone = $("#phone").val();
+		    if (phone==""||phone==null){
+                mui.toast("请输入手机号");
+			}else if (!phone.match(/^1[345789]\d{9}$/)) {
+                mui.toast('请输入正确的手机号码', 'short');
+            }else {
+		        $.ajax({
+					url:"http://qipei.liebianzhe.com/api/index/sendCode",
+					data:{phone:phone},
+					type:"post",
+					success:function (data) {
+						
+                        if (data.status == 1){
+                            mui.toast('验证码发送成功，请注意查收','short');
+                            var time=60;
+                            var clearint=setInterval(function(){
+                                time--;
+                                $(".send_code").html(time+"秒");
+                                if(time==0){
+                                    clearInterval(clearint);
+                                    $(".send_code").html("重新发送");
+                                }
+                            },1000);
+                        }else {
+                            mui.toast('验证码发送失败','short');
+
+                        }
+                    },
+                    error:function(){
+                    	console.info("短信验证请求失败");
+                    	mui.toast("您的手机号已超过本日限制的短信条数~")
+                    }
+				})
+			}
+        }
+
+        function next_step() {
+			var phone =  $("#phone").val(),
+				code = $("#code").val();
+			if($("#savePassword").attr('src')=="img/guoxuan.png"){
+				mui.toast("请选择同意用户协议~~");
+				return false;
+			}
+			if(wx_id!=null && opneid!==null){
+				$.ajax({
+					url:"http://qipei.liebianzhe.com/api/login/set_phone",
+					data:{id:wx_id,code:code,phone:phone},
+					type:"post",
+					success:function (data) {
+					    console.info(data);
+					    if (data.state==0){
+	                        mui.toast(data.msg,'short');
+	                    }else if(data.state==1){
+					        var key = data.key;
+							share_type=null;
+							share_datas["id"]=wx_id;
+							share_datas["share_type"]=share_type;
+							share_datas["phone"]=phone;
+							//判断是否是微信登录，0为不是，1为是,2为分享；
+							var wx_state=1;
+							share_datas["wx_state"]=wx_state;
+							console.info(share_datas);
+							var session=window.sessionStorage;
+							session.setItem("share_datas",JSON.stringify(share_datas));
+					        window.location.href="set_pwd.html?key=" + key + "&phone=" + phone;
+						}else if(data.state==2){
+							mui.toast("绑定微信账号成功~");
+							setTimeout(function(){
+		                    	window.location.href="login_one.html";
+		                    },1500);
+							
+						}
+	                },error:function(){
+	                	console.info("失败~");
+	                }
+				})
+				
+			}else{
+				$.ajax({
+					url:"http://qipei.liebianzhe.com/api/login/register",
+					data:{phone:phone,code:code,type:1},
+					type:"post",
+					success:function (data) {
+					    console.log(data);
+					    if (data.state==0){
+	                        mui.toast(data.msg,'short');
+	                    }else{
+					        var key = data.key;
+					        
+					        window.location.href="set_pwd.html?key=" + key + "&phone=" + phone;
+						}
+	                }
+				})
+			}
+        }
+        $(window).resize(function(){
+            document.documentElement.style.fontSize =document.documentElement.clientWidth/750*40 +"px";
+        });
+        function back_close(){
+			var u = navigator.userAgent, app = navigator.appVersion;
+            var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端或者uc浏览器
+            var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+			console.info(isAndroid);
+            console.info(isiOS);
+			if (isAndroid) {
+                js.back_close();
+            	window.location.href="login.html";
+                
+            }
+			if (isiOS) {
+                var url={ "url":'http://qipei.liebianzhe.com/qipei/login.html'};
+                window.webkit.messageHandlers.back_close.postMessage(url);
+                	window.location.href="login.html";
+            }
+            
+             
+		}
+	</script>
+</html>

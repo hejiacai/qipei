@@ -1,0 +1,554 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>个人中心</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script>
+		    document.documentElement.style.fontSize =document.documentElement.clientWidth/750*40 +"px";
+		</script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/common.css" />
+		<link rel="stylesheet" href="css/personal.css" />
+		
+	</head>
+
+	<body>
+		<header id="header"></header>
+		
+		<section id="content">
+			
+		</section>
+		<footer class="footer">
+			<div class="footer_body">
+				<a href="index.html">
+					<div class="footer_div">
+						<img  src="img/shouye.png" class="shouye"/>
+						<span>首页</span>
+					</div>
+				</a>
+				<a href="my_info.html">
+					<div class="footer_div">
+						<img  src="img/sousuo2.png" class="fenlei"/>
+						<img src="img/read_new.png" class="new_imgs"/>
+						<span>消息</span>
+					</div>
+				</a>
+				<a href="release.html">
+					<div class="footer_div1">
+						<img  src="img/fabu.png" class="fabu"/>
+						<span>发布</span>
+					</div>
+				</a>
+				<a href="shopping_cart.html">
+					<div class="footer_div">
+						<img  src="img/gouwuche.png" class="gouwuche"/>
+						<span>购物车</span>
+					</div>
+				</a>
+				<a href="personal.html">
+					<div class="footer_div">
+						<img  src="img/wode.png" class="wode"/>
+						<span class="footer_active">我的</span>
+					</div>
+				</a>
+				
+			</div>
+		</footer>
+		<div class="tips_info">
+			<div class="warning">
+				<p class="warning_title">客服电话</p>
+				<p class="warning_info" id="phone">
+
+				</p >
+			</div>
+			<div class="tips_button ">
+				<div class="tips_button_div qx" style="width: 100%">
+					确定
+				</div>
+			</div>
+		</div>
+		<div class="backdrop"></div>
+		<div id="picture" class="mui-popover mui-popover-bottom mui-popover-action ">
+		    <!-- 可选择菜单 -->
+		    <ul class="mui-table-view">
+		      <li style="cursor :pointer" class="mui-table-view-cell">
+		        <a href="#" style="color: #FD4C2D;"class="input_file">
+		        	拍照
+
+		        	<input  type="file" accept="image/*" capture="camera" name="file1" id="update1"   enctype="multipart/form-data" onchange="update_img1()">
+		        </a>
+		      </li>
+		      <li style="cursor :pointer" class="mui-table-view-cell">
+		        <a href="#"  class="input_file">
+		        	从相册选择
+		        	<!--<form enctype="multipart/form-data" id="f1">-->
+		        		<input  type="file" accept="image/*" id="update" name="file"   enctype="multipart/form-data" onchange="update_img()" />
+		        	<!--</form>-->
+		        </a>
+		      </li>
+		    </ul>
+		    <!-- 取消菜单 -->
+		    <ul class="mui-table-view">
+		      <li class="mui-table-view-cell">
+		        <a href="#picture">
+		        	取消
+		        </a>
+		      </li>
+		    </ul>
+		</div>
+		<script type="text/html" id="header_text">
+			<div class="header_div">
+				个人中心
+			</div>
+			<div class="my_info">
+				<div class="touxiang">
+					<a href="#picture">
+						<img src="{{headimgurl}}" class="touxiang_img"/>
+					</a>
+					{{if issm==1}}
+					<img  src="img/weirz.png" class="renzheng"/>
+					{{else if issm==2}}
+					<img  src="img/yirz.png" class="renzheng"/>
+					{{/if}}
+				</div>
+				<p class="user_name">{{nickname}}</p>
+				<!--<p class="welcome">欢迎使用汇力汽车</p>-->
+			</div>
+			<div class="my_order">
+				<div class="order_title">
+					<span>我的订单</span>
+					<a href="my_order.html"><span class="font_span">查看全部订单 ></span></a>
+				</div>
+				<div class="order_contnet">
+					<div class="order_contnet_div" onclick="order_index(this)">
+						<img  class="order_img" src="img/待付款.png"/>
+						<span>待付款</span>
+						{{if pcount>0}}
+						<div class="sp_num">{{pcount}}</div>
+						{{/if}}
+					</div>
+					<div class="order_contnet_div" onclick="order_index(this)">
+						<img  class="order_img" src="img/待发货.png"/>
+						<span>待发货</span>
+						{{if fcount>0}}
+						<div class="sp_num">{{fcount}}</div>
+						{{/if}}
+					</div>
+					<div class="order_contnet_div" onclick="order_index(this)">
+						<img  class="order_img" src="img/待收货-01.png"/>
+						<span>待收货</span>
+						{{if scount>0}}
+						<div class="sp_num">{{scount}}</div>
+						{{/if}}
+					</div>
+					<div class="order_contnet_div" onclick="order_index(this)">
+						<img  class="order_img" src="img/待评价1.png"/>
+						<span>待评价</span>
+						{{if jcount>0}}
+						<div class="sp_num">{{jcount}}</div>
+						{{/if}}
+					</div>
+				</div>
+			</div>
+		</script>
+		<script type="text/html" id="text1">
+			{{if vip>=2}}
+			<div class="section_div" onclick="my_team()" id="my_team">
+				<div class="section_content">
+					<img  src="img/my_team.png" class="my_team"/>
+					<span>我的团队</span>
+				</div>
+				<img src="img/更多.png" class="more_img"/>
+			</div>
+			{{/if}}
+			<div class="section_div" onclick="shiming()">
+				<div class="section_content">
+					<img  src="img/实名认证.png" class="shiming_img"/>
+					<span>实名认证</span>
+				</div>
+				<img src="img/更多.png" class="more_img"/>
+			</div>
+			{{if vip==3 || vip==4 || vip==5}}
+			<div class="section_div" onclick="daili()" id="daili">
+				<div class="section_content">
+					<img  src="img/实名认证.png" class="shiming_img"/>
+					<span>代理认证</span>
+				</div>
+				<img src="img/更多.png" class="more_img"/>
+			</div>
+			{{/if}}
+			{{if vip>=2}}
+			<div class="section_div" onclick="share()" id="share">
+				<div class="section_content">
+					<img  src="img/分享推广.png" class="my_team"/>
+					<span>分享推广</span>
+				</div>
+				<img src="img/更多.png" class="more_img"/>
+			</div>
+			{{/if}}
+			<div class="section_div" onclick="coupon()">
+				<div class="section_content">
+					<img  src="img/优惠券.png" class="shiming_img"/>
+					<span>优惠券</span>
+				</div>
+				<img src="img/更多.png" class="more_img"/>
+			</div>
+			
+			<div class="section_div" onclick="my_wallet()">
+				<div class="section_content">
+					<img  src="img/我的钱包.png" class="my_team"/>
+					<span>我的钱包</span>
+				</div>
+				<img src="img/更多.png" class="more_img"/>
+			</div>
+			
+			<div class="section_div" onclick="collection()">
+				<div class="section_content">
+					<img  src="img/收藏.png" class="my_team"/>
+					<span>收藏</span>
+				</div>
+				<img src="img/更多.png" class="more_img"/>
+			</div>
+			
+			<div class="section_div" onclick="master()">
+				<div class="section_content">
+					<img  src="img/我要成为师傅.png" class="my_team"/>
+					<span>我要成为师傅</span>
+				</div>
+				<img src="img/更多.png" class="more_img"/>
+			</div>
+			{{if issm==2}}
+			<div class="section_div" onclick="help_list()" id="help_list_sm">
+				<div class="section_content">
+					<img  src="img/我的派单.png" class="my_team"/>
+					<span>我的派单</span>
+				</div>
+				<img src="img/更多.png" class="more_img"/>
+			</div>
+			{{/if}}
+			{{if ismw==2}}
+			<div class="section_div " onclick="help_list_sf()" id="help_list_sf">
+				<div class="section_content">
+					<img  src="img/我的派单.png" class="my_team"/>
+					<span>我的接单</span>
+				</div>
+				<img src="img/更多.png" class="more_img"/>
+			</div>
+			{{/if}}
+			<div class="section_div" onclick="set_up()">
+				<div class="section_content">
+					<img  src="img/设置.png" class="my_team"/>
+					<span>设置</span>
+				</div>
+				<img src="img/更多.png" class="more_img"/>
+			</div>
+			
+			<div class="section_div" onclick="lianxi()">
+				<div class="section_content">
+					<img  src="img/personal_phone.png" class="my_team"/>
+					<span>联系我们</span>
+				</div>
+				<img src="img/更多.png" class="more_img"/>
+			</div>
+		</script>
+		<script type="text/javascript" src="js/common.js" ></script>
+		<script type="text/javascript" src="js/art-template.js"></script>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript" src="js/jquery-3.3.1.min.js" ></script>
+		<script type="text/javascript">
+			mui.init()
+			var session=window.sessionStorage;
+	      	//登录时返回的用户数据
+	      	var user_info;
+	      	$(function(){
+	      		user_info=session.getItem("user_info");
+      			user_info=JSON.parse(user_info);
+//    			if(user_info.vip>=2){
+//    				$("#my_team,#share").css("display","flex");
+//    			}
+//    			if(user_info.vip==3 || user_info.vip==4 || user_info.vip==5){
+//    				$("#daili").css("display","flex");
+//    			}
+//    			if(user_info.ismw==2){
+//    				$("#help_list_sf").css("display","flex");
+//    			}
+//    			if(user_info.issm==2){
+//    				$("#help_list_sm").css("display","flex");
+//    			}
+      			if(user_info.user_msg==1){
+      				$(".new_imgs").show();
+      			}else if(user_info.user_msg==0){
+      				$(".new_imgs").hide();
+      			}
+      			//获取个人中心的数据
+      			$.ajax({
+	      			type:"post",
+	      			url:"http://qipei.liebianzhe.com/api/user/get_userinfo",
+	      			async:true,
+	      			data:{
+	      				token:user_info.token,
+	      			},
+	      			success:function(data){
+	      				console.info(data);
+	      				if(data.state==1){
+	      					var html =template("header_text",data.data);
+							document.getElementById("header").innerHTML = html;
+							var html =template("text1",data.data);
+							document.getElementById("content").innerHTML = html;
+							user_info=JSON.stringify(data.data);
+							session.setItem("user_info",user_info);
+	      				}
+//	      				else if(data.state==0 ||data.stase==null){
+//		      				session.clear();
+//	      					mui.toast("登录失效，请重新登录！");
+//	      					setTimeout("jump()",2500);
+//	      				}
+	      				user_info=data.data;
+	      			},
+	      			error:function(data){
+	      				console.info("获取个人中心的数据失败！");
+	      			}
+	      		});
+	      		
+	      	})
+	      	
+	      	
+	      	//跳转页面
+	      	function coupon(){
+	      		window.location.href="coupon.html";
+	      	}
+	      	function my_wallet(){
+	      		window.location.href="my_wallet.html";
+	      	}
+	      	function collection(){
+	      		window.location.href="collection.html";
+	      	}
+	      	function set_up(){
+	      		window.location.href="set_up.html";
+	      	}
+	      	
+	      	
+	      	
+	      	
+	      	//联系我们
+	      	function lianxi(){
+	      		$.ajax({
+ 					url:"http://qipei.liebianzhe.com/api/user/customer_phone",
+ 					data:{token:user_info.token},
+ 					type:"post",
+ 					success:function (data) {
+ 					    var res = data.data;
+ 					    $("#phone").html(res.phone);
+                       ShowAndDisappear();
+                   }
+ 				})
+	      	}
+	      	function share(){
+	      		if(user_info.vip==2){
+	      			if(user_info.issm==1){
+		      			session.setItem("helper_state",2);
+		      			session.setItem("helper_states",1);
+	            		window.location.href="help_uncertified.html";
+	            		return false;
+		      		}
+	      		}
+	      		if(user_info.vip>=3 && user_info.vip<=5){
+	      			 if(user_info.isdaili==1){
+		      			session.setItem("helper_state",2);
+		      			session.setItem("helper_states",2);
+	            		window.location.href="help_uncertified.html";
+	            		return false;
+		      			}
+	      		}
+      			window.location.href="share.html";
+	      	}
+	      	function my_team(){
+	      		if(user_info.vip==2){
+	      			if(user_info.issm==1){
+		      			session.setItem("helper_state",2);
+		      			session.setItem("helper_states",1);
+	            		window.location.href="help_uncertified.html";
+	            		return false;
+		      		}
+	      		}
+	      		if(user_info.vip>=3 && user_info.vip<=5){
+	      			 if(user_info.isdaili==1){
+		      			session.setItem("helper_state",2);
+		      			session.setItem("helper_states",2);
+	            		window.location.href="help_uncertified.html";
+	            		return false;
+		      		}
+	      		}
+	      		
+	      			window.location.href="my_team.html";
+	      		
+	      	}
+	      	
+	      	//显示提示框
+	      	function ShowAndDisappear(){
+                $(".backdrop").toggleClass("tool_acitve");
+                $(".tips_info").toggleClass("tool_acitve");
+            }
+	      	//点击遮罩层消失
+            $(".backdrop").click(function(){
+                ShowAndDisappear();
+            })
+            //点击取消消失
+            $(".qx").click(function(){
+                ShowAndDisappear();
+            })
+	      	
+	      	//点击进入找人帮列表界面  href="my_dispatch.html"
+	      	function help_list(){
+	      		window.location.href="my_dispatch.html";
+	      	}
+	      	function help_list_sf(){
+	      		window.location.href="my_dispatch_sf.html";
+	      	}
+	      	function jump(){
+				window.location.href="login.html";
+			}
+	      	function order_index(index_this){
+	      		var index_order=$(index_this).index();
+	      		session.setItem("index_order",index_order);
+	      		window.location.href="my_order.html";
+	      	}
+	      	//点击我要成为师傅
+	      	function master(){
+	      		if(user_info.ismw==2){
+	      			mui.toast("你已经是师傅了~~~");
+	      		}else{
+	      			//进入认证页面的状态；0位门店认证，1位师傅认证，2为代理认证；
+	      			var rz_state=1;
+	      			session.setItem("rz_state",rz_state);
+	      			window.location.href="certification.html";
+	      		}
+	      	}
+	      	//点击进行实名认证
+	      	function shiming(){
+	      		if(user_info.issm==2){
+	      			mui.toast("你已经通过了实名认证~~~");
+	      		}else{
+	      			//进入认证页面的状态；0位门店认证，1位师傅认证，2为代理认证；
+	      			var rz_state=0;
+	      			session.setItem("rz_state",rz_state);
+	      			window.location.href="certification.html";
+	      		}
+	      	}
+	      	function daili(){
+	      		if(user_info.isdaili==2){
+	      			mui.toast("你已经通过了代理认证~~~");
+	      		}else{
+	      			//进入认证页面的状态；0位门店认证，1位师傅认证，2为代理认证；
+	      			session.setItem("rz_state",2);
+	      			window.location.href="certification_sm.html";
+	      		}
+	      	}
+	      	
+	      	//上传图片
+	      	function update_img() {
+                $("#update").click();
+				let formData = new FormData();
+				var file = document.getElementById("update").files[0];
+				formData.append('file',file);
+				mui.ajax("http://qipei.liebianzhe.com/api/index/upload", {
+					data: formData,
+					async: false,
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					cache: false,
+					contentType: false,
+					processData: false,
+					success: function(data) {
+						data=JSON.parse(data);
+                        if(data.state == 1){
+                            file=data.data[0].name;
+                            console.info(file);
+                            $.ajax({
+                                url:'http://qipei.liebianzhe.com/api/user/set_user',
+                                data:{"type":4,"token":user_info.token,"headimg":file},
+                                type:"post",
+                                dataType:"json",
+                                success:function(data){
+                                	console.info(data);
+                                    if(data.state == 1){
+                                        mui.toast(data.msg);
+                                        user_info.headimgurl="http://qipei.liebianzhe.com/static/upload/"+file;
+                                        window.sessionStorage.setItem("user_info",JSON.stringify(user_info))
+                                        window.location.reload();
+                                    }else{
+                                        mui.toast(data.msg);
+                                    }
+                                },
+                                error: function(xhr, type, errorThrown) {
+                                    //异常处理；
+                                    mui.toast("未知错误");
+                                }
+                            })
+                        }else{
+                            mui.toast(data.msg);
+                        }
+					},
+					error: function(xhr, type, errorThrown) {
+						//异常处理；
+                        mui.toast("未知错误");
+					}
+				})
+			}
+			function update_img1() {
+				$("#update1").click();
+				let formData = new FormData();
+				var file = document.getElementById("update1").files[0];
+				formData.append('file',file);
+				mui.ajax("http://qipei.liebianzhe.com/api/index/upload", {
+					data: formData,
+					async: false,
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					cache: false,
+					contentType: false,
+					processData: false,
+					success: function(data) {
+						data=JSON.parse(data);
+						if(data.state == 1){
+                            file=data.data[0].name;
+                            console.info(file);
+                            $.ajax({
+								url:'http://qipei.liebianzhe.com/api/user/set_user',
+								data:{"type":4,"token":user_info.token,"headimg":file},
+								type:"post",
+								dataType:"json",
+								success:function(data){
+									if(data.state == 1){
+                                        mui.toast(data.msg);
+                                        user_info.headimgurl="http://qipei.liebianzhe.com/static/upload/"+file;
+                                        window.sessionStorage.setItem("user_info",JSON.stringify(user_info))
+                                        window.location.reload();
+									}else{
+                                        mui.toast(data.msg);
+									}
+								},
+                                error: function(xhr, type, errorThrown) {
+                                    //异常处理；
+                                    mui.toast("未知错误");
+                                }
+							})
+						}else{
+                            mui.toast(data.msg);
+						}
+
+
+					},
+					error: function(xhr, type, errorThrown) {
+						//异常处理；
+                        mui.toast("未知错误");
+					}
+				})
+			}
+	      	
+		</script>
+	</body>
+
+</html>

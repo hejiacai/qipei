@@ -1,0 +1,685 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>我的团队</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script>
+		    document.documentElement.style.fontSize =document.documentElement.clientWidth/750*40 +"px";
+		</script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/common.css" />
+		<link rel="stylesheet" href="css/my_team.css" />
+		<style>
+			.mui-control-content.mui-active{
+				display:block !important;
+			}
+			.mui-control-content{
+				display: none !important; 
+			}
+			.title_phone p{
+				color: white;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-icon mui-icon-left-nav mui-pull-left" href="personal.html"></a>
+		    <h1 class="mui-title">我的团队</h1>
+		</header>
+		<div class="mui-content">
+		    <div id="slider" class="mui-slider">
+		    	<div id="my_team_header"></div>
+		    	
+			    
+
+	            <div class="mui-slider-group" id="slider-group">
+	                
+	            </div>
+	        </div>
+	        <div class="tips_info">
+				<div class="warning">
+					<p class="warning_title">客服电话</p>
+					<p class="warning_info" id="phone">
+
+					</p >
+				</div>
+				<div class="tips_button ">
+					<div class="tips_button_div qx" style="width: 100%">
+						确定
+					</div>
+					<!--<div class="tips_button_div qd">-->
+					<!--确定-->
+					<!--</div>-->
+				</div>
+			</div>
+			<div class="backdrop"></div>
+		</div>
+		
+		<script type="text/html" id="text"> 
+			{{if vip==2}}
+				<div id="item1mobile" class="mui-slider-item mui-control-content mui-active">
+					{{if state==1}}
+					<ul class="mui-table-view">
+						{{each data as value i}}
+		                <li class="mui-table-view-cell">
+		                	<div class="team_title">
+		                		<div class="title_info">
+		                    		<img src="{{value.headimgurl}}" />
+		                    		<div class="title_phone">
+		                    			<span>{{value.nickname}}</span>
+		                    			<p>{{value.phone}}</p>
+		                    		</div>
+		                		</div>
+		                		<div class="time">
+		                			<img  src="img/team_time.png"/>
+		                			<span>{{value.add_time}}</span>
+		                		</div>
+		                	</div>
+		                	<div class="team_content">
+		                		<div class="content_div1">
+		                			<p class="font_p">总消费</p>
+		                			<p class="font_p1">{{value.spend_price}}</p>
+		                			
+		                		</div>
+		                		{{if value.status==1}}
+		                		<div class="linqu">暂不可领取</div>
+		                		{{else if value.status==2}}
+		                		<div class="linqu">可领取奖励</div>
+		                		{{else if value.status==3}}
+		                		<div class="linqu">已领取奖励</div>
+		                		{{/if}}
+		                	</div>
+		                </li>
+		                {{/each}}
+		            </ul>
+		            {{else}}
+		            	<ul class="mui-table-view ul_body2">
+			                <li class="mui-table-view-cell ul_body2_li">
+		                	<span>您暂时还没有门店</span>
+		                	<button type="button" onclick="show_phone()" class="sj_button">快去招募吧</button>
+		                </li>
+			            </ul>
+		            {{/if}}
+				</div>
+			{{else if vip==3}}
+				<div id="item1mobile" class="mui-slider-item mui-control-content mui-active">
+					{{if state==1}}
+					<ul class="mui-table-view">
+						{{each data as value i}}
+		                <li class="mui-table-view-cell vip_li1">
+		                	<div class="team_title">
+		                		<div class="title_info">
+		                    		<img src="{{value.headimgurl}}" />
+		                    		<div class="title_phone">
+		                    			<span>{{value.nickname}}</span>
+		                    			<p>{{value.phone}}</p>
+		                    		</div>
+		                		</div>
+		                		<div class="time">
+		                			<img  src="img/team_time.png"/>
+		                			<span>{{value.add_time}}</span>
+		                		</div>
+		                	</div>
+		                	<div class="team_content team_content2">
+		                		<div class="content_div content_div2">
+		                			<p class="font_p">总消费</p>
+		                			<p class="font_p1">{{value.spend_price}}元</p>
+		                		</div>
+		                		<div class="content_div content_div2">
+		                			<p class="font_p">我的返利</p>
+		                			<p class="font_p1">{{value.ava_price}}元</p>
+		                		</div>
+		                		<div class="content_div content_div2">
+		                			<p class="font_p">当月总消费</p>
+		                			<p class="font_p1">{{value.month_spend}}元</p>
+		                		</div>
+		                		<div class="content_div content_div2">
+		                			<p class="font_p">当月返利</p>
+		                			<p class="font_p1">{{value.month_ava}}元</p>
+		                		</div>
+		                	</div>
+		                </li>
+		                {{/each}}
+		            </ul>
+		            {{else}}
+		            <ul class="mui-table-view ul_body2">
+		                <li class="mui-table-view-cell ul_body2_li">
+		                	<span>您暂时还没有门店</span>
+		                	<button type="button" onclick="show_phone()" class="sj_button">快去招募吧</button>
+		                </li>
+		            </ul>
+		            {{/if}}
+				</div>
+				<div id="item2mobile" class="mui-slider-item mui-control-content">
+					{{if state==1}}
+					<ul class="mui-table-view">
+						{{each data as value i}}
+		                <li class="mui-table-view-cell">
+		                	<div class="team_title">
+		                		<div class="title_info">
+		                    		<img src="{{value.headimgurl}}" />
+		                    		<div class="title_phone">
+		                    			<span>{{value.nickname}}</span>
+		                    			<p>{{value.phone}}</p>
+		                    		</div>
+		                		</div>
+		                		<div class="time">
+		                			<img  src="img/team_time.png"/>
+		                			<span>{{value.add_time}}</span>
+		                		</div>
+		                	</div>
+		                	<div class="team_content team_content1">
+		                		<div class="content_div">
+		                			<p class="font_p">总消费</p>
+		                			<p class="font_p1">{{value.spend_price}}元</p>
+		                		</div>
+		                		<div class="content_div">
+		                			<p class="font_p">发展门店</p>
+		                			<p class="font_p1">{{value.store_count}}家</p>
+		                		</div>
+		                		
+		                	</div>
+		                </li>
+		                {{/each}}
+		            </ul>
+		            {{else}}
+		            <ul class="mui-table-view ul_body2">
+		                <li class="mui-table-view-cell ul_body2_li">
+		                	<span>您暂时还没有团队</span>
+		                	<button type="button" onclick="show_phone()" class="sj_button">快去招募吧</button>
+		                </li>
+		            </ul>
+		            {{/if}}
+				</div>
+			{{else if vip==4}}
+				<div id="item1mobile" class="mui-slider-item mui-control-content mui-active">
+					{{if state==1}}
+					<ul class="mui-table-view ul_body1">
+						{{each data as value i}}
+		                <li class="mui-table-view-cell">
+		                	<div class="team_title">
+		                		<div class="title_info">
+		                    		<img src="{{value.headimgurl}}" />
+		                    		<div class="title_phone">
+		                    			<span>{{value.nickname}}</span>
+		                    			<p>{{value.phone}}</p>
+		                    		</div>
+		                		</div>
+		                		<div class="time">
+		                			<img  src="img/team_time.png"/>
+		                			<span>{{value.add_time}}</span>
+		                		</div>
+		                	</div>
+		                	<div class="team_content">
+		                		<div class="content_div">
+		                			<p class="font_p">总消费</p>
+		                			<p class="font_p1">{{value.spend_price}}元</p>
+		                		</div>
+		                		<div class="content_div">
+		                			<p class="font_p">我的返利</p>
+		                			<p class="font_p1">{{value.ava_price}}元</p>
+		                		</div>
+		                		<div class="content_div">
+		                			<p class="font_p">他的下级人数</p>
+		                			<p class="font_p1">{{value.team_count}}人</p>
+		                		</div>
+		                	</div>
+		                </li>
+		                {{/each}}
+		            </ul>
+		            {{else if state==0}}
+		            <ul class="mui-table-view ul_body2">
+		                <li class="mui-table-view-cell ul_body2_li">
+		                	<span>您暂时还没有代理</span>
+		                	<button type="button" onclick="show_phone()" class="sj_button">快去招募吧</button>
+		                </li>
+		            </ul>
+		            {{/if}}
+				</div>
+				
+				<div id="item2mobile" class="mui-slider-item mui-control-content">
+					{{if state==1}}
+					<ul class="mui-table-view">
+						{{each data as value i}}
+		                <li class="mui-table-view-cell vip_li1">
+		                	<div class="team_title">
+		                		<div class="title_info">
+		                    		<img src="{{value.headimgurl}}" />
+		                    		<div class="title_phone">
+		                    			<span>{{value.nickname}}</span>
+		                    			<p>{{value.phone}}</p>
+		                    		</div>
+		                		</div>
+		                		<div class="time">
+		                			<img  src="img/team_time.png"/>
+		                			<span>{{value.add_time}}</span>
+		                		</div>
+		                	</div>
+		                	<div class="team_content team_content2">
+		                		<div class="content_div content_div2">
+		                			<p class="font_p">总消费</p>
+		                			<p class="font_p1">{{value.spend_price}}元</p>
+		                		</div>
+		                		<div class="content_div content_div2">
+		                			<p class="font_p">我的返利</p>
+		                			<p class="font_p1">{{value.ava_price}}元</p>
+		                		</div>
+		                		<div class="content_div content_div2">
+		                			<p class="font_p">当月总消费</p>
+		                			<p class="font_p1">{{value.month_spend}}元</p>
+		                		</div>
+		                		<div class="content_div content_div2">
+		                			<p class="font_p">当月返利</p>
+		                			<p class="font_p1">{{value.month_ava}}元</p>
+		                		</div>
+		                	</div>
+		                </li>
+		                {{/each}}
+		            </ul>
+		            {{else}}
+		            <ul class="mui-table-view ul_body2">
+		                <li class="mui-table-view-cell ul_body2_li">
+		                	<span>您暂时还没有门店</span>
+		                	<button type="button" onclick="show_phone()" class="sj_button">快去招募吧</button>
+		                </li>
+		            </ul>
+		            {{/if}}
+				</div>
+				
+			{{else if vip==5}}	
+				<div id="item1mobile" class="mui-slider-item mui-control-content mui-active">
+					{{if state==1}}
+					<ul class="mui-table-view ul_body1">
+						{{each data as value i}}
+		                <li class="mui-table-view-cell vip_li1">
+		                	<div class="team_title">
+		                		<div class="title_info">
+		                    		<img src="{{value.headimgurl}}" />
+		                    		<div class="title_phone">
+		                    			<span>{{value.nickname}}</span>
+		                    			<p>{{value.phone}}</p>
+		                    		</div>
+		                		</div>
+		                		<div class="time">
+		                			<img  src="img/team_time.png"/>
+		                			<span>{{value.add_time}}</span>
+		                		</div>
+		                	</div>
+		                	<div class="team_content team_content2">
+		                		<div class="content_div content_div2">
+		                			<p class="font_p">总消费</p>
+		                			<p class="font_p1">{{value.spend_price}}元</p>
+		                		</div>
+		                		<div class="content_div content_div2">
+		                			<p class="font_p">我的返利</p>
+		                			<p class="font_p1">{{value.ava_price}}元</p>
+		                		</div>
+		                		<div class="content_div content_div2">
+		                			<p class="font_p">当月总消费</p>
+		                			<p class="font_p1">{{value.month_spend}}元</p>
+		                		</div>
+		                		<div class="content_div content_div2">
+		                			<p class="font_p">当月返利</p>
+		                			<p class="font_p1">{{value.month_ava}}元</p>
+		                		</div>
+		                	</div>
+		                </li>
+		                {{/each}}
+		            </ul>
+		            {{else if state==0}}
+		            <ul class="mui-table-view ul_body2">
+		                <li class="mui-table-view-cell ul_body2_li">
+		                	<span>您暂时还没有代理</span>
+		                	<button type="button" onclick="show_phone()" class="sj_button">快去招募吧</button>
+		                </li>
+		            </ul>
+		            {{/if}}
+				</div>
+				<div id="item2mobile" class="mui-slider-item mui-control-content">
+					{{if state==1}}
+					<ul class="mui-table-view ul_body1">
+						{{each data as value i}}
+		                <li class="mui-table-view-cell">
+		                	<div class="team_title">
+		                		<div class="title_info">
+		                    		<img src="{{value.headimgurl}}" />
+		                    		<div class="title_phone">
+		                    			<span>{{value.nickname}}</span>
+		                    			<p>{{value.phone}}</p>
+		                    		</div>
+		                		</div>
+		                		<div class="time">
+		                			<img  src="img/team_time.png"/>
+		                			<span>{{value.add_time}}</span>
+		                		</div>
+		                	</div>
+		                	<div class="team_content">
+		                		<div class="content_div">
+		                			<p class="font_p">总消费</p>
+		                			<p class="font_p1">{{value.spend_price}}元</p>
+		                		</div>
+		                		<div class="content_div">
+		                			<p class="font_p">我的返利</p>
+		                			<p class="font_p1">{{value.ava_price}}元</p>
+		                		</div>
+		                		<div class="content_div">
+		                			<p class="font_p">他的下级人数</p>
+		                			<p class="font_p1">{{value.team_count}}人</p>
+		                		</div>
+		                	</div>
+		                </li>
+		                {{/each}}
+		            </ul>
+		            {{else if state==0}}
+		            <ul class="mui-table-view ul_body2">
+		                <li class="mui-table-view-cell ul_body2_li">
+		                	<span>您暂时还没有代理</span>
+		                	<button type="button" onclick="show_phone()" class="sj_button">快去招募吧</button>
+		                </li>
+		            </ul>
+		            {{/if}}
+				</div>
+				<div id="item3mobile" class="mui-slider-item mui-control-content">
+					{{if state==1}}
+					<ul class="mui-table-view">
+						{{each data as value i}}
+		                <li class="mui-table-view-cell vip_li1">
+		                	<div class="team_title">
+		                		<div class="title_info">
+		                    		<img src="{{value.headimgurl}}" />
+		                    		<div class="title_phone">
+		                    			<span>{{value.nickname}}</span>
+		                    			<p>{{value.phone}}</p>
+		                    		</div>
+		                		</div>
+		                		<div class="time">
+		                			<img  src="img/team_time.png"/>
+		                			<span>{{value.add_time}}</span>
+		                		</div>
+		                	</div>
+		                	<div class="team_content team_content2">
+		                		<div class="content_div content_div2">
+		                			<p class="font_p">总消费</p>
+		                			<p class="font_p1">{{value.spend_price}}元</p>
+		                		</div>
+		                		<div class="content_div content_div2">
+		                			<p class="font_p">我的返利</p>
+		                			<p class="font_p1">{{value.ava_price}}元</p>
+		                		</div>
+		                		<div class="content_div content_div2">
+		                			<p class="font_p">当月总消费</p>
+		                			<p class="font_p1">{{value.month_spend}}元</p>
+		                		</div>
+		                		<div class="content_div content_div2">
+		                			<p class="font_p">当月返利</p>
+		                			<p class="font_p1">{{value.month_ava}}元</p>
+		                		</div>
+		                	</div>
+		                </li>
+		                {{/each}}
+		            </ul>
+		            {{else}}
+		            	<ul class="mui-table-view ul_body2">
+			                <li class="mui-table-view-cell ul_body2_li">
+			                	<span>您暂时还没有门店</span>
+			                	<button type="button" onclick="show_phone()" class="sj_button">快去招募吧</button>
+			                </li>
+			            </ul>
+		            {{/if}}
+				</div>
+			{{else if vip==6}}	
+				<div id="item1mobile" class="mui-slider-item mui-control-content mui-active">
+					<ul class="mui-table-view">
+						<li class="mui-table-view-cell vip_li">
+							<div class="vip_6">
+								<span>门店推广总数:{{first_data.total_mendian}}人（自主推广:{{first_data.self_mendian}}/代理推广{{first_data.daili_mendian}}）</span>
+								<span>代理推广总数:{{first_data.total_daili}}人（自主推广:{{first_data.self_daili}}/平推推广{{first_data.pingtui_daili}}）</span>
+							</div>
+							<div class="vip_6_div">
+								<p>当月门店推广总数:{{second_data.total_mendian}}人（自主推广：{{second_data.self_mendian}}/代理推广{{second_data.daili_mendian}}）</p>
+								<p>当月代理推广总数:{{second_data.total_daili}}人（自主推广：{{second_data.self_daili}}/平推推广{{second_data.pingtui_daili}}）</p>
+								<p>当月消费额：{{second_data.all_price}}元</p>
+							</div>
+						</li>
+						{{each third_data as value i}}
+		                <li class="mui-table-view-cell vip_li1">
+		                	<div class="team_title">
+		                		<div class="title_info">
+		                    		<img src="{{value.headimgurl}}" />
+		                    		<div class="title_phone">
+		                    			<span>{{value.nickname}}</span>
+		                    			<p>{{value.phone}}</p>
+		                    		</div>
+		                		</div>
+		                		<div class="time">
+		                			<img  src="img/team_time.png"/>
+		                			<span>{{value.add_time}}</span>
+		                		</div>
+		                	</div>
+		                	<div class="team_content team_content2 ">
+		                		<div class="content_div content_div2 content_div3">
+		                			<p class="font_p">总消费</p>
+		                			<p class="font_p1">{{value.spend_price}}元</p>
+		                		</div>
+		                		
+		                		<div class="content_div content_div2 content_div3">
+		                			<p class="font_p">当月总消费</p>
+		                			<p class="font_p1">{{value.month_price}}元</p>
+		                		</div>
+		                		{{if value.vip==1}}
+		                			<div class="linqu">普通用户</div>
+		                		{{else if value.vip==2}}
+		                			<div class="linqu">门店</div>
+		                		{{else if value.vip==3}}
+		                			<div class="linqu">城市合伙人</div>
+	                			{{else if value.vip==4}}
+	                				<div class="linqu">市级代理</div>
+	                			{{else if value.vip==5}}
+	                				<div class="linqu">省级代理</div>
+		                		{{/if}}
+		                	</div>
+		                </li>
+		                {{/each}}
+		            </ul>
+				</div>
+			{{/if}}
+			
+		</script>
+		
+
+		
+		<script type="text/html" id="text3">
+			{{if vip==3}}
+			<div class="mui-scroll-wrapper mui-slider-indicator mui-segmented-control mui-segmented-control-inverted" id="segmented">
+				
+			
+                <div class="mui-scroll">
+	                <a class="mui-control-item mui-active" href="#item1mobile" data-type = "2">
+	                   	 <span class="control-item" >我的门店</span>
+	                </a>
+	                <a class="mui-control-item" href="#item2mobile" data-type = "3">
+	                  	  <span class="control-item"  >平推团队</span>
+	                </a>
+		
+		    	</div>
+		    </div>
+			{{else if vip==4}}
+			<div class="mui-scroll-wrapper mui-slider-indicator mui-segmented-control mui-segmented-control-inverted" id="segmented">
+                <div class="mui-scroll">
+	                <a class="mui-control-item  mui-active" href="#item1mobile" data-type = "1">
+	                   	<span class="control-item " >城市合伙人</span>
+	                </a>
+	                <a class="mui-control-item" href="#item2mobile" data-type = "2">
+	                   	 <span class="control-item" >我的门店</span>
+	                </a>
+		    	</div>
+		    	</div>
+			{{else if vip==5}}
+			<div class="mui-scroll-wrapper mui-slider-indicator mui-segmented-control mui-segmented-control-inverted" id="segmented">
+                <div class="mui-scroll">
+	                <a class="mui-control-item  mui-active" href="#item1mobile" data-type = "4">
+	                   	<span class="control-item " >我的市代理</span>
+	                </a>
+	                <a class="mui-control-item" href="#item2mobile" data-type = "1">
+	                   	 <span class="control-item" >城市合伙人</span>
+	                </a>
+	                <a class="mui-control-item" href="#item3mobile" data-type = "2">
+	                  	  <span class="control-item" >我的门店</span>
+	                </a>
+		
+		    	</div>
+			</div>
+			
+			{{/if}}
+		</script>
+		
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript" src="js/common.js" ></script>
+		<script type="text/javascript" src="js/art-template.js"></script>
+		<script type="text/javascript" src="js/jquery-3.3.1.min.js" ></script>
+		<script type="text/javascript">
+			mui.init();
+			var session=window.sessionStorage;
+	      	//登录时返回的用户数据
+	      	var user_info;
+	      	//团队状态 1为我的代理 2为我的门店 3为平推团队
+	      	var team_type;
+	      	var _index=0;
+			$(function(){
+				user_info=session.getItem("user_info");
+      			user_info=JSON.parse(user_info);
+      			if(user_info.vip==1 || user_info.vip==2 ||user_info.vip==3){
+      				team_type=2;
+      			}else if(user_info.vip==4){
+      				team_type=1;
+      			}else if(user_info.vip==5){
+      				team_type=4;
+      			}
+				$.ajax({
+					type:"post",
+					url:"http://qipei.liebianzhe.com/api/user/my_team",
+					async:false,
+					data:{
+						token:user_info.token,
+						type:team_type
+					},
+					success:function(data){
+						data["vip"]=user_info.vip;
+						console.info(data);
+						var html=template("text",data);
+  						document.getElementById("slider-group").innerHTML=html;
+						var html3=template("text3",data);
+						document.getElementById("my_team_header").innerHTML=html3;
+					},
+					error:function(data){
+						console.info("获取数据失败！")
+					}
+				});
+				mui(".mui-scroll").on('tap','.mui-control-item',function(){
+					
+					if(_index==$(this).index()){
+						return false;
+					}else{
+						_index=$(this).index();
+						team_type=$(this).attr("data-type");
+						console.info(team_type);
+						$.ajax({
+							type:"post",
+							url:"http://qipei.liebianzhe.com/api/user/my_team",
+							async:false,
+							data:{
+								token:user_info.token,
+								type:team_type
+							},
+							success:function(data){
+								data["vip"]=user_info.vip;
+								console.info(data);
+								var html=template("text",data);
+	  							document.getElementById("slider-group").innerHTML=html;
+	//							if(team_type==1){
+	//								var html=template("text",data);
+	//								document.getElementById("item1mobile").innerHTML=html;
+	//							}else if(team_type==2){
+	//								var html1=template("text1",data);
+	//								document.getElementById("item2mobile").innerHTML=html1;
+	//							}else if(team_type==3){
+	//								var html2=template("text2",data);
+	//								document.getElementById("item3mobile").innerHTML=html2;
+	//							}
+							
+							
+							},
+							error:function(data){
+								console.info("获取数据失败！")
+							}
+						});
+					}
+				})
+			})
+//			function my_team(type){
+//				console.info(type);
+//				$.ajax({
+//					type:"post",
+//					url:"http://qipei.liebianzhe.com/api/user/my_team",
+//					async:false,
+//					data:{
+//						token:user_info.token,
+//						type:type
+//					},
+//					success:function(data){
+//						data["vip"]=user_info.vip;
+//						console.info(data);
+//						var html=template("text",data);
+//						document.getElementById("mui-slider-group").innerHTML=html;
+//					
+//					
+//					},
+//					error:function(data){
+//						console.info("获取数据失败！")
+//					}
+//				});
+//			}
+            function ShowAndDisappear(){
+                $(".backdrop").toggleClass("tool_acitve");
+                $(".tips_info").toggleClass("tool_acitve");
+            }
+			function show_phone() {
+                $.ajax({
+                    url:"http://qipei.liebianzhe.com/api/user/customer_phone",
+                    data:{token:user_info.token},
+                    type:"post",
+                    success:function (data) {
+                        var res = data.data;
+                        $("#phone").html(res.phone);
+                        ShowAndDisappear();
+                    }
+                })
+            }
+            //点击遮罩层消失
+            $(".backdrop").click(function(){
+                ShowAndDisappear();
+            })
+            //点击取消消失
+            $(".qx").click(function(){
+                ShowAndDisappear();
+            })
+
+//          function show_phone1() {
+//              $.ajax({
+//                  url:"http://qipei.liebianzhe.com/api/user/customer_phone",
+//                  data:{token:user_info.token},
+//                  type:"post",
+//                  success:function (data) {
+//                      var res = data.data;
+//                      $("#phone").html(res.phone);
+//                      ShowAndDisappear();
+//                  }
+//              })
+//          }
+		</script>
+	</body>
+
+</html>

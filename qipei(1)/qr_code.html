@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=no">
+		<script>
+		    document.documentElement.style.fontSize =document.documentElement.clientWidth/750*40 +"px";
+		</script>
+		<title>我的二维码</title>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/common.css" />
+		<link rel="stylesheet" href="css/qr_code.css" />
+	</head>
+	<body>
+		<header class="head">
+		    <a href="share.html"><img src="img/return2.png" alt=""></a>
+		   	 我的二维码
+		</header>
+		<section id="content">
+			
+		</section>
+	</body>
+	
+	<script type="text/html" id="text">
+		<div class="my_info">
+			<img  src="{{headimgurl}}"/>
+			<span>{{phone}}</span>
+		</div>
+		<div class="qr_code">
+			{{if fenxiang_state==1}}
+			<img src="{{qrcode1}}" />
+			{{else if fenxiang_state==2}}
+			<img src="{{qrcode2}}" />
+			{{else if fenxiang_state==3}}
+			<img src="{{qrcode3}}" />
+			{{else if fenxiang_state==4}}
+			<img src="{{qrcode4}}" />
+			{{else if fenxiang_state==5}}
+			<img src="{{qrcode5}}" />
+			{{/if}}
+			<textarea style="opacity:0 ;"  id="fx_url"></textarea >
+			<div class="font_div" onclick="fz()" data-clipboard-action="copy" data-clipboard-target="#fx_url">
+				复制分享地址
+			</div>
+		</div>
+	</script>
+	<script src="js/mui.min.js"></script>
+	<script type="text/javascript" src="js/clipboard.min.js" ></script>
+	<script type="text/javascript" src="js/common.js" ></script>
+	<script type="text/javascript" src="js/art-template.js"></script>
+	<script type="text/javascript" src="js/jquery-3.3.1.min.js" ></script>
+	<script>
+		mui.init();
+		var session=window.sessionStorage;
+		var user_info;
+		//分享页面状态；2为平台，1为下级；
+		var fenxiang_state;
+		$(function(){
+			user_info=session.getItem("user_info");
+  			user_info=JSON.parse(user_info);
+  			fenxiang_state=session.getItem("fenxiang_state");
+  			user_info["fenxiang_state"]=fenxiang_state;
+  			console.info(user_info);
+  			var html =template("text",user_info);
+			document.getElementById("content").innerHTML = html;
+			$.ajax({
+				type:"post",
+				url:"http://qipei.liebianzhe.com/api/user/share",
+				async:true,
+				data:{
+					token:user_info.token,
+					type:fenxiang_state
+				},
+				success:function(data){
+					console.info(data);
+					if(data.state==1){
+						$("#fx_url").val(data.data);
+					}
+				},
+				error:function(){
+					console.info("获取分享地址请求失败~");
+				}
+			});
+		})
+		function fz(){
+			var clipboard = new ClipboardJS(".font_div");
+			clipboard.on("success", function(e){   
+				console.info(e);
+				mui.toast("复制链接成功！");
+			});
+			clipboard.on("error", function(e){     
+				console.info(e);
+			})
+		}
+	</script>
+</html>

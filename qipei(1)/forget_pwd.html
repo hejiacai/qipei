@@ -1,0 +1,125 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>忘记密码</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script>
+		    document.documentElement.style.fontSize =document.documentElement.clientWidth/750*40 +"px";
+		</script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/common.css" />
+		<link rel="stylesheet" href="css/forget_pwd.css" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class=" mui-icon mui-icon-left-nav mui-pull-left" href="login_one.html"></a>
+		</header>
+		<div class="mui-content">
+			<section class="forget_body">
+				<p class="login_title">忘记密码</p>
+				<div class="forget_content">
+					<input type="number" oninput="if(value.length>11)value=value.slice(0,11)" placeholder="请输入您的手机号码" id="phone"/>
+					<div class="yzm_content">
+						<input type="number" placeholder="请输入验证码" class="code"/>
+						<div class="yzm_div send_code" onclick="get_code()">获取验证码</div>
+					</div>
+					<input  type="password" placeholder="请输入6-12位密码" oninput="if(value.length>12)value=value.slice(0,12)" class="pwd"/>
+					<input  type="password" placeholder="请确定新密码" oninput="if(value.length>12)value=value.slice(0,12)" class="qpwd"/>
+				</div>
+				<div class="div_button">
+					<button type="button" onclick="sub()">确定</button>
+				</div>
+			</section>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript" src="js/jquery-3.3.1.min.js" ></script>
+		<script type="text/javascript">
+			mui.init();
+			var phone;
+			//点击发送验证码
+			function get_code() {
+			    phone = $("#phone").val();
+			    if (phone==""||phone==null){
+	                mui.toast("请输入手机号");
+	                return false;
+				}else if (!phone.match(/^1[345789]\d{9}$/)) {
+	                mui.toast('请输入正确的手机号码', 'short');
+	                return false;
+	            }else {
+			        $.ajax({
+						url:"http://qipei.liebianzhe.com/api/index/sendCode",
+						data:{phone:phone},
+						type:"post",
+						success:function (data) {
+							
+	                        if (data.status == 1){
+	                            mui.toast('验证码发送成功，请注意查收','short');
+	                            var time=60;
+	                            var clearint=setInterval(function(){
+	                                time--;
+	                                $(".send_code").html(time+"秒");
+	                                if(time==0){
+	                                    clearInterval(clearint);
+	                                    $(".send_code").html("重新发送");
+	                                }
+	                            },1000);
+	                        }else {
+	                            mui.toast('验证码发送失败','short');
+	
+	                        }
+	                    }
+					})
+				}
+	        }
+			function sub(){
+				phone = $("#phone").val();
+				var code=$(".code").val(),
+				pwd=$(".pwd").val(),
+				qpwd=$(".qpwd").val();
+				if(pwd!=qpwd){
+					mui.toast("密码不一致，请重新输入~");
+					return false;
+				}else if(phone=="" || code=="" || pwd=="" || qpwd==""){
+					mui.toast("请填写完成所有的资料");
+					return false;
+				}else if(pwd.length<6 || qpwd.length<6){
+					mui.toast("密码不能小于六位数~~");
+					return false;
+				}
+				$.ajax({
+					type:"post",
+					url:"http://qipei.liebianzhe.com/api/login/findpass",
+					async:true,
+					data:{
+						phone:phone,
+						code:code,
+						password:pwd,
+						repassword:qpwd
+					},
+					success:function(data){
+						console.info(data);
+						if(data.state==1){
+							mui.toast(data.msg);
+							setTimeout(function(){
+								window.location.href="login_one.html";
+							},2500)
+						}else{
+							mui.toast(data.msg);
+						}
+					},
+					error:function(){
+						console.info("修改密码失败~");
+					}
+				});
+				
+			}
+			$(window).resize(function(){
+	            document.documentElement.style.fontSize =document.documentElement.clientWidth/750*40 +"px";
+	        });
+		</script>
+	</body>
+
+</html>

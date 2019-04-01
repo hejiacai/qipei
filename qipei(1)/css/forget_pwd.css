@@ -1,0 +1,90 @@
+.mui-bar{
+	border-bottom: none;
+}
+.forget_body{
+	width: 17.25rem;
+	margin: 0 auto;
+	margin-top: 6.2rem;
+}
+.login_title{
+	font-size: 1.2rem;
+	text-align: center;
+	margin-bottom: 1.7rem;
+}
+.forget_content{
+	height: 13.5rem;
+	width: 100%;
+}
+.forget_content input{
+	width: 100%;
+	height: 2.35rem;
+	border-radius: 5px;
+	font-size: 0.75rem;
+	margin-bottom: 1rem;
+}
+.yzm_content{
+	width: 100%;
+	height: 2.35rem;
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 1rem;
+}
+.yzm_content input{
+	height: 100%;
+	width: 11.95rem;
+	border-radius: 5px;
+	font-size: 0.75rem;
+}
+.yzm_div{
+	width: 4.8rem;
+	height: 2.35rem;
+	border-radius: 5px;
+	border: 1px solid #99B2F4;
+	font-size: 0.75rem;
+	color: #4f7cf2;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.div_button{
+	width: 100%;
+	height: 2.45rem;
+	text-align: center;
+	margin-top: 0.3rem;
+}
+.div_button button{
+	font-size: 0.9rem;
+	color: white;
+	height: 100%;
+	width:15.1rem ;
+	border-radius: 25px;
+	background: -webkit-linear-gradient(left, #4679EE , #2EAFFC);
+    background: -o-linear-gradient(right, #4679EE, #2EAFFC);
+    background: -moz-linear-gradient(right, #4679EE, #2EAFFC);
+    background: linear-gradient(to right, #4679EE , #2EAFFC);
+}
+.div_button1{
+	margin-top: -2rem;
+}
+.agree{
+	font-size: 0.6rem;
+	color: #939393;
+	display: flex;
+	align-items: center;
+}
+.agree img{
+	width: 0.75rem;
+	height: 0.75rem;
+	margin-right: 0.3rem;
+}
+.agree_span a{
+	font-size: 0.6rem;
+	color: #5E83EE;
+}
+.user_body{
+	width: 17.25rem;
+	height: auto;
+	margin: 0 auto;
+	font-size: 0.75rem;
+	margin-top: 0.3rem;
+}

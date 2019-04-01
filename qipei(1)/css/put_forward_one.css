@@ -1,0 +1,70 @@
+.mui-bar{
+	border-bottom: 1px solid #AAAAAA;
+}
+.fotward_body,.fotward_body1{
+	width: 100%;
+	height: 24.675rem;
+	display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    
+}
+.fotward_body1{
+	display: none;
+}
+.fotward_content{
+	width: 12.5rem;
+	font-size: 0.6rem;
+	height: 10.3rem;
+	display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 auto;
+    margin-top: 2.45rem;
+    color: #989898;
+    text-align: center;
+}
+.fotward_content img{
+	width: 5.852rem;
+	height: 5.852rem;
+}
+.font_span,.font_span1{
+	font-size: 0.9rem;
+	
+	margin-top: 0.75rem;
+	margin-bottom: 0.5rem;
+}
+.font_span1{
+	color: #fb7070;
+	
+}
+.font_span{
+	color: #4f7cf2;
+	width: 8.9rem;
+}
+.div_button{
+	width: 100%;
+	text-align: center;
+}
+.div_button a button{
+	font-size: 0.9rem;
+	background-color: white;
+	border-radius: 25px;
+	width: 10.15rem;
+	height: 2.6rem;
+	box-shadow: 0 0 10px 5px #E5F2FB;
+	color: #6588EF;
+}
+.button1{
+	font-size: 0.9rem;
+	border-radius: 25px;
+	width: 10.15rem;
+	height: 2.6rem;
+	box-shadow: 0 0 10px 5px #E5F2FB;
+	background: -webkit-linear-gradient(left, #4679EE , #2EAFFC);
+    background: -o-linear-gradient(right, #4679EE, #2EAFFC);
+    background: -moz-linear-gradient(right, #4679EE, #2EAFFC);
+    background: linear-gradient(to right, #4679EE , #2EAFFC);
+    color: white !important;
+    margin-bottom: 1rem;
+}

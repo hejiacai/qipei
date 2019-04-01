@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>发布信息</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<script>
+		    document.documentElement.style.fontSize =document.documentElement.clientWidth/750*40 +"px";
+		</script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/common.css" />
+		<link rel="stylesheet" href="css/put_forward_one.css" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class=" mui-icon mui-icon-left-nav mui-pull-left" href="release.html"></a>
+		    <h1 class="mui-title"></h1>
+		</header>
+		<div class="mui-content">
+		    <div class="fotward_body">
+		    	<div class="fotward_content">
+		    		<img src="img/pay_yes.png"/>
+		    		<span class="font_span">您的发布已经成功</span>
+		    	</div>
+		    	<div class="div_button">
+		    		<button type="button" class="button1" onclick="button1()">完成</button>
+		    		<a href="index.html">
+		    			<button type="button">返回首页</button>
+		    		</a>
+		    	</div>
+		    </div>
+		    <div class="fotward_body1">
+		    	<div class="fotward_content">
+		    		<img src="img/forward_no.png"/>
+		    		<span class="font_span1">您的发布失败</span>
+		    		<span class="fail_info">失败原因失败原因失败原因失败原因失败原因失败原因</span>
+		    	</div>
+		    	<div class="div_button">
+		    		<button type="button" class="button1" onclick="button1()">完成</button>
+		    		<a href="index.html">
+		    			<button type="button">返回首页</button>
+		    		</a>
+		    	</div>
+		    </div>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript" src="js/jquery-3.3.1.min.js" ></script>
+		<script type="text/javascript">
+			mui.init()
+			var session=window.sessionStorage;
+			var release_info;
+			$(function(){
+				release_info= session.getItem("release_info");
+				release_info=JSON.parse(release_info);
+				console.info(release_info);
+				if(release_info.state==1){
+//					$(".fotward_body1").hide();
+//					$(".fotward_body").show();
+					$(".fotward_body").css("display","flex");
+					$(".mui-title").text("发布成功");
+				}else if(release_info.state==0){
+//					$(".fotward_body").hide();
+//					$(".fotward_body1").show();
+					$(".fotward_body1").css("display","flex");
+					$(".mui-title").text("发布失败");
+					$(".fail_info").text(release_info.msg);
+				}
+			})
+			function button1(){
+				window.location.replace("release.html");
+			}
+		</script>
+	</body>
+
+</html>

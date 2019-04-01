@@ -1,0 +1,136 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>修改用户名和支付密码</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script>
+		    document.documentElement.style.fontSize =document.documentElement.clientWidth/750*40 +"px";
+		</script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/common.css" />
+		<link rel="stylesheet" href="css/forget_pwd.css" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class=" mui-icon mui-icon-left-nav mui-pull-left"  onclick="back_jump()"></a>
+		</header>
+		<div class="mui-content">
+			<section class="forget_body">
+				<p class="login_title">设置</p>
+				<div class="forget_content">
+					<input id="username"  type="text" placeholder=""/>
+				</div>
+				<div id="sub" class="div_button div_button1">
+					<button type="button" id="baocun">保存</button>
+				</div>
+			</section>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript" src="js/common.js" ></script>
+		<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			var user_info;
+			var session=window.sessionStorage;
+			//判断是修改名字还是修改支付密码 的状态名字为1,6为输入支付密码
+			var jump_type;
+			//结算信息
+			var settlement;
+			
+            $(function(){
+                user_info=session.getItem("user_info");
+                user_info=JSON.parse(user_info);
+                
+                
+                
+                
+                jump_type=session.getItem("jump_type");
+                if(jump_type==1){
+                	$("#username").attr('placeholder','请输入用户名');
+                }else if(jump_type==6){
+                	$("#username").attr('type','password');
+                	$("#username").attr('placeholder','请输入支付密码');
+                	$("#baocun").html("结算");
+                	$(".login_title").html("支付");
+                	settlement=session.getItem("settlement");
+                	settlement=JSON.parse(settlement);
+                	console.info(settlement);
+                }
+                
+			})
+			$("#sub").click(function(){
+                var username=$("#username").val();
+                if(username == ""){
+                   mui.toast("不能为空！");
+                   return false;
+                }
+                if(jump_type==1){
+	                $.ajax({
+	                	url:"http://qipei.liebianzhe.com/api/user/set_user",
+						data:{"token":user_info.token,"type":1,"nickname":username},
+						type:"post",
+						dataType:"json",
+						success:function(data){
+	                	    if(data.state == 1){
+	                            mui.toast(data.msg);
+	                            user_info.nickname=username;
+	                            user_info=JSON.stringify(user_info);
+	                            session.setItem("user_info",user_info);
+	                            setTimeout("jump()",2500);
+							}else{
+	                            mui.toast(data.msg);
+							}
+						},
+	                    error:function(data){
+	                        console.info("未知错误");
+	                    }
+	                })
+                }else if(jump_type==6){
+                	console.info(settlement.coupon_id);
+                	$.ajax({
+						type:"post",
+						url:"http://qipei.liebianzhe.com/api/user/pay_order",
+						async:true,
+						data:{
+							token:user_info.token,
+							paytype:settlement.paytype,
+							coupon_id:settlement.coupon_id,
+							address_id:settlement.address_id,
+							actprice:settlement.actprice,
+							buycontent:settlement.buycontent,
+							nums:settlement.nums,
+							ordernum:settlement.ordernum,
+							tpass:username
+						},
+						success:function(data){
+							console.info(data);
+							console.info(settlement.coupon_id);
+							var pay_info_state=data;
+							session.setItem("pay_info_state",JSON.stringify(pay_info_state));
+							window.location.href="pay_info.html";
+						},
+						error:function(data){
+							console.info("结算失败!");
+						}
+					});		
+                }
+                
+                
+            })
+			function jump(){
+				window.location.href="set_up.html";
+			}
+			function back_jump(){
+				if(jump_type==1){
+					window.location.href="set_up.html";
+				}else if(jump_type==6){
+					window.location.href="confirm_order.html";
+				}
+			}
+		</script>
+	</body>
+
+</html>

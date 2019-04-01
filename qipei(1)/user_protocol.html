@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>用户协议</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script>
+		    document.documentElement.style.fontSize =document.documentElement.clientWidth/750*40 +"px";
+		</script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/common.css" />
+		<link rel="stylesheet" href="css/forget_pwd.css" />
+		<script type="text/javascript" src="js/art-template.js"></script>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" style="border-bottom: 1px solid #AAAAAA;" >
+		    <a class="mui-icon mui-icon-left-nav mui-pull-left" href="reg.html"></a>
+		    <h1 class="mui-title">用户协议</h1>
+		</header>
+		<div class="mui-content">
+		    <section class="user_body" id="content">
+
+		    </section>
+		</div>
+
+
+		<script type="text/html" id="res_content">
+		{{#content}}
+		</script>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+		<script type="text/javascript" src="js/art-template.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			$(function(){
+				$.ajax({
+					type:"get",
+					url:"http://qipei.liebianzhe.com/api/index/xieyi",
+					async:true,
+					success:function(data){
+                        if (data.state==1){
+                            var content1 = data.data;
+                            var text = template("res_content",content1);
+                            document.getElementById("content").innerHTML=text;
+                        }
+					}
+				});
+			})
+			$(window).resize(function(){
+				document.documentElement.style.fontSize =document.documentElement.clientWidth/750*40 +"px";
+			});
+		</script>
+	</body>
+
+</html>

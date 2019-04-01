@@ -1,0 +1,135 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>登录</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<!--<script type="text/javascript" src="js/index.js"></script>-->
+		<script>
+		    document.documentElement.style.fontSize =document.documentElement.clientWidth/750*40 +"px";
+		</script>
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/common.css" />
+		<link rel="stylesheet" href="css/login.css" />
+	</head>
+
+	<body>
+		<section class="login_body">
+			<div class="login_title">
+				<img  src="img/login_logo1.png"/>
+				<!--<span>logo</span>-->
+			</div>
+			<div class="login_content">
+				<a href="login_one.html">
+					<button type="button">登录</button>
+				</a>
+				<a href="reg.html">
+					<span>注册登录 ></span>
+				</a>
+			</div>
+			<div id="wx" style="cursor :pointer" class="login_bottom">
+				<img  src="img/wx.png"/>
+				<span>微信</span>
+			</div>
+		</section>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+
+		<script type="text/javascript">
+			mui.init();
+			var local=window.localStorage;
+			var login_state;
+			var session=window.sessionStorage;
+			var id;
+			var share_type;
+			var share_datas={};
+			$(function(){
+				login_state=local.getItem("login_state");
+				id=getUrlParam('shre_id');
+				share_type=getUrlParam('share_type');
+				var token_state=getUrlParam("token_state");
+				//判断是否是微信登录，0为不是，1为是；
+				var wx_state=0;
+				share_datas["wx_state"]=wx_state;
+				session.setItem("share_datas",JSON.stringify(share_datas));
+				if(token_state!=null){
+					mui.toast("登录失效~~");
+				}
+				console.info(id!=null && share_type!=null);
+				if(id!=null && share_type!=null){
+					
+					share_datas["id"]=id;
+					share_datas["share_type"]=share_type;
+					//
+					
+					console.info(share_datas);
+					session.setItem("share_datas",JSON.stringify(share_datas));
+					$("#wx").css('opacity','0');
+											
+				}else if(login_state==1){
+					
+					var phone=local.getItem("phone");
+					var pwd=local.getItem("pwd");
+					$.ajax({
+						type:"post",
+						url:"http://qipei.liebianzhe.com/api/login/login",
+						async:true,
+						data:{
+							type:1,
+							phone:phone,
+							password:pwd
+						},
+						success:function(data){
+							console.info(data);
+							if(data.state==0){
+								mui.toast(data.msg);
+							}else{
+								var user_info=JSON.stringify(data.data);
+								session.setItem("user_info",user_info);
+								window.location.replace("index.html");
+							}
+						},
+						error:function(data){
+							console.info("登录发生错误！");
+						}
+					});
+					
+				}else{
+					id="";
+					share_type="";
+				}
+			})
+			$(window).resize(function(){
+				document.documentElement.style.fontSize =document.documentElement.clientWidth/750*40 +"px";
+			});
+			function getUrlParam(name){
+				var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象var r = window.location.search.substr(1).match(reg);  //匹配目标参数if (r!=null) return unescape(r[2]); return null; //返回参数值} 
+				var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+				if (r!=null) return unescape(r[2]); return null; //返回参数值
+			}
+            $("#wx").on('tap',function(){
+                // console.log(id);
+                // console.log(share_type);
+                // return;
+                var u = navigator.userAgent, app = navigator.appVersion;
+                var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; //android终端或者uc浏览器
+                var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+                if (isAndroid) {
+                    js.login_old();
+                }
+                if (isiOS) {
+                    // alert(2);
+                    // console.log(window)
+                    var num={"phone":123456789};
+//                  mui.toast(num);
+                    window.webkit.messageHandlers.login.postMessage(num);
+                }
+            })
+		</script>
+	</body>
+
+</html>

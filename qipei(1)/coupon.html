@@ -1,0 +1,212 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>优惠券</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script>
+		    document.documentElement.style.fontSize =document.documentElement.clientWidth/750*40 +"px";
+		</script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/common.css" />
+		<link rel="stylesheet" href="css/coupon.css" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-icon mui-icon-left-nav mui-pull-left" href="personal.html"></a>
+		    <h1 class="mui-title">优惠券</h1>
+		</header>
+		<div class="mui-content">
+		    <div id="slider" class="mui-slider">
+			    <div class="mui-scroll-wrapper mui-slider-indicator mui-segmented-control mui-segmented-control-inverted" id="segmented">
+	                <div class="mui-scroll">
+		                <a class="mui-control-item  mui-active" href="#item1mobile">
+		                   	<span class="control-item">未使用</span>
+		                </a>
+		                <a class="mui-control-item control-item" href="#item2mobile">
+		                   	 <span class="control-item">已使用</span>
+		                </a>
+		                <a class="mui-control-item control-item" href="#item3mobile">
+		                  	  <span class="control-item">已过期</span>
+		                </a>
+			    	</div>
+				</div>
+
+
+	            <div class="mui-slider-group">
+	            	<div id="item1mobile" class="mui-slider-item mui-control-content mui-active"></div>
+	            	<div id="item2mobile" class="mui-slider-item mui-control-content "></div>
+	           		<div id="item3mobile" class="mui-slider-item mui-control-content "></div>
+	            </div>
+	            
+	        </div>
+		</div>
+		
+		<script type="text/html" id="text">
+                <ul class="mui-table-view">
+                	{{each cuse as value i}}
+                    <li class="mui-table-view-cell">
+                    	<div class="yhj" style="background: url({{value.coupon_pic}}) no-repeat;">
+                    		<div class="yhj_div_left">
+                    			<p>{{value.coupon_name}}</p>
+                    			{{if value.coupon_need_capital==0}}
+                    			<span></span>
+                    			{{else}}
+                    			<span>满{{value.coupon_need_capital}}元可用</span>
+                    			{{/if}}
+                    		</div>
+                    		<div class="yhj_div_right">
+                    			￥<span class="yhj_div_right_span">{{value.coupon_capital}}</span>
+                    		</div>
+                    	</div>
+                    	<div class="yhj_content">
+                    		<div class="content_left">{{value.starttime}}-{{value.endtime}}有效</div>
+                    		{{if value.status==0}}
+                    		<div class="content_right" onclick="ljlq({{value.id}})">立即领取</div>
+                    		{{else value.status==1}}
+                    		<div class="content_right" >已领取</div>
+                    		{{/if}}
+                    	</div>
+                    </li>
+					{{/each}}
+					{{each cnuse as value i}}
+					<li class="mui-table-view-cell">
+                    	<div class="yhj" style="background: url({{value.coupon_pic}}) no-repeat;">
+                    		<div class="yhj_div_left">
+                    			<p>{{value.coupon_name}}</p>
+                    			{{if value.coupon_need_capital==0}}
+                    			<span></span>
+                    			{{else}}
+                    			<span>满{{value.coupon_need_capital}}元可用</span>
+                    			{{/if}}
+                    		</div>
+                    		<div class="yhj_div_right">
+                    			￥<span class="yhj_div_right_span">{{value.coupon_capital}}</span>
+                    		</div>
+                    	</div>
+                    	<div class="yhj_content">
+                    		<div class="content_left">{{value.starttime}}-{{value.endtime}}有效</div>
+                    		<div class="content_right">不能使用</div>
+                    	</div>
+                    </li>
+					{{/each}}
+                </ul>
+        </script>    
+        <script type="text/html" id="text1">
+            <ul class="mui-table-view">
+            	{{each use as value i}}
+                <li class="mui-table-view-cell">
+                	<div class="yhj" style="background: url({{value.coupon_pic}}) no-repeat;">
+                		<div class="yhj_div_left">
+                			<p>{{value.coupon_name}}</p>
+                			{{if value.coupon_need_capital==0}}
+                			<span></span>
+                			{{else}}
+                			<span>满{{value.coupon_need_capital}}元可用</span>
+                			{{/if}}
+                		</div>
+                		<div class="yhj_div_right">
+                			￥<span class="yhj_div_right_span">{{value.coupon_capital}}</span>
+                		</div>
+                	</div>
+                	<div class="yhj_content">
+                		<div class="content_left">{{value.starttime}}-{{value.endtime}}有效</div>
+                		<div class="content_right">已使用</div>
+                	</div>
+                </li>
+                {{/each}}
+            </ul>
+        </script>   
+            
+        <script type="text/html" id="text2">
+            <ul class="mui-table-view">
+            	{{each overtime as value i}}
+                <li class="mui-table-view-cell">
+                	<div class="yhj" style="background: url({{value.coupon_pic}}) no-repeat;">
+                		<div class="yhj_div_left">
+                			<p>{{value.coupon_name}}</p>
+                			{{if value.coupon_need_capital==0}}
+                			<span></span>
+                			{{else}}
+                			<span>满{{value.coupon_need_capital}}元可用</span>
+                			{{/if}}
+                		</div>
+                		<div class="yhj_div_right">
+                			￥<span class="yhj_div_right_span">{{value.coupon_capital}}</span>
+                		</div>
+                	</div>
+                	<div class="yhj_content">
+                		<div class="content_left">2017.07.28-2017.08.25有效</div>
+                		<div class="content_right guoqi">已过期</div>
+                	</div>
+                </li>
+                {{/each}}
+            </ul>
+        </script>   
+            
+		
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript" src="js/common.js" ></script>
+		<script type="text/javascript" src="js/art-template.js"></script>
+		<script type="text/javascript" src="js/jquery-3.3.1.min.js" ></script>
+		<script type="text/javascript">
+            mui.init();
+            var session=window.sessionStorage;
+            var user_info;
+            $(function () {
+               user_info=session.getItem("user_info"),
+				user_info=JSON.parse(user_info);
+                $.ajax({
+					type:"post",
+					url:"http://qipei.liebianzhe.com/api/user/user_coupon",
+                    dataType: "json",
+                    async:false,
+					data:{
+						"token":user_info.token,
+					},
+					success:function (data) {
+					    console.info(data);
+					    var html=template("text",data.data.unuse);
+						document.getElementById("item1mobile").innerHTML=html;;
+						var html1=template("text1",data.data);
+						document.getElementById("item2mobile").innerHTML=html1;;
+						var html2=template("text2",data.data);
+						document.getElementById("item3mobile").innerHTML=html2;;
+						
+                    },
+                    error:function(){
+                    	console.info("获取优惠券数据失败");
+                    }
+				})
+                //禁用选项卡滑动
+                mui('.mui-slider').slider().stopped = true;
+            })
+            function ljlq(yid){
+            	$.ajax({
+            		type:"post",
+            		url:"http://qipei.liebianzhe.com/api/user/receive_coupon",
+            		async:true,
+            		data:{
+            			token:user_info.token,
+            			id:yid
+            		},
+            		success:function(data){
+            			console.info(data);
+            			if(data.state==1){
+            				mui.toast(data.msg);
+            				
+            			}else{
+            				mui.toast(data.msg);
+            			}
+            		},
+            		error:function(data){
+            			console.info("领取优惠券失败！")
+            		}
+            	});
+            }
+		</script>
+	</body>
+
+</html>

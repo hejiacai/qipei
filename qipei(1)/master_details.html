@@ -1,0 +1,214 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>师傅详情</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script>
+		    document.documentElement.style.fontSize =document.documentElement.clientWidth/750*40 +"px";
+		</script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/imageview.css" />
+		<link rel="stylesheet" href="css/common.css" />
+		<link rel="stylesheet" href="css/master_details.css" />
+		<style>
+			.call_phone{
+				margin: 0.3rem 0;
+				display: none;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-icon mui-icon-left-nav mui-pull-left" onclick="back_page()" ></a>
+		    <h1 class="mui-title">详情</h1>
+		</header>
+		<div class="mui-content" id="content"></div>
+		
+		<script type="text/html" id="text">
+			<div style="width: 100%;background-color: white;">
+				<div class="tips_body">
+			    	<!--<img src="img/master_banner.png"/>-->
+			    	<div id="slider" class="mui-slider" style="height: 7.25rem;">
+					    <div class="mui-slider-group mui-slider-loop">
+					        <!-- 额外增加的一个节点(循环轮播：第一个节点是最后一张轮播) -->
+					        <div class="mui-slider-item mui-slider-item-duplicate">
+					            <a href="#">
+					                <img src="{{pic[pic.length-1]}}">
+					            </a>
+					        </div>
+					        {{each pic as value i}}
+					        <div class="mui-slider-item">
+					            <a href="#">
+					                <img src="{{value}}" data-preview-src="" data-preview-group="1">
+					            </a>
+					        </div>
+					        {{/each}}
+					        <!-- 额外增加的一个节点(循环轮播：最后一个节点是第一张轮播) -->
+					        <div class="mui-slider-item mui-slider-item-duplicate">
+					            <a href="#">
+					                <img src="{{pic[0]}}" >
+					            </a>
+					        </div>
+					    </div>
+					    <div class="mui-slider-indicator">
+					        {{each pic as v v1}}
+				    		{{if v1==0}}
+					        <div class="mui-indicator  mui-active"></div>
+					        {{else}}
+					        <div class="mui-indicator"></div>
+					        {{/if}}
+					        
+					        {{/each}}
+					    </div>
+					</div>
+			    	<div class="tips_title">{{title}}</div>
+			    	<div class="tips_contetn">
+			    		<div class="content_left">
+			    			<img src="img/time.png"/>
+			    			<span>{{servicetime}}</span>
+			    		</div>
+			    		<div class="content_right">
+			    			<img  src="img/dingwei.png"/>
+			    			<span>{{city}}</span>
+			    		</div>
+			    	</div>
+			    	
+			    </div>
+			</div>
+		    <div class="master_body">
+		    	<div class="title_img">
+			    	<img src="{{headimgurl}}"/>
+		    	</div>
+		    	<div class="master_title">
+		    		<span>{{custname}}</span>
+		    		<span class="phone">联系电话：{{phone}}</span>
+		    		<img  src="img/tel.png" onclick="call_phones({{phone}})" class="call_phone"/>
+		    		<p>
+		    			<span>详细地址：</span>
+		    			<span>{{address}}</span>
+		    		</p>
+		    	</div>
+		    	<!--<div class="master_content">
+		    		<div class="jianjie">留言</div>
+		    		<div class="content_div" >{{liuyan}}</div>
+		    	</div>-->
+		    	<div class="master_content">
+		    		<div class="jianjie">问题描述</div>
+		    		<div class="content_div" >{{desc}}</div>
+		    	</div>
+		    </div>
+		    <div class="div_button">
+		    	<a  onclick="lgjd({{id}})">
+		    		<button type="button" >立即接单</button>
+		    	</a>
+		    </div>
+		</script>
+		
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript" src="js/mui.previewimage.js" ></script>
+		<script type="text/javascript" src="js/mui.zoom.js" ></script>
+		<script type="text/javascript" src="js/common.js" ></script>
+		<script type="text/javascript" src="js/art-template.js"></script>
+		<script type="text/javascript" src="js/jquery-3.3.1.min.js" ></script>
+		<script type="text/javascript">
+			mui.init();
+			mui.previewImage();
+			var session=window.sessionStorage;
+            var user_info;
+            //找人帮订单的详情数据
+            var help_details;
+            //查看接单详情，0为接单列表，1为我的接单
+            var select_master_details;
+            $(function(){
+            	user_info= session.getItem("user_info"),
+                user_info = JSON.parse(user_info);
+                
+                select_master_details=session.getItem("select_master_details");
+                
+                help_details= session.getItem("help_details"),
+                help_details = JSON.parse(help_details);
+                console.info(help_details);
+                var html =template("text",help_details);
+				document.getElementById("content").innerHTML = html;
+				if(select_master_details==0){
+					$(".phone").hide();
+				}else if(select_master_details==1){
+					$(".phone,.call_phone").show();
+					$(".div_button").hide();
+				}
+				var gallery = mui('.mui-slider');
+				gallery.slider({
+				 	interval:2500//自动轮播周期，若为0则不自动播放，默认为0；
+				});
+            })
+            
+            //点击播放视屏
+//          function video_show(){
+//          	$(".video_img").hide();
+//          	$("#video").show();
+//          	document.getElementById("video").play();
+//          }
+            
+            
+            //点击立即接单
+            function lgjd(id){
+            	//进入接单成功页面，0为找帮手列表进入，1为找帮手详情进入
+				var helper_state=1;
+            	if(user_info.ismw==1){
+            		session.setItem("helper_state",helper_state);
+            		window.location.href="help_uncertified.html";
+            	}else if(user_info.ismw==2){
+            		$.ajax({
+						type:"post",
+						url:"http://qipei.liebianzhe.com/api/user/meet_help",
+						async:true,
+						data:{
+							token:user_info.token,
+							type:1,
+							id:id
+						},
+						success:function(data){
+							console.info(data);
+							if(data.state==1){
+								session.setItem("helper_state",helper_state);
+								window.location.href="find_helper.html";
+							}else{
+								mui.toast(data.msg);
+							}
+						},
+						error:function(){
+							console.info("查看详情请求失败~");
+						}
+					});
+            	}
+            }
+            function back_page(){
+            	if(select_master_details==0){
+					window.location.href="find_helper_order.html";
+					session.removeItem("select_master_details");
+				}else if(select_master_details==1){
+					window.location.href="my_dispatch_sf.html";
+					session.removeItem("select_master_details");
+				}
+            	
+            }
+            function call_phones(phone){
+            	var u = navigator.userAgent, app = navigator.appVersion;
+                var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; //android终端或者uc浏览器
+                var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+                if (isAndroid) {
+                    js.call_phone(''+phone+'');
+                }
+                if (isiOS) {
+                    var num={"phone":phone};
+//                  mui.toast("走到这里了");
+                    window.webkit.messageHandlers.call_phone.postMessage(num);
+                }
+            }
+		</script>
+	</body>
+
+</html>

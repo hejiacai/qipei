@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>找帮手-接单成功</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script>
+		    document.documentElement.style.fontSize =document.documentElement.clientWidth/750*40 +"px";
+		</script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/common.css" />
+		<link rel="stylesheet" href="css/find_helper.css" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-icon mui-icon-left-nav mui-pull-left" onclick="back_page()"></a>
+		    <h1 class="mui-title">找帮手</h1>
+		</header>
+		<div class="mui-content" id="content"></div>
+		
+		<script type="text/html" id="text">
+			<div class="title_tips">
+		    	<img src="img/helper_cg.png"/>
+		    	<div class="tips_contetn">
+		    		<p class="font_p">接单成功</p>
+		    		<p class="font_p1">赶紧联系用户吧！</p>
+		    	</div>
+		    </div>
+		    <div class="master_body">
+		    	<div class="title_img">
+			    	<img src="{{headimgurl}}"/>
+		    	</div>
+		    	<div class="master_title">
+		    		<span>{{custname}}</span>
+		    		<span>联系电话：{{phone}}</span>
+		    		<img  src="img/tel.png" onclick="call_phones({{phone}})"/>
+		    		<span class="font_span">地址:{{city}}{{address}}</span>
+		    	</div>
+		    	<div class="master_content">
+		    		<div class="jianjie">留言</div>
+		    		<div class="content_div">{{liuyan}}</div>
+		    	</div>
+		    </div>
+		</script>
+		
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript" src="js/common.js" ></script>
+		<script type="text/javascript" src="js/art-template.js"></script>
+		<script type="text/javascript" src="js/jquery-3.3.1.min.js" ></script>
+		<script type="text/javascript">
+			mui.init();
+			var session=window.sessionStorage;
+            //找人帮订单的详情数据
+            var help_details;
+            //进入接单成功页面，0为找帮手列表进入，1为找帮手详情进入
+			var helper_state;
+            $(function(){
+                help_details= session.getItem("help_details"),
+                help_details = JSON.parse(help_details);
+//              helper_state=session.getItem("helper_state");
+                console.info(help_details);
+                var html =template("text",help_details);
+				document.getElementById("content").innerHTML = html;
+            })
+            function back_page(){
+//          	if(helper_state==0){
+            		session.setItem("select_master_details",1)
+//          		window.location.href="find_helper_order.html";
+//          	}else if(helper_state==1){
+            		window.location.href="master_details.html";
+//          	}
+            }
+            function call_phones(phone){
+            	var u = navigator.userAgent, app = navigator.appVersion;
+                var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; //android终端或者uc浏览器
+                var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+                if (isAndroid) {
+                    js.call_phone(''+phone+'');
+                }
+                if (isiOS) {
+                    var num={"phone":phone};
+//                  mui.toast(num);
+                    window.webkit.messageHandlers.call_phone.postMessage(num);
+                }
+            }
+		</script>
+	</body>
+
+</html>

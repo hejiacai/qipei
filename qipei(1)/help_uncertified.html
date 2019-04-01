@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>找帮手未认证</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script>
+		    document.documentElement.style.fontSize =document.documentElement.clientWidth/750*40 +"px";
+		</script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/common.css" />
+		<link rel="stylesheet" href="css/help_uncertified.css" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-icon mui-icon-left-nav mui-pull-left" onclick="back_page()"></a>
+		    <!--<h1 class="mui-title">认证</h1>-->
+		</header>
+		<div class="mui-content">
+		    <div class="uncertified_body">
+		    	<img src="img/wrz.png" class="wrz"/>
+		    	<div class="uncertified_tips">
+		    		<p>你尚未进行<span id="rz"></span>认证</p>
+		    		<p>请先进行认证</p>
+		    	</div>
+		    </div>
+		    <div class="div_button">
+		    	<button type="button" onclick="lgrz()">立即认证</button>
+		    </div>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript" src="js/jquery-3.3.1.min.js" ></script>
+		<script type="text/javascript">
+			mui.init();
+			var session=window.sessionStorage;
+			//进入接单成功页面，0为找帮手列表进入，1为找帮手详情进入
+			var helper_state;
+			var helper_states;
+			$(function(){
+				helper_state=session.getItem("helper_state");
+				helper_states=session.getItem("helper_states");
+				if(helper_states==1){
+					$("#rz").text("实名");
+				}else if(helper_states==2){
+					$("#rz").text("代理");
+				}else{
+					$("#rz").text("师傅");
+				}
+			})
+			function back_page(){
+            	if(helper_state==0){
+            		window.location.href="find_helper_order.html";
+            	}else if(helper_state==1){
+            		window.location.href="master_details.html";
+            	}else if(helper_state==2){
+            		window.location.href="personal.html";
+            	}
+            }
+			function lgrz(){
+				//进入认证页面的状态；0位门店认证，1位师傅认证；
+				if(helper_states==1){
+					var rz_state=1;
+	      			session.setItem("rz_state",rz_state);
+	      			window.location.href="certification.html";
+				}else if(helper_states==2){
+					window.location.href="certification_sm.html";
+				}else{
+					var rz_state=1;
+					session.setItem("rz_state",rz_state);
+					window.location.href="certification.html";
+				}
+			}
+		</script>
+	</body>
+
+</html>

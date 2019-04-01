@@ -1,0 +1,108 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>权限设置</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script>
+		    document.documentElement.style.fontSize =document.documentElement.clientWidth/750*40 +"px";
+		</script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/common.css" />
+		<link rel="stylesheet" href="css/setting_details.css" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-icon mui-icon-left-nav mui-pull-left" href="purview_setting.html"></a>
+		    <h1 class="mui-title">权限设置</h1>
+		</header>
+		<div class="mui-content">
+		    <div class="setting_content" id="content">
+	    		
+	    	</div>
+	    	<div class="div_button">
+	    		<button type="button" class="sub">保存</button>
+	    	</div>
+		</div>
+		
+		<script type="text/html" id="text">
+			<div class="team_title">
+        		<div class="title_info">
+            		<img src="{{data.headimgurl}}" />
+            		<span>{{data.nickname}}</span>
+        		</div>
+        		<div class="time">
+        			<img  src="img/team_time.png"/>
+        			<span>{{data.add_time}}</span>
+        		</div>
+        	</div>
+        	<div class="team_content">
+        		{{each data.range as value i}}
+        		<div class="setting_div">
+        			<img src="img/guoxuan.png" class="xuanze" onclick="setting_xz(this,{{value.range}})"/>
+        			<span>{{value.name}}</span>
+        		</div>
+        		{{/each}}
+        	</div>
+		</script>
+		
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript" src="js/jquery-3.3.1.min.js" ></script>
+		<script type="text/javascript" src="js/art-template.js"></script>
+		<script type="text/javascript" src="js/common.js" ></script>
+		<script type="text/javascript">
+			mui.init();
+			var session=window.sessionStorage;
+			var user_info;
+			var setting_datails;
+			var set_range;
+			$(function(){
+				user_info=session.getItem("user_info");
+				user_info=JSON.parse(user_info);
+//				console.info(user_info);
+				setting_datails=session.getItem("setting_datails");
+				setting_datails=JSON.parse(setting_datails);
+				console.info(setting_datails);
+				var html=template("text",setting_datails);
+				document.getElementById("content").innerHTML=html;
+				
+			})
+			function setting_xz(here,range){
+				$(here).attr("src","img/guoxuan1.png").parent(".setting_div").siblings().find("img").attr("src","img/guoxuan.png");
+				set_range=range;
+				console.info(set_range);
+			}
+			$(".sub").on('tap',function(){
+				console.info(set_range);
+				if(set_range==null){
+					mui.toast("请选择要设置的权限~~");
+				}else{
+					$.ajax({
+						type:"post",
+						url:"http://qipei.liebianzhe.com/api/user/do_jur",
+						async:false,
+						data:{
+							id:setting_datails.data.id,
+							range:set_range,
+							token:user_info.token,
+						},
+						success:function(data){
+							console.info(data);
+							if(data.state==1){
+								mui.toast(data.msg);
+							}else{
+								mui.toast(data.msg);
+							}
+						},
+						error:function(data){
+							console.info("获取数据失败！")
+						}
+					});
+				}
+			})
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,157 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>收藏</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script>
+		    document.documentElement.style.fontSize =document.documentElement.clientWidth/750*40 +"px";
+		</script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/common.css" />
+		<link rel="stylesheet" href="css/collection.css" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-icon mui-icon-left-nav mui-pull-left" href="personal.html"></a>
+		    <h1 class="mui-title">收藏</h1>
+		</header>
+		<div class="mui-content" id="content"></div>
+		
+		<script type="text/html" id="text">
+			{{each data as value i}}
+			<div class="dispatch_body">
+		    	<div class="dispatch_left" onclick="goods_detail({{value.gid}})">
+		    		<img src="{{value.cover}}"/>
+		    	</div>
+		    	<div class="dispatch_right">
+		    		<p>{{value.goods_name}}</p>
+		    		<div class="div_button">
+		    			<button type="button" class="white yjd" onclick="delete_sc({{value.gid}},this)">删除</button>
+		    			<button type="button" class="blue zw" onclick="add_cart({{value.gid}})">加入购物车</button>
+		    		</div>
+		    	</div>
+		    </div>
+		    {{/each}}
+		</script>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript" src="js/common.js" ></script>
+		<script type="text/javascript" src="js/art-template.js"></script>
+		<script type="text/javascript" src="js/jquery-3.3.1.min.js" ></script>
+		<script type="text/javascript">
+			mui.init()
+			var session=window.sessionStorage;
+	      	//登录时返回的用户数据
+	      	var user_info;
+	      	$(function(){
+	      		user_info=session.getItem("user_info");
+      			user_info=JSON.parse(user_info);
+      			$.ajax({
+      				type:"post",
+      				url:"http://qipei.liebianzhe.com/api/user/collection_list",
+      				async:true,
+      				data:{
+      					token:user_info.token,
+      					type:1
+      				},
+      				success:function(data){
+      					if(data.state==0){
+      						mui.toast("您还没有收藏哟~快去添加吧！");
+      					}else if(data.state==1){
+      						console.info(data);
+							var html=template("text",data);
+      						document.getElementById("content").innerHTML=html;
+      					}
+      				},
+      				error:function(data){
+      					console.info("查看失败!");
+      				}
+      			});
+	      	})
+	      	
+	      	//点击进入商品详情
+	      	function goods_detail(gid,event){
+				$.ajax({
+					type:"post",
+					url:"http://qipei.liebianzhe.com/api/user/goods_detail",
+					async:false,
+					data:{
+						token:user_info.token,
+						gid:gid
+					},
+					success:function(data){
+						console.info(data);
+						if(data.state==1){
+							//进入商品详情页面状态，0为首页的推荐商品，1为列表,2为购物车
+			      			var commodity_details_state=4;
+			      			session.setItem("commodity_details_state",commodity_details_state);
+							//存入商品详情数据
+							var goods_detail=JSON.stringify(data.data);
+							session.setItem("goods_detail",goods_detail)
+							tj_state=0
+							session.setItem("tj_state",tj_state);
+							window.location.href="commodity_details.html";
+						}else{
+							mui.toast(data.msg);	
+						}
+					},
+					error:function(data){
+						console.info("获取商品详情失败！")
+					}
+				});
+				event.stopPropagation();
+			}
+	      	
+	      	
+	      	function delete_sc(gid,sc_this){
+	      		$.ajax({
+      				type:"post",
+      				url:"http://qipei.liebianzhe.com/api/user/collection_list",
+      				async:true,
+      				data:{
+      					token:user_info.token,
+      					type:3,
+      					gid:gid
+      				},
+      				success:function(data){
+      					console.info(data);
+  						mui.toast(data.msg);
+  						$(sc_this).parents(".dispatch_body").remove();
+      				},
+      				error:function(data){
+      					console.info("删除失败!");
+      				}
+      			});
+	      	}
+	      	function add_cart(gid){
+	      		$.ajax({
+      				type:"post",
+      				url:"http://qipei.liebianzhe.com/api/user/collection_list",
+      				async:true,
+      				data:{
+      					token:user_info.token,
+      					type:2,
+      					gid:gid
+      				},
+      				success:function(data){
+      					console.info(data);
+      					if(data.state==1){
+      						mui.toast("加入购物车成功！");
+							setTimeout(function(){
+								window.location.reload();
+							},3000)
+      					}else{
+      						mui.toast(data.msg);
+      					}
+      				},
+      				error:function(data){
+      					console.info("加入失败!");
+      				}
+      			});
+	      	}
+		</script>
+	</body>
+
+</html>

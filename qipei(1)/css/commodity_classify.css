@@ -1,0 +1,117 @@
+html,body,.mui-content{
+	background-color: #F9F9F9;
+	overflow: hidden;
+}
+.section_body{
+	width: 100%;
+	/*height: auto;*/
+	height: 28.2rem;
+	display: flex;
+	justify-content: space-between;
+	/*margin-bottom: 4.2rem;*/
+	overflow: hidden;
+}
+.static_header{
+	width: 100%;
+	height: 2.2rem;
+	border-bottom: 1px solid #E3E5E5;
+	text-align: center;
+	position: relative;
+	line-height: 2.2rem;
+	display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-right: 0.75rem;
+    background-color: white;
+    /*margin-top: 1rem;*/
+}
+.header_content{
+	width: 13.85rem;
+	height: 100%;
+}
+.header_content input{
+	width: 100%;
+	height: 1.25rem;
+	background-color: #EEEEEE;
+	font-size: 0.5rem;
+	background-image: url(../img/sousuo.png);
+	background-size: 0.6rem 0.6rem;
+	background-repeat: no-repeat;
+	background-position: 4%;
+	border-radius: 25px;
+	margin-bottom: 0 ;
+	padding-left:1.5rem ;
+	padding-top: 13px;
+}
+.section_left{
+	width: 4.85rem;
+	height: 27.95rem;
+	overflow: scroll;
+}
+.left_content{
+	width: 100%;
+	height: 2.15rem;
+	background-color: white;
+	font-size: 0.75rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.left_content:nth-of-type(even){
+	border: 1px solid #E9E9E9;
+	border-left: 0;
+}
+.left_active{
+	background-color: #EEEEEE;
+	color: #4974EC;
+	border-left: 0.2rem solid #4974EC !important;
+}
+.section_right{
+	/*width: 13.1rem;*/
+	width: 100%;
+	height: 27.7rem;
+	overflow-y: scroll;
+}
+.fnelei_banner{
+	width: 100%;
+	height: 5.45rem;
+	border-radius: 5px;
+}
+.right_body{
+	width: 100%;
+	height: auto;
+    display: flex;
+    flex-wrap: wrap;
+    background-color: white;
+    justify-content: flex-start;
+    padding-top: 0.3rem;
+    padding-bottom: 1rem;
+    min-height: 19%;
+    /*min-height: 50%;*/
+}
+.right_body a{
+	width: 33%;
+}
+.right_content{
+	width: 100%;
+	height: 4rem;
+	font-size: 0.75rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+.right_content img{
+	width: 2.5rem;
+	height: 2.5rem;
+	border-radius: 50%;
+}
+.header_left{
+	margin-right: 2rem;
+}
+.section_right_body{
+	/*width: 72%;*/
+	width: 13.1rem;
+	margin-right: 0.5rem;
+	margin-top: 0.5rem;
+}

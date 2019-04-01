@@ -1,0 +1,681 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>实名认证</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script>
+		    document.documentElement.style.fontSize =document.documentElement.clientWidth/750*40 +"px";
+		</script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/common.css" />
+		<link rel="stylesheet" href="css/certification.css" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class=" mui-icon mui-icon-left-nav mui-pull-left" href="personal.html"></a>
+		    <h1 class="mui-title">实名认证</h1>
+		</header>
+		<div class="mui-content">
+		    <div class="rz_tips">
+		    	<div class="rz_jiantou">
+			    	<img  src="img/rz_jiantou.png"/>
+		    	</div>
+		    	<span>身份证信息</span>
+		    </div>
+		    <div class="rz_idcard">
+		    	<div class="rz_idcard_div">
+		    		<div class="idcard_div_tips">姓名</div>
+		    		<input  type="text" placeholder="请输入您的真实姓名" class="username"/>
+		    	</div>
+		    	<div class="rz_idcard_div">
+		    		<div class="idcard_div_tips">证件号</div>
+		    		<input  type="text" placeholder="请输入证件号码（加密处理）" class="idcard"/>
+		    	</div>
+		    </div>
+		    <div class="rz_tips">
+		    	<div class="rz_jiantou">
+			    	<img  src="img/rz_jiantou.png"/>
+		    	</div>
+		    	<span>上传身份证照片</span>
+		    </div>
+		    <div class="upload_body">
+			    <div class="upload">
+			    	<div class="upload_content">
+			    		<input type="file" accept="image/*"  id="idCard_face1" onchange="idCard_face1()"  enctype="multipart/form-data"/>
+			    		<img src="img/upload_img.png" class="zm_img"/>
+			    	</div>
+			    	<span>正面（带身份证信息）</span>
+			    </div>
+			    <div class="upload">
+			    	<div class="upload_content">
+			    		<input type="file" accept="image/*"  id="idCard_con1" onchange="idCard_con1()"  enctype="multipart/form-data"/>
+			    		<img src="img/upload_img1.png" class="fm_img"/>
+			    	</div>
+			    	<span>反面（带国徽照片）</span>
+			    </div>
+			    <!--<div class="upload">
+			    	<div class="upload_content">
+			    		<input type="file" accept="image/*"  id="idCard_head1" onchange="idCard_head1()"  enctype="multipart/form-data"/>
+			    		<img src="img/upload_img2.png" class="sc_img"/>
+			    	</div>
+			    	<span>手持身份证（手持正面）</span>
+			    </div>-->
+			    <div class="upload">
+			    	<div class="upload_content">
+			    		<input type="file" accept="image/*"   id="build_kill" onchange="build_kill()"  enctype="multipart/form-data"/>
+			    		<img src="img/upload_img3.png" class="kill_img"/>
+			    	</div>
+			    	<span>施工证明（证明您的技术）</span>
+			    </div>
+		    </div>
+		    
+		    
+		    
+		    <div class="upload_body1">
+		    	<div class="upload">
+			    	<div class="upload_content">
+			    		<input type="file" accept="image/*"  id="idCard_face" onchange="idCard_face()"  enctype="multipart/form-data"/>
+			    		<img src="img/upload_img.png" class="zm_img"/>
+			    	</div>
+			    	<span>正面（带身份证信息）</span>
+			    </div>
+			    <div class="upload">
+			    	<div class="upload_content">
+			    		<input type="file" accept="image/*"  id="idCard_con" onchange="idCard_con()"  enctype="multipart/form-data"/>
+			    		<img src="img/upload_img1.png" class="fm_img"/>
+			    	</div>
+			    	<span>反面（带国徽照片）</span>
+			    </div>
+			    <!--<div class="upload">
+			    	<div class="upload_content">
+			    		<input type="file" accept="image/*"  id="idCard_head" onchange="idCard_head()"  enctype="multipart/form-data"/>
+			    		<img src="img/upload_img2.png" class="sc_img"/>
+			    	</div>
+			    	<span>手持身份证（手持正面）</span>
+			    </div>-->
+			    <div class="rz_tips">
+			    	<div class="rz_jiantou">
+				    	<img  src="img/rz_jiantou.png"/>
+			    	</div>
+			    	<span>店铺证明（营业执照、门头照片）</span>
+			    </div>
+			    <div>
+			    	<div class="upload">
+				    	<div class="upload_content">
+				    		<input type="file" accept="image/*"  id="shop_data" onchange="shop_data()"  enctype="multipart/form-data"/>
+				    		<img src="img/upload_img3.png" class="shop_img"/>
+				    	</div>
+				    	<span>营业执照</span>
+				    </div>
+				    <div class="upload">
+				    	<div class="upload_content">
+				    		<input type="file" accept="image/*"  id="shop_data1" onchange="shop_data1()"  enctype="multipart/form-data"/>
+				    		<img src="img/upload_img3.png" class="shop_img1"/>
+				    	</div>
+				    	<span>门头照片</span>
+				    </div>
+			    </div>
+			    
+		    </div>
+		    <div class="div_button">
+		    		<button type="button" class="sub" onclick="submits()">完成</button>
+		    </div>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript" src="js/jquery-3.3.1.min.js" ></script>
+		<script type="text/javascript">
+			mui.init();
+			//正面身份证照片
+			var file_face;
+			//反面
+			var file_con;
+			//手持
+			var file_head;
+			//店铺资料
+			var file_shop;
+			//店铺资料1
+			var file_shop1;
+			//技术证明
+			var file_kill;
+			var session=window.sessionStorage;
+	      	//登录时返回的用户数据
+	      	var user_info;
+	      	//进入认证页面的状态；0位门店认证，1位师傅认证,2为代理；
+  			var rz_state;
+  			//认证接口的状态
+	      	var rz_type;
+	      	
+	      	
+			$(function(){
+				user_info=session.getItem("user_info");
+      			
+      			user_info=JSON.parse(user_info);
+				rz_state=session.getItem("rz_state");
+				if(rz_state==0){
+					$(".upload_body1").show();
+					$(".upload_body").hide();
+					rz_type=1;
+				}else if(rz_state==1){
+					$(".upload_body").show();
+					$(".upload_body1").hide();
+					rz_type=2;
+					$(".mui-title").html("师傅认证")
+				}
+			})
+//			$(".sub").on('tap',function(){
+//				var realname=$(".username").val();
+//				var idcard=$(".idcard").val();
+//				if (isCardNo(idcard)==false){
+//					mui.toast("请输入正确的身份证号");
+//				}else if(rz_state==0){
+//					if(idcard!="" && realname!="" && file_face !=null && file_con!=null  && file_shop!=null && file_shop1!=null){
+//						$.ajax({
+//							type:"post",
+//							url:"http://qipei.liebianzhe.com/api/user/auth",
+//							async:true,
+//							data:{
+//								token:user_info.token,
+//								type:rz_type,
+//								realname:realname,
+//								idcard:idcard,
+//								zidcard:file_face,
+//								fidcard:file_con,
+////								holdidcard:file_head,
+//								yingyepic:file_shop,
+//								shoppic:file_shop1
+//							},
+//							success:function(data){
+//								console.info(data);
+//								if(data.state==1){
+//									window.location.href("authentication_success.html");
+//								}else{
+//									mui.toast(data.msg);
+//								}
+//							},
+//							error:function(){
+//								console.info("实名认证失败~");
+//							}
+//						});
+//					}else{
+//						mui.toast("请把上传资料补充完整~");
+//					}
+//				}else if(rz_state==1){
+//					
+//					if(idcard!="" && realname!="" && file_face !=null && file_con!=null   && file_kill!=null){
+//						$.ajax({
+//							type:"post",
+//							url:"http://qipei.liebianzhe.com/api/user/auth",
+//							async:true,
+//							data:{
+//								token:user_info.token,
+//								type:rz_type,
+//								realname:realname,
+//								idcard:idcard,
+//								zidcard:file_face,
+//								fidcard:file_con,
+////								holdidcard:file_head,
+//								buildpic:file_kill
+//							},
+//							success:function(data){
+//								console.info(data);
+//								if(data.state==1){
+//									window.location.href="authentication_success.html";
+//								}else{
+//									mui.toast(data.msg);
+//								}
+//							},
+//							error:function(){
+//								console.info("实名认证失败~");
+//							}
+//						});
+//					}else{
+//						mui.toast("请把上传资料补充完整~");
+//					}
+//				}
+//			})
+				
+			 // 验证身份证
+			function isCardNo(card) {
+			    var pattern = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+			    return pattern.test(card);
+			}	
+					
+			function jump_login(){
+				window.location.href="login.html";
+			}
+			
+			//提交
+			function submits(){
+				var realname=$(".username").val();
+				var idcard=$(".idcard").val();
+				if (isCardNo(idcard)==false){
+					mui.toast("请输入正确的身份证号");
+				}else if(rz_state==0){
+					if(idcard!="" && realname!="" && file_face !=null && file_con!=null  && file_shop!=null && file_shop1!=null){
+						$.ajax({
+							type:"post",
+							url:"http://qipei.liebianzhe.com/api/user/auth",
+							async:true,
+							data:{
+								token:user_info.token,
+								type:rz_type,
+								realname:realname,
+								idcard:idcard,
+								zidcard:file_face,
+								fidcard:file_con,
+//								holdidcard:file_head,
+								yingyepic:file_shop,
+								shoppic:file_shop1
+							},
+							success:function(data){
+								console.info(data);
+								if(data.state==1){
+									window.location.href="authentication_success.html";
+								}else{
+									mui.toast(data.msg);
+								}
+							},
+							error:function(){
+								console.info("实名认证失败~");
+							}
+						});
+					}else{
+						mui.toast("请把上传资料补充完整~");
+					}
+				}else if(rz_state==1){
+					
+					if(idcard!="" && realname!="" && file_face !=null && file_con!=null   && file_kill!=null){
+						$.ajax({
+							type:"post",
+							url:"http://qipei.liebianzhe.com/api/user/auth",
+							async:true,
+							data:{
+								token:user_info.token,
+								type:rz_type,
+								realname:realname,
+								idcard:idcard,
+								zidcard:file_face,
+								fidcard:file_con,
+//								holdidcard:file_head,
+								buildpic:file_kill
+							},
+							success:function(data){
+								console.info(data);
+								if(data.state==1){
+									window.location.href="authentication_success.html";
+								}else{
+									mui.toast(data.msg);
+								}
+							},
+							error:function(){
+								console.info("实名认证失败~");
+							}
+						});
+					}else{
+						mui.toast("请把上传资料补充完整~");
+					}
+				}
+			}
+			
+			//上传正面身份证信息
+			function idCard_face(){
+				let formData = new FormData();
+				file_face = document.getElementById("idCard_face").files[0];
+				formData.append('file',file_face);
+				
+				if(typeof FileReader === 'undefined'){
+			        mui.toast("抱歉，你的浏览器不支持 FileReader") ;
+			    }else{
+			    	var reader = new FileReader();
+			        reader.readAsDataURL(file_face);
+			        reader.onload = function(e){
+			            $(".zm_img").attr('src',this.result);
+			        }
+			 
+			    }
+				mui.ajax("http://qipei.liebianzhe.com/api/index/upload", {
+					data: formData,
+					async: false,
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					cache: false,
+					contentType: false,
+					processData: false,
+					success: function(data) {
+						data=JSON.parse(data);
+						console.info(data);
+						if(data.state == 1){
+							file_face=data.data[0].name;
+							 
+						}else{
+							mui.toast(data.msg);
+						}
+							
+					},
+					error:function(){
+						console.info("上传图片失败！");
+					}
+				})		
+						
+			}
+			//上传正面身份证信息1
+			function idCard_face1(){
+				let formData = new FormData();
+				file_face = document.getElementById("idCard_face1").files[0];
+				formData.append('file',file_face);
+				if(typeof FileReader === 'undefined'){
+			        mui.toast("抱歉，你的浏览器不支持 FileReader") ;
+			    }else{
+			    	var reader = new FileReader();
+			        reader.readAsDataURL(file_face);
+			        reader.onload = function(e){
+			            $(".zm_img").attr('src',this.result);
+			        }
+			 
+			    }
+				mui.ajax("http://qipei.liebianzhe.com/api/index/upload", {
+					data: formData,
+					async: false,
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					cache: false,
+					contentType: false,
+					processData: false,
+					success: function(data) {
+						data=JSON.parse(data);
+						console.info(data);
+						if(data.state == 1){
+							file_face=data.data[0].name;
+//							$(".zm_img").attr('src','http://qipei.liebianzhe.com/static/upload/'+ file_face);
+						}else{
+							mui.toast(data.msg);
+						}
+							
+					},
+					error:function(){
+						console.info("上传图片失败！");
+					}
+				})		
+						
+			}
+			
+			
+			//上传身份证反面
+			function idCard_con(){
+				let formData = new FormData();
+				file_con = document.getElementById("idCard_con").files[0];
+				formData.append('file',file_con);
+				if(typeof FileReader === 'undefined'){
+			        mui.toast("抱歉，你的浏览器不支持 FileReader") ;
+			    }else{
+			    	var reader = new FileReader();
+			        reader.readAsDataURL(file_con);
+			        reader.onload = function(e){
+			            $(".fm_img").attr('src',this.result);
+			        }
+			 
+			    }
+				mui.ajax("http://qipei.liebianzhe.com/api/index/upload", {
+					data: formData,
+					async: false,
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					cache: false,
+					contentType: false,
+					processData: false,
+					success: function(data) {
+						data=JSON.parse(data);
+						console.info(data);
+						if(data.state == 1){
+							file_con=data.data[0].name;
+//							$(".fm_img").attr('src','http://qipei.liebianzhe.com/static/upload/'+ file_con);
+						}else{
+							mui.toast(data.msg);
+						}
+							
+					},
+					error:function(){
+						console.info("上传图片失败！");
+					}
+				})		
+						
+			}
+			//上传身份证反面1
+			function idCard_con1(){
+				let formData = new FormData();
+				file_con = document.getElementById("idCard_con1").files[0];
+				formData.append('file',file_con);
+				
+				if(typeof FileReader === 'undefined'){
+			        mui.toast("抱歉，你的浏览器不支持 FileReader") ;
+			    }else{
+			    	var reader = new FileReader();
+			        reader.readAsDataURL(file_con);
+			        reader.onload = function(e){
+			            $(".fm_img").attr('src', this.result);
+			        }
+			 
+			    }
+				
+				mui.ajax("http://qipei.liebianzhe.com/api/index/upload", {
+					data: formData,
+					async: false,
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					cache: false,
+					contentType: false,
+					processData: false,
+					success: function(data) {
+						data=JSON.parse(data);
+						console.info(data);
+						if(data.state == 1){
+							file_con=data.data[0].name;
+//							$(".fm_img").attr('src','http://qipei.liebianzhe.com/static/upload/'+ file_con);
+						}else{
+							mui.toast(data.msg);
+						}
+							
+					},
+					error:function(){
+						console.info("上传图片失败！");
+					}
+				})		
+						
+			}
+			
+			
+			//手持身份证
+//			function idCard_head(){
+//				let formData = new FormData();
+//				file_head = document.getElementById("idCard_head").files[0];
+//				formData.append('file',file_head);
+//				mui.ajax("http://qipei.liebianzhe.com/api/index/upload", {
+//					data: formData,
+//					async: false,
+//					dataType: 'json', //服务器返回json格式数据
+//					type: 'post', //HTTP请求类型
+//					cache: false,
+//					contentType: false,
+//					processData: false,
+//					success: function(data) {
+//						data=JSON.parse(data);
+//						console.info(data);
+//						if(data.state == 1){
+//							file_head=data.data[0].name;
+//							$(".sc_img").attr('src','http://qipei.liebianzhe.com/static/upload/'+ file_head);
+//						}else{
+//							mui.toast(data.msg);
+//						}
+//							
+//					},
+//					error:function(){
+//						console.info("上传图片失败！");
+//					}
+//				})		
+//						
+//			}
+//			//手持身份证
+//			function idCard_head1(){
+//				let formData = new FormData();
+//				file_head = document.getElementById("idCard_head1").files[0];
+//				formData.append('file',file_head);
+//				mui.ajax("http://qipei.liebianzhe.com/api/index/upload", {
+//					data: formData,
+//					async: false,
+//					dataType: 'json', //服务器返回json格式数据
+//					type: 'post', //HTTP请求类型
+//					cache: false,
+//					contentType: false,
+//					processData: false,
+//					success: function(data) {
+//						data=JSON.parse(data);
+//						console.info(data);
+//						if(data.state == 1){
+//							file_head=data.data[0].name;
+//							$(".sc_img").attr('src','http://qipei.liebianzhe.com/static/upload/'+ file_head);
+//						}else{
+//							mui.toast(data.msg);
+//						}
+//							
+//					},
+//					error:function(){
+//						console.info("上传图片失败！");
+//					}
+//				})		
+//						
+//			}
+			
+			
+			//店铺资料
+			function shop_data(){
+				let formData = new FormData();
+				file_shop = document.getElementById("shop_data").files[0];
+				formData.append('file',file_shop);
+				
+				if(typeof FileReader === 'undefined'){
+			        mui.toast("抱歉，你的浏览器不支持 FileReader") ;
+			    }else{
+			    	var reader = new FileReader();
+			        reader.readAsDataURL(file_shop);
+			        reader.onload = function(e){
+			            $(".shop_img").attr('src',this.result);
+			        }
+			 
+			    }
+				
+				mui.ajax("http://qipei.liebianzhe.com/api/index/upload", {
+					data: formData,
+					async: false,
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					cache: false,
+					contentType: false,
+					processData: false,
+					success: function(data) {
+						data=JSON.parse(data);
+						console.info(data);
+						if(data.state == 1){
+							file_shop=data.data[0].name;
+//							$(".shop_img").attr('src','http://qipei.liebianzhe.com/static/upload/'+ file_shop);
+						}else{
+							mui.toast(data.msg);
+						}
+							
+					},
+					error:function(){
+						console.info("上传图片失败！");
+					}
+				})		
+						
+			}
+			//店铺资料1
+			function shop_data1(){
+				let formData = new FormData();
+				file_shop1 = document.getElementById("shop_data1").files[0];
+				formData.append('file',file_shop1);
+				
+				if(typeof FileReader === 'undefined'){
+			        mui.toast("抱歉，你的浏览器不支持 FileReader") ;
+			    }else{
+			    	var reader = new FileReader();
+			        reader.readAsDataURL(file_shop1);
+			        reader.onload = function(e){
+			            $(".shop_img1").attr('src',this.result);
+			        }
+			 
+			    }
+				
+				mui.ajax("http://qipei.liebianzhe.com/api/index/upload", {
+					data: formData,
+					async: false,
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					cache: false,
+					contentType: false,
+					processData: false,
+					success: function(data) {
+						data=JSON.parse(data);
+						console.info(data);
+						if(data.state == 1){
+							file_shop1=data.data[0].name;
+//							$(".shop_img1").attr('src','http://qipei.liebianzhe.com/static/upload/'+ file_shop1);
+						}else{
+							mui.toast(data.msg);
+						}
+							
+					},
+					error:function(){
+						console.info("上传图片失败！");
+					}
+				})		
+						
+			}
+			//施工技术
+			function build_kill(){
+				let formData = new FormData();
+				file_kill = document.getElementById("build_kill").files[0];
+				formData.append('file',file_kill);
+				
+				if(typeof FileReader === 'undefined'){
+			        mui.toast("抱歉，你的浏览器不支持 FileReader") ;
+			    }else{
+			    	var reader = new FileReader();
+			        reader.readAsDataURL(file_kill);
+			        reader.onload = function(e){
+			            $(".kill_img").attr('src',this.result);
+			        }
+			 
+			    }
+				
+				mui.ajax("http://qipei.liebianzhe.com/api/index/upload", {
+					data: formData,
+					async: false,
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					cache: false,
+					contentType: false,
+					processData: false,
+					success: function(data) {
+						data=JSON.parse(data);
+						console.info(data);
+						if(data.state == 1){
+							file_kill=data.data[0].name;
+//							$(".kill_img").attr('src','http://qipei.liebianzhe.com/static/upload/'+ file_kill);
+						}else{
+							mui.toast(data.msg);
+						}
+							
+					},
+					error:function(){
+						console.info("上传图片失败！");
+					}
+				})		
+						
+			}
+		</script>
+	</body>
+
+</html>

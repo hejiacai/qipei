@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>手机验证</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script>
+		    document.documentElement.style.fontSize =document.documentElement.clientWidth/750*40 +"px";
+		</script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/common.css" />
+		<link rel="stylesheet" href="css/forget_pwd.css" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class=" mui-icon mui-icon-left-nav mui-pull-left"></a>
+		</header>
+		<div class="mui-content">
+			<section class="forget_body">
+				<p class="login_title">手机验证</p>
+				<div class="forget_content">
+					<input type="number" oninput="if(value.length>11)value=value.slice(0,11)" placeholder="请输入您的手机号码"/>
+					<div class="yzm_content">
+						<input type="number" placeholder="请输入验证码"/>
+						<div class="yzm_div">获取验证码</div>
+					</div>
+				</div>
+				<div class="div_button div_button1">
+					<button type="button">下一步</button>
+				</div>
+			</section>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+	</body>
+
+</html>

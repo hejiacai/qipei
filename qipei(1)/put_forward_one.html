@@ -1,0 +1,127 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>我的钱包</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script>
+		    document.documentElement.style.fontSize =document.documentElement.clientWidth/750*40 +"px";
+		</script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/common.css" />
+		<link rel="stylesheet" href="css/put_forward_one.css" />
+		<style>
+			.fotward_body1{
+				display: block;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class=" mui-icon mui-icon-left-nav mui-pull-left"  onclick="back_jump()"></a>
+		    <h1 class="mui-title">我的钱包</h1>
+		</header>
+		<div class="mui-content" id="content"></div>
+		
+		<script type="text/html" id="text">
+			{{if state==1}}
+			<div class="fotward_body">
+		    	<div class="fotward_content">
+		    		<img src="img/fotward_yes.png"/>
+		    		<span class="font_span">提现进度已提交</span>
+		    		<span>预计1-2工作日提现成功</span>
+		    	</div>
+		    	<div class="div_button">
+		    		<a href="index.html">
+		    			<button type="button">返回首页</button>
+		    		</a>
+		    	</div>
+		    </div>
+		    {{else state==0}}
+		    <div class="fotward_body1">
+		    	<div class="fotward_content">
+		    		<img src="img/forward_no.png"/>
+		    		<span class="font_span1">您的提现失败</span>
+		    		<span>{{msg}}</span>
+		    	</div>
+		    	<div class="div_button">
+		    		<a href="index.html">
+		    			<button type="button">返回首页</button>
+		    		</a>
+		    	</div>
+		    </div>
+		    {{/if}}
+		</script>
+		
+		<script type="text/html" id="text1">
+			{{if status==1}}
+			<div class="fotward_body">
+		    	<div class="fotward_content">
+		    		<img src="img/fotward_yes.png"/>
+		    		<span class="font_span">提现进度已提交</span>
+		    		<span>预计1-2工作日提现成功</span>
+		    	</div>
+		    	<div class="div_button">
+		    		<a href="index.html">
+		    			<button type="button">返回首页</button>
+		    		</a>
+		    	</div>
+		    </div>
+		    {{else status==3}}
+		    <div class="fotward_body1">
+		    	<div class="fotward_content">
+		    		<img src="img/forward_no.png"/>
+		    		<span class="font_span1">您的提现失败</span>
+		    		<span>{{reason}}</span>
+		    	</div>
+		    	<div class="div_button">
+		    		<a href="index.html">
+		    			<button type="button">返回首页</button>
+		    		</a>
+		    	</div>
+		    </div>
+		    {{/if}}
+		</script>
+		
+		<script type="text/javascript" src="js/common.js" ></script>
+		<script type="text/javascript" src="js/art-template.js"></script>
+		<script type="text/javascript" src="js/jquery-3.3.1.min.js" ></script>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init()
+			var session=window.sessionStorage;
+			//判断提现是否成功的状态0为失败，1为成功；
+			var put_forward_state;
+			//判断页面进入状态，0位提现，1位提现详细
+			var put_forward;
+			//详情原因
+			var put_detailed_info;
+			$(function(){
+				put_forward=session.getItem("put_forward");
+				if(put_forward==0){
+					put_forward_state=session.getItem("put_forward_state");
+					put_forward_state=JSON.parse(put_forward_state);
+					console.info(put_forward_state);
+					var html=template("text",put_forward_state);
+					document.getElementById("content").innerHTML=html;
+				}else if(put_forward==1){
+					put_detailed_info=session.getItem("put_detailed_info");
+					put_detailed_info=JSON.parse(put_detailed_info);
+					console.info(put_detailed_info);
+					var html1=template("text1",put_detailed_info);
+					document.getElementById("content").innerHTML=html1;
+				}
+			})
+			function back_jump(){
+				if(put_forward==0){
+					window.location.replace("put_forward.html");
+				}else if(put_forward==1){
+					window.location.replace("detailed.html");
+				}
+			}
+		</script>
+	</body>
+
+</html>

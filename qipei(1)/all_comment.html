@@ -1,0 +1,80 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>全部评论</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script>
+		    document.documentElement.style.fontSize =document.documentElement.clientWidth/750*40 +"px";
+		</script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/imageview.css" />
+		<link rel="stylesheet" href="css/common.css" />
+		<link rel="stylesheet" href="css/all_comment.css" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-icon mui-icon-left-nav mui-pull-left" onclick="back_page()" ></a>
+		    <h1 class="mui-title">全部评论</h1>
+		</header>
+		<div class="mui-content" id="content">
+		    
+		    
+		    
+		</div>
+		
+		<script type="text/html" id="text">
+			{{each data as value i}}
+			<div class="comment_div">
+		    	<div class="comment_title">
+		    		<div class="title_left">
+		    			<img  src="{{value.user_img}}"/>
+		    			<span>{{value.username}}</span>
+		    		</div>
+		    		<span class="title_right">{{value.createtime}}</span>
+		    	</div>
+		    	<div class="comment_content">
+		    		{{value.content}}
+		    	</div>
+		    	<div class="comment_img">
+		    		{{each value.pic as v v1}}
+		    		<img  src="{{v}}" data-preview-src="" data-preview-group="{{i}}"/>
+		    		{{/each}}
+		    	</div>
+		    </div>
+		    {{/each}}
+		    <div class="no_more">没有更多了</div>
+		</script>
+		
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript" src="js/mui.previewimage.js" ></script>
+		<script type="text/javascript" src="js/mui.zoom.js" ></script>
+		<script type="text/javascript" src="js/common.js" ></script>
+		<script type="text/javascript" src="js/art-template.js"></script>
+		<script type="text/javascript" src="js/jquery-3.3.1.min.js" ></script>
+		<script type="text/javascript">
+			mui.init();
+			mui.previewImage();
+			var session=window.sessionStorage;
+			var all_comment;
+			$(function(){
+				all_comment=session.getItem("all_comment");
+				
+				all_comment=JSON.parse(all_comment);
+				console.info(all_comment);
+				var html=template("text",all_comment);
+      			document.getElementById("content").innerHTML=html;
+			})
+			
+			function jump_login(){
+				window.location.href="login.html";
+			}
+			function back_page(){
+				window.location.href="commodity_details.html";
+			}
+		</script>
+	</body>
+
+</html>

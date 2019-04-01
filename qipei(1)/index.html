@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>首页</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <script>
+	    document.documentElement.style.fontSize =document.documentElement.clientWidth/750*40 +"px";
+	</script>
+    <link href="css/mui.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="css/common.css" />
+    <link rel="stylesheet" href="css/index.css" />
+    <style type="text/css">
+	    source::-internal-media-controls-download-button {
+		      display:none;
+		}
+		source::-webkit-media-controls-enclosure {
+		      overflow:hidden;
+		}
+		source::-webkit-media-controls-panel {
+		      width: calc(100% + 30px); 
+		}
+	</style>
+
+</head>
+<body>
+	
+	
+	
+	<div class="mui-content">
+		<div id="pullrefresh" class="mui-content mui-scroll-wrapper">
+			<section>
+				<!--<div id="iSlider-wrapper">
+					
+				</div>-->
+				<!--<div id="banner"></div>-->
+				<div id="slider" class="mui-slider slider" >
+					
+				</div>
+				<div id="index_banner">
+					
+				</div>
+				
+				<div class="commodity_content" id="commodity_content"></div>
+				
+				<div class="xian"></div>
+				<div class="new_gg" id="news">
+					
+					<!--<div class="help_div">
+						<img src="img/guanggao.png" />
+						<div class="help_font">最新广告</div>
+					</div>-->
+					
+				</div>
+				<div class="xian"></div>
+				<div class="help">
+					<div class="help_div">
+					<div class="help_left">
+						<img src="img/select_index1.png" />
+						<span>找帮手</span>
+					</div>
+					<div>
+						<span>立即查看</span>
+						<img src="img/index_jiantou2.png" />
+					</div>
+					</div>
+				</div>
+				<div class="tj">
+					<div class="tj_content">
+						<div class="xian1"></div>
+						<img  src="img/index_sp.png" class="index_sp"/>
+						<span>推荐视频</span>
+						<div class="xian1"></div>
+					</div>
+					<div class="tj_more" onclick="show_more()" id="tj_more">查看更多</div>
+				</div>
+				<div class="sp_body" id="content">
+					
+				</div>
+				<div class="tj">
+					<div class="tj_content">
+						<div class="xian1"></div>
+						<img  src="img/index_tjsp.png" class="index_tjsp"/>
+						<span>推荐商品</span>
+						<div class="xian1"></div>
+					</div>
+				</div>
+				<div class="tjsp_body" id="content1"></div>
+				<div class="tjsp_body" id="content2"></div>
+				<div class="look_more">
+					<div class="look_more_content">
+						查看更多
+						<img src="img/index_more.png" />
+					</div>
+				</div>
+			</section>
+		</div>
+	</div>
+	<footer class="footer">
+		<div class="footer_body">
+			<a href="index.html">
+				<div class="footer_div">
+					<img  src="img/index.png" class="shouye"/>
+					<span class="footer_active">首页</span>
+				</div>
+			</a>
+			<a href="my_info.html">
+				<div class="footer_div">
+					<img  src="img/sousuo2.png" class="fenlei"/>
+					<img src="img/read_new.png" class="new_imgs"/>
+					<span>消息</span>
+				</div>
+			</a>
+			<a href="release.html">
+				<div class="footer_div1">
+					<img  src="img/fabu.png" class="fabu"/>
+					<span>发布</span>
+				</div>
+			</a>
+			<a href="shopping_cart.html">
+				<div class="footer_div">
+					<img  src="img/gouwuche.png" class="gouwuche"/>
+					<span>购物车</span>
+				</div>
+			</a>
+			<a href="personal.html">
+				<div class="footer_div">
+					<img  src="img/my.png" class="wode"/>
+					<span >我的</span>
+				</div>
+			</a>
+		</div>
+	</footer>
+	<script type="text/html" id="text">
+		{{each cate as value i}}
+		<div class="content_div" onclick="content_div({{value.id}})" data-id = "{{value.id}}">
+			<img  src="{{value.cover}}" class="index_zp"/>
+			<span>{{value.name}}</span>
+		</div>
+		{{/each}}
+	</script>
+	<script type="text/html" id="text1">
+		{{if video}}
+		<div class="sp_contnet">
+			<img src="img/bofang.png" id="play_img" class="video_play video_img" onclick="video_show()">
+			<img src="{{video.cover}}"  class="video_img"/>
+			
+			<video style="height: 200px;width: 100%;display: none;" id="video" controls="controls" poster="{{video.cover}}" preload="auto" >
+				<source  src="{{video.videourl}}" type="video/mp4">
+				您的浏览器不支持 视频播放。
+				</source>
+			</video>
+			<span>
+				{{video.desc}}
+			</span>
+		</div>
+		{{else}}
+		<div class="sp_contnet1" >
+			<span>
+				暂无推荐视频
+			</span>
+		</div>
+		{{/if}}
+	</script>
+	<script type="text/html" id="text2">
+		{{each goods as value i}}
+		<!--<a href="commodity_details.html">-->
+			<div class="tjsp_content" onclick="goods_detail({{value.id}})" data-gid = "{{value.id}}">
+				<div class="content_left">
+					<img  src="{{value.cover}}"/>
+				</div>
+				<div class="content_right">
+					<span class="font_span2">{{value.goods_name}}</span>
+					<span class="font_span">{{value.desc}}</span>
+					{{if vip>=2}}
+					<span class="font_span1">￥{{value.price}}</span>
+					{{/if}}
+				</div>
+			</div>
+		<!--</a>-->
+		{{/each}}
+	</script>
+	<script type="text/html" id="text22">
+		{{each data as value i}}
+			<div class="tjsp_content" onclick="goods_detail({{value.id}})" data-gid = "{{value.id}}">
+				<div class="content_left">
+					<img  src="{{value.cover}}"/>
+				</div>
+				<div class="content_right">
+					<span class="font_span2">{{value.goods_name}}</span>
+					<span class="font_span">{{value.desc}}</span>
+					{{if vip>=2}}
+					<span class="font_span1">￥{{value.price}}</span>
+					{{/if}}
+				</div>
+			</div>
+		{{/each}}
+	</script>
+	
+	<script type="text/html" id="text3">
+		<div class="new_content" >
+			<div id="slider1" class="mui-slider slider1" >
+			    <div class="mui-slider-group mui-slider-loop" id="guanggao">
+			        <div class="mui-slider-item mui-slider-item-duplicate">
+			            <a href="#">
+			                <img src="{{advert[advert.length-1].cover}}">
+			            </a>
+			        </div>
+			        {{each advert as value i}}
+			        <div class="mui-slider-item news" onclick="news_details({{value.id}})" data-newid="{{value.id}}">
+			            <a href="#">
+			                <img src="{{value.cover}}">
+			            </a>
+			        </div>
+			        {{/each}}
+			        <div class="mui-slider-item mui-slider-item-duplicate">
+			            <a href="#">
+			                <img src="{{advert[0].cover}}">
+			            </a>
+			        </div>
+			    </div>
+			    <!--<div class="mui-slider-indicator ggd">
+			    	{{each advert as v v1}}
+			    	{{if v1==0}}
+			        <div class="mui-indicator ggd_div mui-active"></div>
+			        {{else}}
+			        <div class="mui-indicator ggd_div"></div>
+			        {{/if}}
+			        
+			        {{/each}}
+			    </div>-->
+			</div>
+		
+		</div>
+	</script>
+	<script type="text/html" id="text4">
+			<header id="header" class="mui-bar mui-bar-transparent">
+				<a class="mui-icon  mui-pull-left header_left1">
+						<span class="header_span"></span>
+						<img src="img/index_jiantou.png"  class="index_jiantou"/>
+				</a>
+				<a class="mui-title" id="input_title">
+					<input type="text" placeholder="搜索您需要的内容" class="select_input"/>
+				</a>
+				<!--<a class="mui-icon  mui-pull-right" href="my_info.html">
+					<img src="img/index_info1.png" class="index_info"/>
+				</a>-->
+			</header>
+		    <div class="mui-slider-group mui-slider-loop">
+		        <div class="mui-slider-item mui-slider-item-duplicate">
+		            <a href="#">
+		                <img src="{{banner[banner.length-1].pic}}">
+		            </a>
+		        </div>
+		        {{each banner as value i}}
+		        <div class="mui-slider-item banner">
+		            <a href="#">
+		                <img src="{{value.pic}}">
+		            </a>
+		        </div>
+		        {{/each}}
+		        <div class="mui-slider-item mui-slider-item-duplicate">
+		            <a href="#">
+		                <img src="{{banner[0].pic}}">
+		            </a>
+		        </div>
+		    </div>
+			<!--<div class="num_div">
+				<span>
+					<span class="num_span" id="num_span">1</span>
+					/
+				</span>&nbsp;
+				<span class="num_all">{{banner.length}}</span>
+			</div>-->
+			<div class="mui-slider-indicator">
+		    	{{each banner as v v1}}
+		    		{{if v1==0}}
+		        	<div class="mui-indicator  mui-active"></div>
+		        	{{else}}
+		        	<div class="mui-indicator"></div>
+		        {{/if}}
+		        
+		        {{/each}}
+		    </div>
+	</script>
+	
+	<script type="text/html" id="text5">
+			<header id="header" class="mui-bar mui-bar-transparent">
+				<a class="mui-icon  mui-pull-left header_left1">
+						<span class="header_span"></span>
+						<img src="img/index_jiantou.png"  class="index_jiantou"/>
+				</a>
+				<a class="mui-title" id="input_title">
+					<input type="text" placeholder="搜索您需要的内容" class="select_input"/>
+				</a>
+				<!--<a class="mui-icon  mui-pull-right" href="my_info.html">
+					<img src="img/index_info1.png" class="index_info"/>
+				</a>-->
+			</header>
+			<div id="slider2" class="mui-slider slider" >
+			    <div class="mui-slider-group mui-slider-loop">
+			        <div class="mui-slider-item mui-slider-item-duplicate">
+			            <a href="#">
+			                <img src="{{banner[banner.length-1].pic}}">
+			            </a>
+			        </div>
+			        {{each banner as value i}}
+			        <div class="mui-slider-item banner">
+			            <a href="#">
+			                <img src="{{value.pic}}">
+			            </a>
+			        </div>
+			        {{/each}}
+			        <div class="mui-slider-item mui-slider-item-duplicate">
+			            <a href="#">
+			                <img src="{{banner[0].pic}}">
+			            </a>
+			        </div>
+			    </div>
+				<!--<div class="num_div">
+					<span>
+						<span class="num_span" id="num_span">1</span>
+						/
+					</span>&nbsp;
+					<span class="num_all">{{banner.length}}</span>
+				</div>-->
+				<div class="mui-slider-indicator">
+			    	{{each banner as v v1}}
+			    		{{if v1==0}}
+			        	<div class="mui-indicator  mui-active"></div>
+			        	{{else}}
+			        	<div class="mui-indicator"></div>
+			        {{/if}}
+			        
+			        {{/each}}
+			    </div>
+		    </div>
+	</script>
+	
+	
+	
+	<script type="text/javascript" src="js/jquery-3.3.1.min.js" ></script>
+	<script type="text/javascript" src="js/common.js" ></script>
+	<script type="text/javascript" src="js/art-template.js"></script>
+	<script src="js/mui.min.js"></script>
+	<script src="js/mui.lazyload.js"></script>
+	<script src="js/mui.lazyload.img.js"></script>
+	<script type="text/javascript" src="js/iSlider.min.js" ></script>
+	<script type="text/javascript" src="js/iSlider.animate.min.js" ></script>
+	<script type="text/javascript" src="js/iSlider.plugin.dot.js" ></script>
+	<script>
+	    document.documentElement.style.fontSize =document.documentElement.clientWidth/750*40 +"px";
+	</script>
+    <script type="text/javascript" charset="utf-8">
+      	var session=window.sessionStorage;
+      	//登录时返回的用户数据
+      	var user_info;
+      	var num=1;
+      	var index_banner;
+      	var select_state=1;
+      	var vip;
+      	var token;
+      	
+      	
+      	
+  		mui.init({
+	  		pullRefresh : {
+			    container:"#pullrefresh",//下拉刷新容器标识，querySelector能定位的css选择器均可，比如：id、.class等
+			    down : {
+			      style:'circle',//必选，下拉刷新样式，目前支持原生5+ ‘circle’ 样式
+			      auto: false,//可选,默认false.首次加载自动上拉刷新一次
+			      callback:shuaxin, //必选，刷新函数，根据具体业务来编写，比如通过ajax从服务器获取新数据；
+			      contentdown: "下拉可以刷新", //可选，在下拉可刷新状态时，下拉刷新控件上显示的标题内容
+				  contentover: "释放立即刷新", //可选，在释放可刷新状态时，下拉刷新控件上显示的标题内容
+			    }
+			}
+		});
+		
+		
+		(function($) {
+			$(document).imageLazyload({
+				placeholder: 'img/60x60.gif'
+			});
+		})(mui);
+		
+		
+		
+      	$(function(){
+	  		
+      		var picList = [];
+      		token=$.getUrlParam("token");
+      		console.info(token);
+//    		return false;
+      		if(token==null || token==""){
+			    user_info=session.getItem("user_info");
+      			user_info=JSON.parse(user_info);
+      			token=user_info.token;
+      			console.info(user_info);
+      		}else{
+      			$.ajax({
+	      			type:"post",
+	      			url:"http://qipei.liebianzhe.com/api/user/get_userinfo",
+	      			async:false,
+	      			data:{
+	      				token:token,
+	      			},
+	      			success:function(data){
+	      				console.info(data);
+	      				if(data.state==1){
+							user_info=data.data;
+							session.setItem("user_info",JSON.stringify(user_info));
+	      				}else if(data.state==0 ||data.stase==null){
+		      				session.clear();
+	      					mui.toast("登录失效，请重新登录！");
+	      					setTimeout("jump()",1000);
+	      				}
+	      			},
+	      			error:function(data){
+	      				console.info("获取个人中心的数据失败！");
+	      			}
+	      		});
+      		}
+			
+	      	if(user_info.user_msg==1){
+  				$(".new_imgs").show();
+  			}else if(user_info.user_msg==0){
+  				$(".new_imgs").hide();
+  			}
+	      	
+      		//获取首页数据
+      		$.ajax({
+      			type:"post",
+      			url:"http://qipei.liebianzhe.com/api/user/index",
+      			async:false,
+      			data:{
+      				token:token,
+      			},
+      			success:function(data){
+      				console.info(data);
+      				if(data.state==1){
+	      				index_banner=data.data.banner;
+	      				vip=user_info.issm;
+	                    $(".header_left span").text(data.data.city);
+	                    data.data["vip"]=user_info.issm
+	                    var html4=template("text4",data.data);
+						document.getElementById("slider").innerHTML=html4;
+	                    var html=template("text",data.data);
+						document.getElementById("commodity_content").innerHTML=html;
+	                    var html1=template("text1",data.data);
+						document.getElementById("content").innerHTML=html1;
+						var html2=template("text2",data.data);
+						document.getElementById("content1").innerHTML=html2;
+						var html3=template("text3",data.data);
+						document.getElementById("news").innerHTML=html3;	
+						
+						$(".header_span").html(data.data.city);
+//						console.info(data.data.city);
+//						(function($) {
+//							$(document).imageLazyload({
+//								placeholder: 'img/60x60.gif'
+//							});
+//						})(mui);
+      				}
+					
+      			},
+      			error:function(data){
+      				console.info("获取首页数据失败！");
+      			}
+      			
+      		});
+      		var gallery = mui('#slider');
+			gallery.slider({
+			 	interval:2500//自动轮播周期，若为0则不自动播放，默认为0；
+			});
+			
+			//查询商品
+	      	document.getElementById("input_title").addEventListener('tap',function(){
+	      		//判断进入二级列表的状态，0为点击分类进入，1为点击搜索框进入；
+	      		var second_type=1;
+	      		session.setItem("second_type",second_type);
+	    		window.location.href="second_classification.html";
+	      	})
+	      	//点击显示视频
+	      	document.getElementById("play_img").addEventListener('tap',function(){
+	      		$(".video_img").hide();
+	      		$("#video").show();
+	      		document.getElementById("video").play();
+	      	})
+	      	//点击查看新闻详情
+	      	mui("#guanggao").on('tap','.news',function(){
+	      		var news_id=$(this).data("newid")
+	      		$.ajax({
+	      			type:"post",
+	      			url:"http://qipei.liebianzhe.com/api/user/advertlist",
+	      			async:true,
+	      			data:{
+	      				token:token,
+	      				id:news_id
+	      			},
+	      			success:function(data){
+	      				console.info(data);
+	      				if(data.state==1){
+	      					var news_data=data.data;
+	      					session.setItem("news_data",JSON.stringify(news_data));
+	      					window.location.href="advertisement.html";
+	      				}else{
+	      					mui.toast(data.msg);
+	      				}
+	      			},
+	      			error:function(){
+	      				console.info("产看广告详情失败！");
+	      			}
+	      		});
+	      	})
+	      	document.querySelector('.mui-slider').addEventListener('drag', function(event) {
+				 $(".mui-indicator").eq(event.detail.slideNumber).addClass(".mui-active").siblings().removeClass(".mui-active");
+			});
+	      	
+      	})
+      	
+      	//获取地址栏token
+      	$.getUrlParam = function (name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return unescape(r[2]);
+            return null;
+        }
+
+      	
+      	//下拉刷新的方法
+      	function shuaxin() {
+      		$.ajax({
+      			type:"post",
+      			url:"http://qipei.liebianzhe.com/api/user/get_userinfo",
+      			async:false,
+      			data:{
+      				token:user_info.token,
+      			},
+      			success:function(data){
+      				console.info(data);
+      				if(data.state==1){
+//    					var html =template("header_text",data.data);
+//						document.getElementById("header").innerHTML = html;
+						user_info=data.data;
+						session.setItem("user_info",JSON.stringify(user_info));
+      				}
+      				token=user_info.token;
+      			},
+      			error:function(data){
+      				console.info("获取个人中心的数据失败！");
+      			}
+      		});
+		     //业务逻辑代码，比如通过ajax从服务器获取新数据；
+		     mui.ajax('http://qipei.liebianzhe.com/api/user/index',{
+      			type:"post",
+      			async:false,
+      			data:{
+      				token:token
+      			},
+      			success:function(data){
+      				console.info(data.data);
+      				if(data.state==1){
+	      				index_banner=data.data.banner;
+	      				vip=user_info.issm;
+	      				data.data["vip"]=user_info.issm;
+	                    $(".header_left span").text(data.data.city);
+	                    var html=template("text",data.data);
+						document.getElementById("commodity_content").innerHTML=html;
+	                    var html1=template("text1",data.data);
+						document.getElementById("content").innerHTML=html1;
+						var html2=template("text2",data.data);
+						document.getElementById("content1").innerHTML=html2;
+						var html3=template("text3",data.data);
+						document.getElementById("news").innerHTML=html3;
+						document.getElementById("slider").innerHTML="";
+						var html5=template("text5",data.data);
+						document.getElementById("index_banner").innerHTML=html5;
+						$("#slider").hide();
+						$(".header_span").html(data.data.city);
+      				}else if(data.state==0 ||data.stase==null){
+	      				session.clear();
+      					mui.toast("登录失效，请重新登录！");
+      					setTimeout("jump()",1000);
+      				}
+		    		 setTimeout(function(){
+						 //没有更多内容了，endPulldown 传入true， 不再执行下拉刷新
+			    		 mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
+		    		 	mui.toast("刷新成功~");
+		    		 	var gallery = mui('#slider2');
+						gallery.slider({
+						 	interval:2500//自动轮播周期，若为0则不自动播放，默认为0；
+						});
+			      		
+		    		 },1500);
+		    		 
+      			},
+      			error:function(data){
+      				console.info("获取首页数据失败！");
+      			}
+      			
+      		});
+      		document.querySelector('.mui-slider').addEventListener('drag', function(event) {
+				 $(".mui-indicator").eq(event.detail.slideNumber).addClass(".mui-active").siblings().removeClass(".mui-active");
+			});
+			
+      		//点击显示视频
+	      	document.getElementById("play_img").addEventListener('tap',function(){
+	      		$(".video_img").hide();
+	      		$("#video").show();
+	      		document.getElementById("video").play();
+	      	})
+      		//查询商品
+	      	document.getElementById("input_title").addEventListener('tap',function(){
+	      		//判断进入二级列表的状态，0为点击分类进入，1为点击搜索框进入；
+	      		console.info("aaaa");
+	      		var second_type=1;
+	      		session.setItem("second_type",second_type);
+	    		window.location.href="second_classification.html";
+	      	})
+		    //点击查看新闻详情
+	      	mui("#guanggao").on('tap','.news',function(){
+	      		var news_id=$(this).data("newid")
+	      		$.ajax({
+	      			type:"post",
+	      			url:"http://qipei.liebianzhe.com/api/user/advertlist",
+	      			async:true,
+	      			data:{
+	      				token:user_info.token,
+	      				id:news_id
+	      			},
+	      			success:function(data){
+	      				console.info(data);
+	      				if(data.state==1){
+	      					var news_data=data.data;
+	      					session.setItem("news_data",JSON.stringify(news_data));
+	      					window.location.href="advertisement.html";
+	      				}else{
+	      					mui.toast(data.msg);
+	      				}
+	      			},
+	      			error:function(){
+	      				console.info("产看广告详情失败！");
+	      			}
+	      		});
+	      	})
+		     
+		}
+      	
+//    	function video_show(){
+//    		
+//    	}
+      	var gallery = mui('#slider');
+		gallery.slider({
+		 	interval:2500//自动轮播周期，若为0则不自动播放，默认为0；
+		});
+      	
+      	//点击查看更多
+      	mui('.look_more').on('tap','.look_more_content',function(){
+      		if(select_state==1){
+	      		$.ajax({
+	      			type:"post",
+	      			url:"http://qipei.liebianzhe.com/api/user/more_product",
+	      			async:false,
+	      			data:{
+	      				token:token,
+	      			},
+	      			success:function(data){
+	      				console.info(data);
+	      				select_state=0;
+	      				if(data.state==1){
+	      					data["vip"]=vip;
+	      					var html5=template("text22",data);
+	      					
+	//						var div=document.getElementById("content2").innerHTML=html5;
+							$("#content2").append(html5);
+							$(".look_more_content").html("暂无更多数据~");
+							
+	      				}else if(data.state==0){
+//	      					mui.toast("目前暂无更多的商品可查看！")
+							$(".look_more_content").html("暂无更多数据~");
+	      				}
+	      			},
+	      			error:function(){
+	      				console.info("查看更多请求失败~")
+	      			}
+	      		});
+      		}
+      	}) 
+      		
+      	
+      	
+      	
+      	
+      	
+      	//点击进入找人帮列表界面 
+      	mui(".help_div").on('tap','span',function(){
+      		window.location.href="find_helper_order.html";
+      	})
+      	
+      	//点击商品详情
+      	mui("#content1").on('tap','.tjsp_content',function(){
+      		var gid=$(this).data("gid");
+      		$.ajax({
+				type:"post",
+				url:"http://qipei.liebianzhe.com/api/user/goods_detail",
+				async:true,
+				data:{
+					token:user_info.token,
+					gid:gid
+				},
+				success:function(data){
+					console.info(data);
+					if(data.msg=="该商品不存在"){
+						mui.toast("该商品不存在");
+						return false;
+					}
+					//进入商品详情页面状态，0为首页的推荐商品，1为列表
+	      			var commodity_details_state=0;
+	      			session.setItem("commodity_details_state",commodity_details_state);
+	      			//商品详情数据
+					var goods_detail=JSON.stringify(data.data);
+					//为推荐商品时评论没有查看全部
+//					var tj_state=1
+//					session.setItem("tj_state",tj_state);
+					session.setItem("goods_detail",goods_detail)
+					window.location.href="commodity_details.html";
+				},
+				error:function(data){
+					console.info("获取商品详情失败！")
+				}
+			});
+      	})
+      	//点击商品详情
+      	mui("#content2").on('tap','.tjsp_content',function(){
+      		var gid=$(this).data("gid");
+      		$.ajax({
+				type:"post",
+				url:"http://qipei.liebianzhe.com/api/user/goods_detail",
+				async:true,
+				data:{
+					token:user_info.token,
+					gid:gid
+				},
+				success:function(data){
+					console.info(data);
+					if(data.msg=="该商品不存在"){
+						mui.toast("该商品不存在");
+						return false;
+					}
+					//进入商品详情页面状态，0为首页的推荐商品，1为列表
+	      			var commodity_details_state=0;
+	      			session.setItem("commodity_details_state",commodity_details_state);
+	      			//商品详情数据
+					var goods_detail=JSON.stringify(data.data);
+					//为推荐商品时评论没有查看全部
+//					var tj_state=1
+//					session.setItem("tj_state",tj_state);
+					session.setItem("goods_detail",goods_detail)
+					window.location.href="commodity_details.html";
+				},
+				error:function(data){
+					console.info("获取商品详情失败！")
+				}
+			});
+      	})
+      	
+      	//点击进入分类界面
+      	mui("#commodity_content").on('tap','.content_div',function(){
+      		var id=$(this).data("id");
+      		session.setItem("fl_id",id);
+      		window.location.href="commodity_classify.html";
+      	})
+      	
+      	
+      	
+      	
+      	
+      	function jump(){
+			window.location.href="login.html";
+		}
+
+		document.getElementById("tj_more").addEventListener('tap',function(){
+			window.location.href = "video.html";
+		})
+	</script>
+</body>
+</html>

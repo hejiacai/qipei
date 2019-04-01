@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>支付信息</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<script>
+		    document.documentElement.style.fontSize =document.documentElement.clientWidth/750*40 +"px";
+		</script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/common.css" />
+		<link rel="stylesheet" href="css/put_forward_one.css" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class=" mui-icon mui-icon-left-nav mui-pull-left" href="modify_username.html"></a>
+		    <h1 class="mui-title"></h1>
+		</header>
+		<div class="mui-content" id="content"></div>
+		
+		<script type="text/html" id="text">
+			{{if state==1}}
+			<div class="fotward_body">
+		    	<div class="fotward_content">
+		    		<img src="img/pay_yes.png"/>
+		    		<span class="font_span">付款成功</span>
+		    	</div>
+		    	<div class="div_button">
+		    		<a href="personal.html"><button type="button" class="button1">完成</button></a>
+		    		<a href="index.html">
+		    			<button type="button">返回首页</button>
+		    		</a>
+		    	</div>
+		    </div>
+		    {{else if state==0}}
+		    <div class="fotward_body1">
+		    	<div class="fotward_content">
+		    		<img src="img/forward_no.png"/>
+		    		<span class="font_span1">您的支付失败</span>
+		    		<span>{{msg}}</span>
+		    	</div>
+		    	<div class="div_button">
+	    			<a href="personal.html"><button type="button" class="button1">完成</button></a>
+		    		<a href="index.html">
+		    			<button type="button">返回首页</button>
+		    		</a>
+		    	</div>
+		    </div>
+		    {{/if}}
+		</script>
+		
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript" src="js/common.js" ></script>
+		<script type="text/javascript" src="js/art-template.js"></script>
+		<script type="text/javascript" src="js/jquery-3.3.1.min.js" ></script>
+		<script type="text/javascript">
+			mui.init();
+			var session=window.sessionStorage;
+			//判断支付成功还是失败的状态0为失败，1为成功；
+			var pay_info_state;
+			$(function(){
+				pay_info_state=session.getItem("pay_info_state");
+				pay_info_state=JSON.parse(pay_info_state);
+				console.info(pay_info_state);
+				var html=template("text",pay_info_state);
+				document.getElementById("content").innerHTML=html;
+				if(pay_info_state.state==0){
+					$(".mui-title").text("付款失败");
+				}else if(pay_info_state.state==1){
+					$(".mui-title").text("付款成功");
+				}
+			})
+		</script>
+	</body>
+
+</html>

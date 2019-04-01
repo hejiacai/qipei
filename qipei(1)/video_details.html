@@ -1,0 +1,104 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>推荐视频详情</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script>
+		    document.documentElement.style.fontSize =document.documentElement.clientWidth/750*40 +"px";
+		</script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/common.css" />
+		<link rel="stylesheet" href="css/video_details.css" />
+	</head>
+
+	<body>
+		
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-icon mui-icon-left-nav mui-pull-left" onclick="back_page()"></a>
+		    <h1 class="mui-title" id="title"></h1>
+		    <a class="mui-icon  mui-pull-right">
+		    	<img  src="img/fenxiang.png" class="fenxiang"/>
+		    </a>
+		</header>
+		
+		<div class="mui-content">
+		    <div class="video_content" id="content" onclick="video(this)"></div>
+		</div>
+		
+		
+		
+		<script type="text/html" id="res_title">
+					{{data.title}}
+		</script>
+		
+		
+		<script type="text/html" id="res_content">
+				<img src="img/bofang.png" class="video_play">
+				<img src="{{data.cover}}" />
+			<video style="height: 10rem;width: 100%;display: none;" id="video" controls="controls" poster="{{data.cover}}"  preload="auto" >
+				<source  src="{{data.videourl}}" type="video/mp4">
+				您的浏览器不支持 视频播放。
+				</source>
+			</video>
+			<p>{{data.desc}}</p>
+		</script>
+		
+		
+		
+		<script type="text/javascript" src="js/common.js" ></script>
+		<script type="text/javascript" src="js/jquery-3.3.1.min.js" ></script>
+		<script type="text/javascript" src="js/art-template.js"></script>
+
+		<script type="text/javascript">
+            var session=window.sessionStorage;
+            var video_state;
+            $(function () {
+                var user_info=session.getItem("user_info"),
+                    information =JSON.parse(user_info);
+                    
+                var id = $.getUrlParam('id');
+                video_state=$.getUrlParam('video_state');
+                $.ajax({
+                    url: "http://qipei.liebianzhe.com/api/user/video_detail",
+                    data: {id: id, token: information.token},
+                    type: "post",
+                    success: function (data) {
+                    	console.info(data);
+                        if (data.state==1){
+                        var title = template("res_title",data);
+                        document.getElementById("title").innerHTML=title;
+                        var content = template("res_content",data);
+                        document.getElementById("content").innerHTML=content;
+                        }
+                    }
+                })
+            });
+			$.getUrlParam = function (name) {
+                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+                var r = window.location.search.substr(1).match(reg);
+                if (r != null) return unescape(r[2]);
+                return null;
+            }
+            function video(the) {
+                $("#video").show();
+                document.getElementById("video").play();
+                $(the).children("img").hide();
+            }
+            function back_page(){
+            	if(video_state==0){
+            		window.location.replace("index.html");
+            	}else if(video_state==1){
+            		window.location.replace("video.html");
+            	}
+            }
+		</script>
+
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+	</body>
+
+</html>

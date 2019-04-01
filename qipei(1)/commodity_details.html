@@ -1,0 +1,609 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>商品详情</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script>
+		    document.documentElement.style.fontSize =document.documentElement.clientWidth/750*40 +"px";
+		</script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/imageview.css" />
+		<link rel="stylesheet" href="css/common.css" />
+		<link rel="stylesheet" href="css/commodity_details.css" />
+
+		<style>
+			#LRdiv0,#LRdiv1,#LRdiv2,#LRdiv3{
+				display: none;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-icon mui-icon-left-nav mui-pull-left" onclick="back_page()" ></a>
+		    <h1 class="mui-title">商品详情</h1>
+		</header>
+		<div class="mui-content">
+		    <div class="details_content" id="content"></div>
+		    <div class="xian"></div>
+		    <div class="details_evaluate" id="content1"></div>
+		    <div class="xian"></div>
+		    <div class="sp_details" id="sp_details">
+
+		    </div>
+
+		    <div class="tj">
+				<div class="tj_content">
+					<div class="xian1"></div>
+					<img  src="img/index_tjsp.png" class="index_tjsp"/>
+					<span>推荐商品</span>
+					<div class="xian1"></div>
+				</div>
+			</div>
+			<div class="tjsp_body" id="content2"></div>
+
+		</div>
+		<footer class="details_footer">
+			<div class="footer_content">
+				<div class="footer_div" id="custom">
+					<img  src="img/details_kefu.png" class="details_kefu"/>
+					<!--<span onclick="customer()">客服</span>-->
+					<span >客服</span>
+				</div>
+				<div class="footer_div collection">
+					<img  src="img/details_shouchang.png" class="details_shouchang"/>
+					<span>收藏</span>
+				</div>
+			</div>
+			<div class="footer_content1">加入购物车</div>
+			<div class="footer_content2">立即购买</div>
+		</footer>
+		<div class="specifications" id="content3"></div>
+		<div class="tips_info">
+			<div class="warning">
+				<p class="warning_title">客服电话</p>
+				<p class="warning_info" id="phone">
+
+				</p >
+			</div>
+			<div class="tips_button ">
+				<div class="tips_button_div qx" style="width: 100%">
+					确定
+				</div>
+				<!--<div class="tips_button_div qd">-->
+					<!--确定-->
+				<!--</div>-->
+			</div>
+		</div>
+		<div class="backdrop"></div>
+
+
+		<script type="text/html" id="text">
+			<div id="slider" class="mui-slider" >
+			    <div class="mui-slider-group mui-slider-loop">
+			        <!-- 额外增加的一个节点(循环轮播：第一个节点是最后一张轮播) -->
+			        <div class="mui-slider-item mui-slider-item-duplicate">
+			            <a href="#">
+			                <img src="{{goods.banner[goods.banner.length-1]}}">
+			            </a>
+			        </div>
+			        {{each goods.banner as value i}}
+			        <!-- 第一张 -->
+			        <div class="mui-slider-item">
+			            <a href="#">
+			                <img src="{{value}}" data-preview-src="" data-preview-group="1">
+			            </a>
+			        </div>
+			        {{/each}}
+			        <!-- 额外增加的一个节点(循环轮播：最后一个节点是第一张轮播) -->
+			        <div class="mui-slider-item mui-slider-item-duplicate">
+			            <a href="#">
+			                <img src="{{goods.banner[0]}}">
+			            </a>
+			        </div>
+			    </div>
+			    <div class="mui-slider-indicator">
+			    	{{each goods.banner as v v1}}
+			    	{{if v1==0}}
+			        <div class="mui-indicator  mui-active"></div>
+			        {{else}}
+			        <div class="mui-indicator"></div>
+			        {{/if}}
+
+			        {{/each}}
+			    </div>
+			</div>
+		    <div class="content_div">
+		    	<span>{{goods.goods_name}}</span>
+		    	<p class="font_p">{{goods.desc}}</p>
+		    	<div class="price_div">
+		    		{{if vip>=2}}
+		    		<span class="font_span3">￥{{goods.price}}</span>
+		    		{{else}}
+		    		<span></span>
+		    		{{/if}}
+		    		<span>销量：{{goods.alsalenum}}</span>
+		    	</div>
+		    </div>
+		</script>
+
+		<script type="text/html" id="text1">
+			{{if evaluate==false}}
+				暂无评论
+	    	{{else}}
+	    	<a class="select_more"  onclick="all_comment({{evaluate.goods_id}})">查看全部</a>
+	    	<div class="evaluate_title">商品评价</div>
+	    	<div class="evaluate_info">
+	    		<img src="{{evaluate.user_img}}" />
+	    		<span>{{evaluate.username}}</span>
+	    	</div>
+	    	<div class="evaluate_div">{{evaluate.content}}</div>
+	    	<div class="evaluate_img" >
+	    		{{each evaluate.pic as value i}}
+	    		<img  src="{{value}}" data-preview-src="" data-preview-group="2"/>
+	    		{{/each}}
+	    	</div>
+	    	{{/if}}
+		</script>
+		<script type="text/html" id="text2">
+			{{each tuijian as value i}}
+				<div class="tjsp_content" onclick="goods_detail1({{value.id}})">
+					<div class="content_left">
+						<img  src="{{value.cover}}"/>
+					</div>
+					<div class="content_right">
+						<span class="font_span2">{{value.goods_name}}</span>
+						<span class="font_span">{{value.desc}}</span>
+						{{if vip>=2}}
+						<span class="font_span1">￥{{value.price}}</span>
+						{{/if}}
+					</div>
+				</div>
+			{{/each}}
+		</script>
+
+		<script type="text/html" id="text3">
+			<div class="specifications_title">
+				<div class="title_left">
+					<img src="{{goods.cover}}"/>
+				</div>
+				<div class="title_content">
+					<p class="font_span1 font_magin">
+						{{if vip>=2}}
+						￥
+						<span class="price price5">{{goods.price}}</span>
+						{{/if}}
+					</p>
+					<span>选择  规格 分类</span>
+				</div>
+				<div class="title_right">
+					<img src="img/details_delete.png" class="close"/>
+				</div>
+			</div>
+			<%for (var key_id in goods.attribute){%>
+			<div class="specifications_content">
+				<div class="content_title"><%=goods.attribute[key_id].attr_name%></div>
+				<div class="specifications_content_div">
+					<%for (var key_idone in goods.attribute[key_id].spec){%>
+					<div class="specifications_div" onclick="spec_sp({{key_id}},{{key_idone}},{{goods.attribute[key_id].price[key_idone]}})"data-price = "{{goods.attribute[key_id].price[key_idone]}}" data-key_idone = "{{key_idone}}" data-key_id = "{{key_id}}">{{goods.attribute[key_id].spec[key_idone]}}</div>
+					<%} %>
+				</div>
+			</div>
+			<%} %>
+			<div class="specifications_content1">
+				<span>购买数量</span>
+				<div class="number">
+					<button type="button" class="reduce">-</button>
+					<input type="number" value="1" class="number_input"/>
+					<button type="button" class="add">+</button>
+				</div>
+			</div>
+			<div class="div_button">
+				<!--<a href="confirm_order.html">-->
+					<button type="button" onclick="submit_button()">确定</button>
+				<!--</a>-->
+			</div>
+
+
+		</script>
+
+		<script type="text/html" id="text4">
+		{{if goods.details}}
+			{{#goods.details}}
+		{{/if}}
+		</script>
+
+
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript" src="js/mui.previewimage.js" ></script>
+		<script type="text/javascript" src="js/mui.zoom.js" ></script>
+		<script src="js/mui.lazyload.js"></script>
+		<script src="js/mui.lazyload.img.js"></script>
+		<script type="text/javascript" src="js/common.js" ></script>
+		<script type="text/javascript" src="js/art-template.js"></script>
+		<script type="text/javascript" src="js/jquery-3.3.1.min.js" ></script>
+		<script type="text/javascript">
+			mui.init();
+			(function($) {
+				$(document).imageLazyload({
+					placeholder: 'img/60x60.gif'
+				});
+			})(mui);
+			mui.previewImage();
+			var session=window.sessionStorage;
+	      	//登录时返回的用户数据
+	      	var user_info;
+	      	//商品详情的数据
+	      	var goods_detail;
+	      	//获取商品价格
+	      	var price;
+	      	//获取本商品详情的id
+	      	var commodity_id;
+	      	//用户选择商品规格
+	      	var goods_attr={};
+	      	//商品的状态；为0时是加入购物车，为1时是立即购买
+	      	var commodity_state;
+	      	//推荐商品状态，为1时不显示查看全部评论
+	      	var tj_state;
+	      	$(function(){
+
+	      		user_info=session.getItem("user_info");
+      			user_info=JSON.parse(user_info);
+      			goods_detail=session.getItem("goods_detail");
+      			goods_detail=JSON.parse(goods_detail);
+      			console.info(goods_detail);
+      			price=goods_detail.goods.price;
+      			commodity_id=goods_detail.goods.id;
+      			var jsons=goods_detail.goods.attribute;
+
+
+//    			for (var a in jsons)
+//				{
+////				   console.info(a);
+////				   console.info(jsons[a].spec);
+//				   for(var key in jsons[a].spec){
+//				   		console.info(key);
+//				   		console.info(jsons[a].spec[key]);
+//				   }
+//				}
+				goods_detail["vip"]=user_info.issm;
+      			//商品详情
+      			var html=template("text",goods_detail);
+      			document.getElementById("content").innerHTML=html;
+      			//商品评论
+				var html1=template("text1",goods_detail);
+				document.getElementById("content1").innerHTML=html1;
+				//推荐商品
+				var html2=template("text2",goods_detail);
+				document.getElementById("content2").innerHTML=html2;
+				//商品规格、颜色
+				var html3=template("text3",goods_detail);
+				document.getElementById("content3").innerHTML=html3;
+//				sp_details
+				var html4=template("text4",goods_detail);
+				document.getElementById("sp_details").innerHTML=html4;
+
+				if(goods_detail.goods.collect==1){
+					$(".details_shouchang").attr('src','img/yishouchang.png');
+				}
+
+				if(goods_detail.tuijian.length==0){
+					$(".tj_content").hide();
+				}
+
+		      	var gallery = mui('.mui-slider');
+				gallery.slider({
+				 	interval:2000//自动轮播周期，若为0则不自动播放，默认为0；
+				});
+				//点击选择规格和颜色
+				$(".specifications_div").on('tap',function(){
+					$(this).addClass('specifications_div_active').siblings().removeClass('specifications_div_active');
+
+				})
+				//点击关闭
+				$(".close,.backdrop").on('tap',function(){
+					$(".details_footer").show();
+					$(".specifications").hide();
+					$(".backdrop").removeClass("tool_acitve");
+					$(".tips_info ").removeClass("tool_acitve");
+					$(".specifications_div").removeClass("specifications_div_active");
+				})
+
+				$(".footer_content1,.footer_content2").on('tap',function(){
+					$(".details_footer").hide();
+					$(".specifications").show();
+					$(".backdrop").addClass("tool_acitve");
+
+				})
+				//当文本框发生变化时
+				$(".number_input").on("input",function(){
+					var num=($(this).val()*1);
+					var price1=price*num;
+					$(".price").text(price1);
+				})
+				//减法
+				$(".reduce").on("tap",function(){
+					var num=($(".number_input").val()*1);
+					num=num-1;
+					if(num<=0){
+						num =1;
+						$(".number_input").val(num);
+					}
+					$(".number_input").val(num);
+					var price1=price*num;
+					$(".price").text(price1);
+				})
+				//加法
+				$(".add").on("tap",function(){
+					var num=($(".number_input").val()*1);
+					num=num+1;
+					$(".number_input").val(num);
+					var price1=price*num;
+					$(".price").text(price1);
+				})
+
+				tj_state=session.getItem("tj_state");
+  				if(tj_state==1){
+  					$(".select_more").hide();
+  				}
+  				//默认选择第一个规格参数
+  				for (var i=0;i<$(".specifications_content_div").index();i++) {
+  					$(".specifications_content_div").eq(i).children(".specifications_div").eq(0).addClass('specifications_div_active');
+  					var id_one=$(".specifications_content_div").eq(i).children(".specifications_div").eq(0).data("key_id");
+  					var id_two=$(".specifications_content_div").eq(i).children(".specifications_div").eq(0).data("key_idone");
+  					var p=$(".specifications_content_div").eq(i).children(".specifications_div").eq(0).data("price");
+  					goods_attr[id_one]=id_two;
+					var num=($(".number_input").val()*1);
+					$(".price5").html(p*num);
+					console.info(goods_attr);
+  				}
+  				console.info($(".specifications_content_div").index());
+
+	      	})
+
+	      	function back_page(){
+	      		//进入商品详情页面状态，0为首页的推荐商品，1为商品列表,2为购物车,3为我的订单列表,4为收藏
+	      		var commodity_details_state=session.getItem("commodity_details_state");
+	      		if(commodity_details_state==0){
+	      			window.location.href="index.html";
+	      		}else if(commodity_details_state==1){
+	      			window.location.href="second_classification.html";
+	      		}else if(commodity_details_state==2){
+	      			window.location.href="shopping_cart.html";
+	      		}else if(commodity_details_state==3){
+	      			window.location.href="my_order.html";
+	      		}else if(commodity_details_state==4){
+	      			window.location.href="collection.html";
+	      		}
+	      	}
+
+	      	function goods_detail1(gid){
+				console.info(gid);
+				$.ajax({
+					type:"post",
+					url:"http://qipei.liebianzhe.com/api/user/goods_detail",
+					async:true,
+					data:{
+						token:user_info.token,
+						gid:gid
+					},
+					success:function(data){
+						console.info(data);
+						var goods_detail1=JSON.stringify(data.data);
+						//存入商品详情数据
+						session.setItem("goods_detail",goods_detail1)
+						//为推荐商品时评论没有查看全部
+						tj_state=1
+						session.setItem("tj_state",tj_state);
+						window.location.href="commodity_details.html";
+					},
+					error:function(data){
+						console.info("获取商品详情失败！")
+					}
+				});
+			}
+	      	//点击收藏商品
+			$(".collection").on('tap',function(){
+				if($(".details_shouchang").attr('src')=="img/details_shouchang.png"){
+					$.ajax({
+						type:"post",
+						url:"http://qipei.liebianzhe.com/api/user/collection_list",
+						async:true,
+						data:{
+							token:user_info.token,
+							type:4,
+							gid:commodity_id,
+						},
+						success:function(data){
+							console.info(data);
+							if(data.state==1){
+								$(".details_shouchang").attr('src','img/yishouchang.png');
+								goods_detail.goods["collect"]=1;
+								console.info(goods_detail.goods.collect);
+								session.setItem("goods_detail",JSON.stringify(goods_detail));
+							}
+							mui.toast(data.msg);
+
+						},
+						error:function(data){
+							console.info("加入收藏失败！")
+						}
+					});
+				}else{
+					$.ajax({
+						type:"post",
+						url:"http://qipei.liebianzhe.com/api/user/collection_list",
+						async:true,
+						data:{
+							token:user_info.token,
+							type:3,
+							gid:commodity_id,
+						},
+						success:function(data){
+							console.info(data);
+							if(data.state==1){
+								$(".details_shouchang").attr('src','img/details_shouchang.png');
+								goods_detail.goods["collect"]=0;
+								console.info(goods_detail.goods.collect);
+								session.setItem("goods_detail",JSON.stringify(goods_detail));
+							}
+
+						},
+						error:function(data){
+							console.info("加入收藏失败！")
+						}
+					});
+				}
+			})
+			//点击查看全部评论
+			function all_comment(goods_id){
+				$.ajax({
+					type:"post",
+					url:"http://qipei.liebianzhe.com/api/user/query_evaluate",
+					async:true,
+					data:{
+						token:user_info.token,
+						gid:goods_id
+					},
+					success:function(data){
+						console.info(data);
+						if(data.state==1){
+							var all_comment=data;
+							session.setItem("all_comment",JSON.stringify(all_comment));
+							window.location.href="all_comment.html";
+						}else{
+							mui.toast(data.msg);
+						}
+					},
+					error:function(){
+						console.info("查看全部评论失败~")
+					}
+				});
+			}
+
+			function spec_sp(id_one,id_two,p){
+				goods_attr[id_one]=id_two;
+				var num=($(".number_input").val()*1);
+				$(".price5").html(p*num);
+				console.info(goods_attr);
+			}
+			//加入购物车
+			$(".footer_content1").on('tap',function(){
+				commodity_state=0;
+				console.info(commodity_state);
+			})
+			//立即购买
+			$(".footer_content2").on('tap',function(){
+				commodity_state=1;
+				console.info(commodity_state);
+			})
+			function submit_button(){
+				var num =$(".number_input").val();
+				if($.isEmptyObject(goods_attr)){
+					mui.toast("请选择商品的规格！");
+					return false;
+				}
+				goods_attr=JSON.stringify(goods_attr);
+				//加入购物车
+				if(commodity_state==0){
+					$.ajax({
+						type:"post",
+						url:"http://qipei.liebianzhe.com/api/user/car_list",
+						async:true,
+						data:{
+							token:user_info.token,
+							type:2,
+							gid:commodity_id,
+							goods_attr:goods_attr,
+							num:num,
+						},
+						success:function(data){
+							console.info(data);
+							goods_attr=JSON.parse(goods_attr);
+							mui.toast(data.msg);
+						},
+						error:function(data){
+							console.info("加入购物车失败！");
+						}
+					});
+				//确定购买
+				}else if(commodity_state==1){
+					if(user_info.issm==1){
+						mui.toast("请先通过门店验证，才能购买商品");
+						return false;
+					}
+					$.ajax({
+						type:"post",
+						url:"http://qipei.liebianzhe.com/api/user/trace_order",
+						async:true,
+						data:{
+							token:user_info.token,
+							type:1,
+							gid:commodity_id,
+							num:num,
+							attribute:goods_attr,
+						},
+						success:function(data){
+							console.info(data);
+							if(data.state==1){
+								var ordernum=data.ordernum;
+								session.setItem("ordernum",ordernum);
+								//从商品详情页进入确认订单页面的状态 为0，购物车为1，2为订单页面
+		      					var order_state=0;
+		      					session.setItem("order_state",order_state);
+								window.location.href="confirm_order.html";
+							}else{
+								mui.toast(data.msg);
+							}
+						},
+						error:function(data){
+							console.info("加入购物车失败！");
+						}
+					});
+				}
+			}
+
+			//点击遮罩层消失
+            $(".backdrop").click(function(){
+                ShowAndDisappear();
+            })
+            //点击取消消失
+            $(".qx").click(function(){
+                ShowAndDisappear();
+            })
+            function ShowAndDisappear(){
+                $(".backdrop").toggleClass("tool_acitve");
+                $(".tips_info").toggleClass("tool_acitve");
+            }
+
+            $("#custom").click(function () {
+                window.location.href = "http://pyt.zoosnet.net/LR/Chatpre.aspx?id=PYT32000899&lng=cn&e=%e6%82%a8%e5%a5%bd%ef%bc%8c%e6%9c%89%e4%bb%80%e4%b9%88%e5%8f%af%e4%bb%a5%e5%b8%ae%e5%8a%a9%e4%bd%a0%e7%9a%84%e5%90%97%ef%bc%9f";
+            })
+// 			function customer() {
+// 				console.info("aaa");
+// 				window.location.href="";
+// //	      	    $.ajax({
+// //					url:"http://qipei.liebianzhe.com/api/user/customer_phone",
+// //					data:{token:user_info.token},
+// //					type:"post",
+// //					success:function (data) {
+// //					    var res = data.data;
+// //					    $("#phone").html(res.phone);
+// //                      ShowAndDisappear();
+// //                  }
+// //				})
+//             }
+
+		</script>
+		<!--<script language=javascript>
+		var LiveReceptionCode_chatexplain_online='您好，请问有什么可以帮助您的吗？';
+		LiveReceptionCode_chatexplain_online=escape(LiveReceptionCode_chatexplain_online);
+		</script>-->
+		<!--<script language="javascript" src="http://pyt.zoosnet.net/JS/LsJS.aspx?siteid=PYT32000899&lng=cn"></script>-->
+
+
+	</body>
+
+</html>

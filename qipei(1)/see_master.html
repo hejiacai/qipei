@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>查看接单师傅</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script>
+		    document.documentElement.style.fontSize =document.documentElement.clientWidth/750*40 +"px";
+		</script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/common.css" />
+		<link rel="stylesheet" href="css/see_master.css" />
+		<style>
+			.master_content{
+				height: 2.2rem;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-icon mui-icon-left-nav mui-pull-left" href="my_dispatch.html"></a>
+		    <h1 class="mui-title">我的派单</h1>
+		</header>
+		<div class="mui-content" id="content">
+		    
+		</div>
+		
+		<script type="text/html" id="text">
+			<div class="master_body">
+		    	<div class="title_img">
+			    	<img src="{{headimgurl}}"/>
+		    	</div>
+		    	<div class="master_title">
+		    		<span>{{nickname}}</span>
+		    		<span>联系电话：{{phone}}</span>
+		    		<img  src="img/tel.png" onclick="call_phones({{phone}})"/>
+		    	</div>
+		    	<div class="master_content">
+		    		<!--<div class="jianjie">简介</div>
+		    		<div class="content_div">
+		    			内容内容内容内容内容内容内容内容内容内容内容内容内
+						内容内容内容内容内容内容内容内容内容内容内容内容内
+						容内容内容
+		    		</div>-->
+		    	</div>
+		    </div>
+		</script>
+		
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript" src="js/common.js" ></script>
+		<script type="text/javascript" src="js/art-template.js"></script>
+		<script type="text/javascript" src="js/jquery-3.3.1.min.js" ></script>
+		<script type="text/javascript">
+			mui.init();
+			var session=window.sessionStorage;
+			var master_details;
+			$(function(){
+				master_details=session.getItem("master_details");
+				master_details=JSON.parse(master_details);
+				console.info(master_details);
+				var html =template("text",master_details);
+				document.getElementById("content").innerHTML = html;
+			})
+			function call_phones(phone){
+            	var u = navigator.userAgent, app = navigator.appVersion;
+                var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; //android终端或者uc浏览器
+                var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+                if (isAndroid) {
+                    js.call_phone(''+phone+'');
+                }
+                if (isiOS) {
+                    var num={"phone":phone};
+                    window.webkit.messageHandlers.call_phone.postMessage(num);
+                }
+            }
+		</script>
+	</body>
+
+</html>

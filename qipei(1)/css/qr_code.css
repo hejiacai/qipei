@@ -1,0 +1,66 @@
+section{
+	width: 100%;
+	height: 31.29rem;
+	background: url(../img/qr_code.png) no-repeat;
+	background-size: 100% 100%;
+	position: relative;
+}
+.my_info{
+	padding-top: 0.5rem;
+	margin-left: 0.75rem;
+	font-size: 0.9rem;
+	color: white;
+	display: flex;
+	align-items: center;
+}
+.my_info img{
+	width: 2rem;
+	height: 2rem;
+	margin-right: 0.65rem;
+	border-radius:50% ;
+}
+.qr_code{
+	width: 12.15rem;
+	height: 16.75rem;
+	position: absolute;
+    top: 40%;
+    left: 17.5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+.qr_code img{
+	width: 12.15rem;
+	height: 13.675rem;
+}
+.font_div{
+	font-size: 1rem;
+	color: white;
+	border-bottom: 1px solid white;
+}
+.head{
+    height: 2.05rem;
+    width: 100%;
+    background: #24a7f8;
+    color: #fff;
+    line-height: 2.05rem;
+    text-align: center;
+    font-size: 0.9rem;
+    position: relative;
+}
+.head>a{
+    display: block;
+    position: absolute;
+    height: 100%;
+    width: .4rem;
+    display: flex;
+    align-items: center;
+    left: .875rem;
+}
+.head>a>img{
+    display: block;
+    width: .4rem;
+    height: .725rem;
+
+}

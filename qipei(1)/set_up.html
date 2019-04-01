@@ -1,0 +1,462 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>设置</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script>
+		    document.documentElement.style.fontSize =document.documentElement.clientWidth/750*40 +"px";
+		</script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link href="css/mui.picker.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/common.css" />
+		<link rel="stylesheet" href="css/set_up.css" />
+		<script type="text/javascript" src="js/art-template.js"></script>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a  class=" mui-icon mui-icon-left-nav mui-pull-left" href="personal.html"></a>
+		    <h1 class="mui-title">设置</h1>
+		</header>
+		<div class="mui-content">
+		    <div class="set_body" id="content"></div>
+		</div>
+		<!--弹框-->
+		<div class="tips_info">
+			<div class="warning">
+				<p class="warning_title">退出</p>
+				<p class="warning_info">
+					退出登录将无法查看。确认退出吗？
+				</p>
+			</div>
+			<div class="tips_button ">
+				<div class="tips_button_div qx">
+					取消
+				</div>
+				<div class="tips_button_div qd">
+					确定
+				</div>
+			</div>
+		</div>
+		<!--遮罩层-->
+		<div class="backdrop"></div>
+		<div id="picture" class="mui-popover mui-popover-bottom mui-popover-action ">
+		    <!-- 可选择菜单 -->
+		    <ul class="mui-table-view">
+		      <li style="cursor :pointer" class="mui-table-view-cell">
+		        <a href="#" style="color: #FD4C2D;"class="input_file">
+		        	拍照
+
+		        	<input  type="file" accept="image/*" capture="camera" name="file1" id="update1"   enctype="multipart/form-data" onchange="update_img1()">
+		        </a>
+		      </li>
+		      <li style="cursor :pointer" class="mui-table-view-cell">
+		        <a href="#"  class="input_file">
+		        	从相册选择
+		        	<!--<form enctype="multipart/form-data" id="f1">-->
+		        		<input  type="file" accept="image/*" id="update" name="file"   enctype="multipart/form-data" onchange="update_img()" />
+		        	<!--</form>-->
+		        </a>
+		      </li>
+		    </ul>
+		    <!-- 取消菜单 -->
+		    <ul class="mui-table-view">
+		      <li class="mui-table-view-cell">
+		        <a href="#picture">
+		        	取消
+		        </a>
+		      </li>
+		    </ul>
+		</div>
+		
+		
+		<script type="text/html" id="text">
+			<div class="set_content">
+	    		<a href="#picture">
+	    		<img  src="{{headimgurl}}"/>
+		    		<div class="content_right" >
+		    			<span>修改头像</span>
+		    			<a  id="changeT">
+		    				<img  src="img/set_jiantou.png"/>
+		    			</a>
+		    		</div>
+	    		</a>
+	    	</div>
+	    	<div class="set_content1">
+	    		<span>昵称 </span>
+	    		<div onclick="jump_set(1)" class="content_right">
+	    			<span>{{nickname}}</span>
+	    			<!--<a href="modify_username.html">-->
+		    			<!--<img  src="img/set_jiantou.png"/>-->
+	    			<!--</a>-->
+	    		</div>
+	    	</div>
+	    	<div class="set_content1">
+	    		<span>性别 </span>
+	    		<div class="content_right">
+	    			<div class="choice_box">
+	    				{{if sex==1}}
+	    				<div onclick="changesex(1)"  class="male on" data-sex="男"><input type="radio" checked="checked"><img src="img/xuanze.png" alt="" class="xuanze">男</div>
+	    				<div onclick="changesex(2)" class="female" data-sex="女"><input type="radio"><img src="img/weixuan.png" alt="" class="xuanze">女</div>
+	    				{{else if sex==2}}
+	    				<div onclick="changesex(1)" class="male " data-sex="男"><input type="radio" ><img src="img/weixuan.png" alt="" class="xuanze">男</div>
+	    				<div onclick="changesex(2)" class="female on" data-sex="女"><input type="radio" checked="checked"><img src="img/xuanze.png" alt="" class="xuanze">女</div>
+	    				{{/if}}
+	    			</div>
+	    			<img  src="img/set_jiantou.png"/>
+	    		</div>
+	    	</div>
+	    	<div class="set_content1">
+	    		<span>手机号码 </span>
+	    		<div class="content_right">
+	    			<span>{{phone}}</span>
+	    		</div>
+	    	</div>
+	    	<div class="set_content1">
+	    		<span>出生日期  </span>
+	    		<div class="content_right choice_add">
+	    			<span class="add_box">{{birth}}</span>
+	    			<img  src="img/set_jiantou.png" />
+	    		</div>
+	    	</div>
+	    	<div class="set_content1">
+	    		<span>设置支付密码 </span>
+	    		<div onclick="card_set_pwd()" class="content_right">
+	    			<img  src="img/set_jiantou.png"/>
+	    		</div>
+	    	</div>
+	    	<div class="set_content1">
+	    		<span>实名认证 </span>
+	    		<div class="content_right">
+	    			{{if issm==1}}
+	    			<span class="font_span">未认证</span>
+	    			{{else if issm==2}}
+	    			<span style="color:#4e7ef2;">已认证</span>
+	    			{{/if}}
+	    			<!--<img  src="img/set_jiantou.png"/>-->
+	    		</div>
+	    	</div>
+	    	<div class="set_content1">
+	    		<span>收货地址  </span>
+	    		<div class="content_right" onclick="jump_my_address()">
+					<span id="address" class="font_span"></span>
+	    			<img  src="img/set_jiantou.png"/>
+	    		</div>
+	    	</div>
+	    	<div class="set_content1 dianji">
+	    		<span>退出当前账户  </span>
+	    		<div class="content_right">
+	    			<img  src="img/set_jiantou.png"/>
+	    		</div>
+	    	</div>
+		</script>
+		
+		<script type="text/javascript" src="js/common.js" ></script>
+		<script type="text/javascript" src="js/jquery-3.3.1.min.js" ></script>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript" src="js/mui.picker.min.js" ></script>
+		<script type="text/javascript">
+			mui.init()
+			var loca=window.localStorage;
+			var session=window.sessionStorage;
+	      	//登录时返回的用户数据
+	      	var user_info;
+            
+			$(function(){
+				user_info=session.getItem("user_info");
+      			user_info=JSON.parse(user_info);
+      			console.info(user_info);
+      			var html=template("text",user_info);
+      			document.getElementById("content").innerHTML=html;
+				$.ajax({
+					url:"http://qipei.liebianzhe.com/api/user/defaddress",
+					type:"post",
+					dataType:"json",
+					data:{"token":user_info.token},
+					success:function(data){
+					    if(data.state == 1){
+							$("#address").html(data.data.city);
+							$("#address").css('color','black');
+						}else{
+                            $("#address").html("暂无地址");
+						}
+					},
+					error:function(){
+                        $("#address").html("暂无地址");
+					}
+				})
+				//点击选择日期
+				var choiceAdd = document.querySelector('.choice_add');
+		        var addBox = document.querySelector('.add_box');
+		        var year=new Date().getFullYear();
+		      	choiceAdd.addEventListener('tap', function() {
+		      		var dtpicker  = new  mui.DtPicker({
+		      			type:'date',
+		      			"beginYear":1960,
+              			"endYear":year,//区间内的日期
+            			"beginDate": new Date(1960,01,01),//设置开始日期  
+            			"endDate": new Date(2038,11,31),//设置结束日期    //真正的是10.21
+		      		});
+					dtpicker .show(function(rs) {
+							/*
+							 * rs.value 拼合后的 value
+							 * rs.text 拼合后的 text
+							 * rs.y 年，可以通过 rs.y.vaue 和 rs.y.text 获取值和文本
+							 * rs.m 月，用法同年
+							 * rs.d 日，用法同年
+							 * rs.h 时，用法同年
+							 * rs.i 分（minutes 的第二个字母），用法同年
+							 */
+							addBox.innerText = rs.y.text + '-' + rs.m.text + '-' + rs.d.text;
+							var birth= rs.y.text + '-' + rs.m.text + '-' + rs.d.text;
+							//点击修改出生日期
+							$.ajax({
+			                    type:"post",
+			                    url:"http://qipei.liebianzhe.com/api/user/set_user",
+			                    async:false,
+			                    data:{
+			                        token:user_info.token,birth:birth,type:3
+			                    },
+			                    success:function(data){
+			                        if(data.state==1){
+			                            user_info.birth=birth;
+			                            window.sessionStorage.setItem("user_info",JSON.stringify(user_info))
+			                        }
+			                        mui.toast(data.msg);
+			                    },
+			                    error:function(data){
+			                        mui.toast("未知错误");
+			                    }
+			
+			                });
+							/* 
+							 * 返回 false 可以阻止选择框的关闭
+							 * return false;
+							 */
+							 dtpicker.dispose();
+					});
+				}, false);
+				
+				
+//    			点击切换男女
+				$('.choice_box>div').on('tap',function () {
+			        $(this).addClass('on').siblings().removeClass('on')
+			        $(this).find('input').attr('checked','checked')
+			        $('.sexual').html($(this).attr('data-sex'))
+			        $(this).siblings().find('input').removeAttr('checked')
+			        $(this).find('img').attr('src','img/xuanze.png')
+			        $(this).siblings().find('img').attr('src','img/weixuan.png')
+			    })
+				//点击触发
+				$(".dianji").click(function(){
+					ShowAndDisappear();
+				})
+				//点击遮罩层消失
+				$(".backdrop").click(function(){
+					ShowAndDisappear();
+				})
+				//点击取消消失
+				$(".qx").click(function(){
+					ShowAndDisappear();
+				})
+				
+//				点击退出登录
+				$(".qd").on('tap',function(){
+					$.ajax({
+						type:"post",
+						url:"http://qipei.liebianzhe.com/api/login/logout",
+						async:true,
+						data:{
+							token:user_info.token,
+						},
+						success:function(data){
+							console.info(data);
+							if(data.state==1){
+								//判断能否自动登录的状态；0为否，1为是
+								var login_state=0;
+								loca.setItem("login_state",login_state);
+								session.clear();
+								mui.toast(data.msg);
+								back_close();
+							}
+						},
+						error:function(data){
+                            mui.toast("未知错误");
+						}
+						
+					});
+				})
+			})
+			
+			function jump_my_address(){
+				//进入我的地址页面的状态，0为设置页面进入，1为确认订单页面进入；
+				var my_address_state=0;
+				session.setItem("my_address_state",my_address_state);
+				window.location.replace("my_address.html");
+			}
+			function changesex(type){
+                $.ajax({
+                    type:"post",
+                    url:"http://qipei.liebianzhe.com/api/user/set_user",
+                    async:true,
+                    data:{
+                        token:user_info.token,sex:type,type:2
+                    },
+                    success:function(data){
+                        if(data.state==1){
+                            user_info.sex=type;
+                            window.sessionStorage.setItem("user_info",JSON.stringify(user_info))
+                        }
+                        mui.toast(data.msg);
+                    },
+                    error:function(data){
+                        mui.toast("未知错误");
+                    }
+
+                });
+            }
+			//点击跳转设置页面
+			function jump_set(jump_type){
+//				session.setItem("jump_type",jump_type);
+//				window.location.href='modify_username.html';
+			}
+			//点击设置支付密码
+			function card_set_pwd(){
+				window.location.replace("card_set_pwd.html");
+			}
+			//显示和隐藏
+			function ShowAndDisappear(){
+				$(".backdrop").toggleClass("tool_acitve");
+				$(".tips_info").toggleClass("tool_acitve");
+			}
+			function jump(){
+				window.location.replace("login.html");
+			}
+			function update_img() {
+                $("#update").click();
+				let formData = new FormData();
+				var file = document.getElementById("update").files[0];
+				formData.append('file',file);
+				mui.ajax("http://qipei.liebianzhe.com/api/index/upload", {
+					data: formData,
+					async: false,
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					cache: false,
+					contentType: false,
+					processData: false,
+					success: function(data) {
+						data=JSON.parse(data);
+                        if(data.state == 1){
+                            file=data.data[0].name;
+                            console.info(file);
+                            $.ajax({
+                                url:'http://qipei.liebianzhe.com/api/user/set_user',
+                                data:{"type":4,"token":user_info.token,"headimg":file},
+                                type:"post",
+                                dataType:"json",
+                                success:function(data){
+                                	console.info(data);
+                                    if(data.state == 1){
+                                        mui.toast(data.msg);
+                                        user_info.headimgurl="http://qipei.liebianzhe.com/static/upload/"+file;
+                                        window.sessionStorage.setItem("user_info",JSON.stringify(user_info))
+                                        window.location.reload();
+                                    }else{
+                                        mui.toast(data.msg);
+                                    }
+                                },
+                                error: function(xhr, type, errorThrown) {
+                                    //异常处理；
+                                    mui.toast("未知错误");
+                                }
+                            })
+                        }else{
+                            mui.toast(data.msg);
+                        }
+					},
+					error: function(xhr, type, errorThrown) {
+						//异常处理；
+                        mui.toast("未知错误");
+					}
+				})
+			}
+			function update_img1() {
+				$("#update1").click();
+				let formData = new FormData();
+				var file = document.getElementById("update1").files[0];
+				formData.append('file',file);
+				mui.ajax("http://qipei.liebianzhe.com/api/index/upload", {
+					data: formData,
+					async: false,
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					cache: false,
+					contentType: false,
+					processData: false,
+					success: function(data) {
+						data=JSON.parse(data);
+						if(data.state == 1){
+                            file=data.data[0].name;
+                            console.info(file);
+                            $.ajax({
+								url:'http://qipei.liebianzhe.com/api/user/set_user',
+								data:{"type":4,"token":user_info.token,"headimg":file},
+								type:"post",
+								dataType:"json",
+								success:function(data){
+									if(data.state == 1){
+                                        mui.toast(data.msg);
+                                        user_info.headimgurl="http://qipei.liebianzhe.com/static/upload/"+file;
+                                        window.sessionStorage.setItem("user_info",JSON.stringify(user_info))
+                                        window.location.reload();
+									}else{
+                                        mui.toast(data.msg);
+									}
+								},
+                                error: function(xhr, type, errorThrown) {
+                                    //异常处理；
+                                    mui.toast("未知错误");
+                                }
+							})
+						}else{
+                            mui.toast(data.msg);
+						}
+
+
+					},
+					error: function(xhr, type, errorThrown) {
+						//异常处理；
+                        mui.toast("未知错误");
+					}
+				})
+			}
+			function back_close(){
+				var u = navigator.userAgent, app = navigator.appVersion;
+                var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端或者uc浏览器
+                var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+				console.info(isAndroid);
+                console.info(isiOS);
+				if (isAndroid) {
+//              	var urls='http://qipei.liebianzhe.com/qipei/login.html';
+                    js.back_close();
+                	window.location.href="login.html";
+                    
+                }
+				if (isiOS) {
+                    var url={ "url":'http://qipei.liebianzhe.com/qipei/login.html'};
+//                  mui.toast(url);
+                    window.webkit.messageHandlers.back_close.postMessage(url);
+                    setTimeout(function(){
+                    	window.location.href="login.html";
+                    },2500);
+                }
+                
+                 
+			}
+		</script>
+	</body>
+
+</html>

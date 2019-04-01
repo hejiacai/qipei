@@ -1,0 +1,672 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>确认订单</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script>
+		    document.documentElement.style.fontSize =document.documentElement.clientWidth/750*40 +"px";
+		</script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/common.css" />
+		<link rel="stylesheet" href="css/confirm_order.css" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-icon mui-icon-left-nav mui-pull-left"  onclick="back()"></a>
+		    <h1 class="mui-title">确认订单</h1>
+		</header>
+		<div class="mui-content" id="content"></div>
+		
+		<div class="backdrop"></div>
+		<div class="fkfs_body">
+    		<div class="fkfs_title">
+    			<img src="img/return1.png" class="return"/>
+    			<div class="fkfs_title_div">选择付款方式</div>
+    		</div>
+    		<div class="fkfs_content" onclick="fkfs_content(1)">
+    			<div class="content_left">
+    				<div class="left_img">
+    					<img src="img/yeb.png"/>
+    				</div>
+    				<span>我的钱包</span>
+    			</div>
+    			<div class="content_right">
+    				<img  src="img/guo.png" class="guo"/>
+    			</div>
+    		</div>
+    		<div class="fkfs_content" onclick="fkfs_content(2)">
+    			<div class="content_left">
+    				<div class="left_img">
+    					<img src="img/wxzf.png"/>
+    				</div>
+    				<span>微信支付</span>
+    			</div>
+    			<div class="content_right">
+    				<img  src="img/guo.png" class="guo"/>
+    			</div>
+    		</div>
+    		<div class="fkfs_content" onclick="fkfs_content(3)">
+    			<div class="content_left">
+    				<div class="left_img">
+    					<img src="img/zfbzf.png"/>
+    				</div>
+    				<span>支付宝</span>
+    			</div>
+    			<div class="content_right">
+    				<img  src="img/guo.png" class="guo"/>
+    			</div>
+    		</div>
+    		
+    	</div>
+    	<div class="yhj_body" id="yhj_body"></div>
+    	
+    	
+    	<script type="text/html" id="text">
+    		<div class="address" onclick="address_xz()">
+    			{{if data.address}}
+		    	<div class="address_left">
+		    		<div class="left_title">
+		    			<span>收件人:</span>
+		    			<span class="sjr">{{data.address.username}}</span>
+		    			<span class="font_span">{{data.address.phone}}</span>
+		    		</div>
+		    		<div class="left_content">
+		    			<span>收件地址:</span>
+		    			<div class="left_content_div">
+		    				{{data.address.city}}{{data.address.address}}
+		    			</div>
+		    		</div>
+		    	</div>
+		    	{{else}}
+		    	<div class="address_left">
+		    		<div class="left_title">
+		    			<span>收件人:</span>
+		    			<span class="sjr">{{data.address.username}}</span>
+		    			<span class="font_span">{{data.address.phone}}</span>
+		    		</div>
+		    		<div class="left_content">
+		    			<span>收件地址:</span>
+		    			<div class="left_content_div">
+		    				{{data.address.city}}{{data.address.address}}
+		    			</div>
+		    		</div>
+		    	</div>
+		    	{{/if}}
+		    	<div class="address_right">
+		    		 <img src="img/confirm_order_jiantou.png" />
+		    	</div>
+		    </div>
+		    
+		    
+		    
+		    <div class="product_info">产品信息</div>
+		    {{each data.goods as value i}}
+		    <div class="product_body">
+			    <div class="product_contnet" data-id ="{{value.id}}">
+			    	<div class="contnet_img">
+			    		<img src="{{value.cover}}" />
+			    	</div>
+			    	<div class="product_contnet_div">
+			    		<p class="font_p">{{value.goods_name}}</p>
+			    		<p class="font_p1">{{value.attribute}}</p>
+			    		<p class="font_p2">
+			    			<span>￥</span>
+			    			<span class="price">{{value.goods_price}}</span>
+			    		</p>
+			    	</div>
+			    </div>
+			    <div class="commodity_div">
+			    	<span>数量</span>
+			    	<div class="commodity_div_right">
+			    		<div class="div_button reduce" onclick="reduce(this)">-</div>
+			    		<input type="number" class="number_input" value="{{value.goods_num}}" onchange="number_input(this)" onfocus="number_input1(this)"/>
+			    		<div class="div_button add" onclick="add(this)">+</div>
+			    	</div>
+			    </div>
+		    </div>
+		    {{/each}}
+		    <div class="commodity_div">
+		    	<span>平台优惠券</span>
+		    	<span class="font_span1 lingqu1" onclick="lingqu1()">领取 ></span>
+		    </div>
+		    <div class="commodity_div">
+		    	<span>运费</span>
+		    	<span>
+		    		<span class="freight">{{data.freightprice}}</span>
+		    		元
+		    	</span>
+		    </div>
+		    <div class="commodity_div1">
+		    	<span>买家留言</span>
+		    	<input type="text" class="message"placeholder="请输入留言"/>
+		    </div>
+		    <div class="all_price">
+		    	<div class="agreement">
+		    		<img src="img/guoxuan1.png" />
+		    		<span>提交订单规则表示您同意</span>
+		    	</div>
+		    	<div class="all_price_div">
+		    		<span>共{{num}}件商品</span>
+		    		<span class="font_span2">小计:</span>
+		    		<span class="font_span3">￥</span>
+		    		<span class="all_price_span all_price1">{{data.goodsprice}}</span>
+		    	</div>
+		    </div>
+			<footer class="confirm_footer">
+				<div class="footer_left">
+					<span>合计:</span>
+					<span class="font_span3">￥</span>
+		    		<span class="all_price_span all_price2"></span>
+		    		<span class="font_span4">（含运费）</span>
+				</div>
+				<div class="footer_right" onclick="footer_right()">结算</div>
+			</footer>
+    	</script>
+    	<script type="text/html" id="text1">
+    		<div class="yhj_title">优惠券</div>
+    		{{each unuse.cuse as value i}}
+    		<div class="yhj_content" >
+    			<div class="yhj" style="background: url({{value.coupon_pic}}) no-repeat;" onclick="use({{value.id}},{{value.status}},{{value.coupon_capital}},{{value.coupon_need_capital}})">
+            		<div class="yhj_div_left">
+            			<p>{{value.coupon_name}}</p>
+            			{{if value.coupon_need_capital==0}}
+            			<span>任何价格都可用</span>
+            			{{else}}
+            			<span>满{{value.coupon_need_capital}}元可用</span>
+            			{{/if}}
+            		</div>
+            		<div class="yhj_div_right">
+            			￥<span class="yhj_div_right_span">{{value.coupon_capital}}</span>
+            		</div>
+            	</div>
+    			<div class="yhj_content_div">
+    				{{if value.status==0}}
+    				<div class="content_div_info">
+    					<span>{{value.starttime}}-{{value.endtime}}有效</span>
+    					<span class="lingqu" onclick="lingqu(this,{{value.id}})">领取</span>
+    				</div>
+    				<img class="yiling" src="img/yiling.png"/>
+    				{{else value.status==1}}
+    				<div class="content_div_info">
+    					<span>{{value.starttime}}-{{value.endtime}}有效</span>
+    					<span class="lingqu">已领取</span>
+    				</div>
+    				<img class="yiling" src="img/yiling.png" style="display: block;"/>
+    				{{/if}}
+    			</div>
+    		</div>
+    		{{/each}}
+    		<div class="div_button1">
+    			<button type="button" class="wancheng" onclick="wancheng()">完成</button>
+    		</div>
+    	</script>
+    	
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript" src="js/common.js" ></script>
+		<script type="text/javascript" src="js/art-template.js"></script>
+		<script type="text/javascript" src="js/jquery-3.3.1.min.js" ></script>
+		<script type="text/javascript">
+			mui.init();
+			var session=window.sessionStorage;
+	      	//登录时返回的用户数据
+	      	var user_info;
+	      	//获取订单号
+	      	var ordernum;
+//			获取商品的单价
+			var price;
+//			获取运费
+			var freight;
+			//订单的总金额
+			var allprice;
+			//支付方式
+			var paytype;
+			//商品的数量
+			var num;
+			//一种商品的总价
+			var prices;
+			//地址id
+			var address_id;
+			//优惠券id
+			var yid=0;
+			//选择地址时返回的数据
+			var address;
+			//优惠券便宜的价格
+			var coupon_capital=0;
+			$(function(){
+				user_info=session.getItem("user_info");
+      			user_info=JSON.parse(user_info);
+      			ordernum=session.getItem("ordernum");
+      			address=session.getItem("address_data");
+      			address=JSON.parse(address);
+      			$.ajax({
+      				type:"post",
+      				url:"http://qipei.liebianzhe.com/api/user/confirm_order",
+      				async:false,
+      				data:{
+      					token:user_info.token,
+      					ordernum:ordernum
+      				},
+      				success:function(data){
+      					console.info(data);
+      					if(address==""||address==null){
+	      					var html=template("text",data);
+							document.getElementById("content").innerHTML=html;
+      					}else{
+      						data.data["address"]=address;
+      						var html=template("text",data);
+							document.getElementById("content").innerHTML=html;
+							console.info(data);
+      					}
+						address_id=data.data.address.id;
+						if(data.data.user_coupon){
+							yid= data.data.user_coupon.id;
+							let pirces2=((data.data.freightprice)*1+ (data.data.goodsprice)*1-data.data.user_coupon.coupon_capital).toFixed(2);	
+							$(".all_price2").html(pirces2);
+						}else{
+							let pirces2=((data.data.freightprice)*1+ (data.data.goodsprice)*1).toFixed(2)
+							$(".all_price2").html(pirces2);
+						}
+						
+      				},
+      				error:function(data){
+      					console.info("获取数据失败！")
+      				}
+      			});
+				
+				//运费
+				freight=($(".freight").html()*1);
+			})
+			
+			
+			
+			//选择支付方式
+			function fkfs_content(paytype){
+				$(".fkfs_content").children().children(".guo").hide();
+//				$(_this).children().children(".guo").show();
+//				paytype=$(_this).index();
+				//买家留言
+				var buycontent=$(".message").val();
+				//实际支付金额
+				var actprice=$(".all_price2").html();
+				//商品对应数量json串
+				var nums={};
+				for (var i=0;i<$(".product_contnet").length;i++) {
+					var goods_id=$(".product_contnet").eq(i).data("id");
+					var num=$(".number_input").eq(i).val();
+					nums[goods_id]=num;
+				}
+				nums=JSON.stringify(nums);
+				console.info(address_id);
+				if(address_id=="" || address_id==null){
+					mui.toast("请先选择收货地址~~");					
+					return false;
+				}
+				if(paytype==1){
+					var settlement={};
+					settlement["paytype"]=paytype;
+					settlement["coupon_id"]=yid;
+					settlement["address_id"]=address_id;
+					settlement["actprice"]=actprice;
+					settlement["buycontent"]=buycontent;
+					settlement["nums"]=nums;
+					settlement["ordernum"]=ordernum;
+					console.info(settlement);
+					session.setItem("settlement",JSON.stringify(settlement));
+					var jump_type=6;
+					session.setItem("jump_type",jump_type);
+					window.location.href="modify_username.html";
+				}else if(paytype==3){
+					if(buycontent==""){
+						buycontent=" ";
+					}
+					console.info(yid);
+					$.ajax({
+						url:"http://qipei.liebianzhe.com/api/user/pay_order",
+						type:"post",
+						dataType:"json",
+						data:{
+						    "token":user_info.token,
+							"paytype":paytype,
+							"coupon_id":yid,
+							"address_id":address_id,
+							"actprice":actprice,
+							"buycontent":buycontent,
+							"nums":nums,
+							"ordernum":ordernum
+						},
+						success:function(data){
+							console.info(yid);
+						    if(data.state == 0){
+                                mui.toast(data.msg);
+                            }else{
+                                window.location.href="http://qipei.liebianzhe.com/api/user/alipay_exec/token/"+ user_info.token +"/ordernum/"+ data.data.ordernum +"/price/"+data.data.price+"";
+                            }
+						}
+					})
+				}else if (paytype==2){
+					console.info(yid);
+                    $.ajax({
+                        url:"http://qipei.liebianzhe.com/api/user/pay_order",
+                        type:"post",
+                        dataType:"json",
+                        data:{"token":user_info.token,"paytype":paytype,"coupon_id":yid,"address_id":address_id,"actprice":actprice,"buycontent":buycontent,"nums":nums,"ordernum":ordernum},
+                        success:function(data){
+                        	console.info(yid);
+                            if(data.state == 0){
+                                mui.toast(data.msg);
+                            }else{
+                                var data=data.data;
+//								var user_id=user_info.id;
+                                data=JSON.stringify(data)
+//                              user_id=JSON.stringify(user_id);
+                                console.log(data)
+                                var u = navigator.userAgent, app = navigator.appVersion;
+                                var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; //android终端或者uc浏览器
+                                var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+                                if (isAndroid) {
+                                    js.weixinpay(data);
+                                }
+                                if (isiOS) {
+//                              	mui.toast(data);
+                                    window.webkit.messageHandlers.weixinpay.postMessage(data);
+                                }
+							}
+                        }
+                    })
+				}
+			};
+			
+			
+//			//选择支付方式
+//			$(".fkfs_content").on('tap',function(){
+//				$(".fkfs_content").children().children(".guo").hide();
+//				$(this).children().children(".guo").show();
+//				paytype=$(this).index();
+//				//买家留言
+//				var buycontent=$(".message").val();
+//				//实际支付金额
+//				var actprice=$(".all_price2").html();
+//				//商品对应数量json串
+//				var nums={};
+//				for (var i=0;i<$(".product_contnet").length;i++) {
+//					var goods_id=$(".product_contnet").eq(i).data("id");
+//					var num=$(".number_input").eq(i).val();
+//					nums[goods_id]=num;
+//				}
+//				nums=JSON.stringify(nums);
+//				console.info(address_id);
+//				if(address_id=="" || address_id==null){
+//					mui.toast("请先选择收货地址~~");					
+//					return false;
+//				}
+//				if(paytype==1){
+////					console.info("paytype:"+paytype);
+////					console.info("coupon_id:"+yid);
+////					console.info("address_id:"+address_id);
+////					console.info("actprice:"+actprice);
+////					console.info("buycontent:"+buycontent);
+////					console.info("nums:"+nums);
+////					console.info("ordernum:"+ordernum);
+//					var settlement={};
+//					settlement["paytype"]=paytype;
+//					settlement["coupon_id"]=yid;
+//					settlement["address_id"]=address_id;
+//					settlement["actprice"]=actprice;
+//					settlement["buycontent"]=buycontent;
+//					settlement["nums"]=nums;
+//					settlement["ordernum"]=ordernum;
+//					console.info(settlement);
+//					session.setItem("settlement",JSON.stringify(settlement));
+//					var jump_type=6;
+//					session.setItem("jump_type",jump_type);
+//					window.location.href="modify_username.html";
+//				}else if(paytype==3){
+//					if(buycontent==""){
+//						buycontent=" ";
+//					}
+//					$.ajax({
+//						url:"http://qipei.liebianzhe.com/api/user/pay_order",
+//						type:"post",
+//						dataType:"json",
+//						data:{
+//						    "token":user_info.token,
+//							"paytype":paytype,
+//							"coupon_id":yid,
+//							"address_id":address_id,
+//							"actprice":actprice,
+//							"buycontent":buycontent,
+//							"nums":nums,
+//							"ordernum":ordernum
+//						},
+//						success:function(data){
+//						    if(data.state == 0){
+//                              mui.toast(data.msg);
+//                              return;
+//                          }else{
+//                              window.location.href="http://qipei.liebianzhe.com/api/user/alipay_exec/token/"+ user_info.token +"/ordernum/"+ data.data.ordernum +"/price/"+data.data.price+"";
+//                          }
+//						}
+//					})
+//				}else if (paytype==2){
+//                  $.ajax({
+//                      url:"http://qipei.liebianzhe.com/api/user/pay_order",
+//                      type:"post",
+//                      dataType:"json",
+//                      data:{"token":user_info.token,"paytype":paytype,"coupon_id":yid,"address_id":address_id,"actprice":actprice,"buycontent":buycontent,"nums":nums,"ordernum":ordernum},
+//                      success:function(data){
+//                          if(data.state == 0){
+//                              mui.toast(data.msg);
+//                              return;
+//                          }else{
+//                              var data=data.data;
+//                              data=JSON.stringify(data)
+//                              console.log(data)
+//                              var u = navigator.userAgent, app = navigator.appVersion;
+//                              var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; //android终端或者uc浏览器
+//                              var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+//                              if (isAndroid) {
+//                                  js.weixinpay(data);
+//                              }
+//                              if (isiOS) {
+//
+//                                  // var num={ "data":data};
+//                                  window.webkit.messageHandlers.weixinpay.postMessage(data);
+//                              }
+//							}
+//                      }
+//                  })
+//				}
+//			});
+
+			//点击完成消失
+			function wancheng(){
+				$(".yhj_body,.backdrop").hide();
+				$(".confirm_footer").show();
+			}
+			//点击选择地址
+			function address_xz(){
+				//进入我的地址页面的状态，0为设置页面进入，1为确认订单页面进入；
+				var my_address_state=1;
+				session.setItem("my_address_state",my_address_state);
+				window.location.href="my_address.html";
+			}
+			//领取是赋值
+			var st;
+			//点击使用优惠券
+			function use(yid1,status,money,need_money){
+				if(st==1){
+					status=1;
+				}
+				if(status==0){
+					mui.toast("请先领取优惠券~");
+				}else {
+					if(yid==yid1){
+						mui.toast("你现在已经在使用这张优惠券了~");
+					}else{
+						var prices1=$(".all_price1").text();
+						if(prices1>=need_money){
+							yid=yid1;
+							coupon_capital=money;
+							$(".all_price1").text((prices1-coupon_capital).toFixed(2));
+							var prices2=$(".all_price2").text();
+							var all_money=(prices2-coupon_capital).toFixed(2);
+//							if(all_money==0){
+//								all_money=0.01;
+//							}
+							$(".all_price2").text(all_money);
+							$(".confirm_footer").show();
+							$(".yhj_body,.backdrop").hide();
+							mui.toast("使用优惠券成功~");
+						}else{
+//							$(".yhj_body,.backdrop").hide();
+							
+							mui.toast("你的订单不满足优惠券的使用条件~~");
+						}
+					}
+				}
+			}
+			//领取优惠券
+			function lingqu(lin_this,yid){
+				
+				$(lin_this).parent(".content_div_info").siblings(".yiling").show();
+				$.ajax({
+            		type:"post",
+            		url:"http://qipei.liebianzhe.com/api/user/receive_coupon",
+            		async:true,
+            		data:{
+            			token:user_info.token,
+            			id:yid
+            		},
+            		success:function(data){
+            			console.info(data);
+            			if(data.state==1){
+            				st=1;
+            				mui.toast(data.msg+"再点击一次就能使用了哟~");
+            				
+            			}else{
+            				mui.toast(data.msg);
+            			}
+            		},
+            		error:function(data){
+            			console.info("领取优惠券失败！")
+            		}
+            	});
+			}
+			
+//			点击领取显示
+			function lingqu1(){
+				
+				$.ajax({
+					type:"post",
+					url:"http://qipei.liebianzhe.com/api/user/user_coupon",
+					async:true,
+					data:{
+						token:user_info.token,
+						allprice:allprice
+					},
+					success:function(data){
+						console.info(data);
+						if(data.data.unuse.cuse.length==0){
+							mui.toast("暂时没有可以领取的优惠券~");
+						}else{
+							
+							allprice=$(".all_price2").html();
+							$(".yhj_body,.backdrop").show();
+							$(".confirm_footer").hide();
+							var html=template("text1",data.data);
+							document.getElementById("yhj_body").innerHTML=html;
+						}
+					},
+					error:function(){
+						console.info("获取优惠券列表失败！")
+					}
+				});
+			}
+			//点击遮罩层消失
+			$(".backdrop").on('tap',function(){
+				$(".confirm_footer").show();
+				$(".yhj_body,.backdrop,.fkfs_body").hide();
+			})
+//			点击结算显示
+			function footer_right(){
+				$(".confirm_footer").hide();
+				$(".fkfs_body,.backdrop").show();
+			}
+//			点击返回箭头消失
+			$(".return").on('tap',function(){
+				$(".confirm_footer").show();
+				$(".backdrop,.fkfs_body").hide();
+			})
+//			加减
+			function reduce(reduce_this){
+				var num=($(reduce_this).siblings(".number_input").val()*1);
+				//商品的单价
+				price=($(reduce_this).parents(".product_body").find(".price").html()*1);
+				//原价
+				var price2=(price*num);
+				num=num-1;
+				if(num<=0){
+					num =1;
+					$(reduce_this).siblings(".number_input").val(num);
+				}
+				$(reduce_this).siblings(".number_input").val(num);
+				var price1=($(".all_price1").html()*1);
+				price1=(price1-(price2-price*num)).toFixed(2);
+				$(".all_price1").text(price1);
+				var price2=((price1*1+freight)).toFixed(2);
+				$(".all_price2").text(price2);
+			}
+			function add(reduce_this){
+				var num=($(reduce_this).siblings(".number_input").val()*1);
+				//商品的单价
+				price=($(reduce_this).parents(".product_body").find(".price").html()*1);
+				//原价
+				var price2=price*num;
+				num=num+1;
+				$(reduce_this).siblings(".number_input").val(num);
+				console.info(price);
+				var price1=($(".all_price1").html()*1);
+				price1=(price1+(price*num-price2)).toFixed(2);
+				$(".all_price1").text(price1);
+				price2=((price1*1+freight)).toFixed(2);
+				$(".all_price2").text(price2);
+			}
+			//获取焦点时过去单价
+			function number_input1(input_this){
+				price=($(input_this).parents(".product_body").find(".price").html()*1);
+				num=($(input_this).val()*1);
+				prices=($(".all_price1").html()*1);
+				prices=prices-price*num;
+			}
+//			当商品数量发生改变时
+			function number_input(reduce_this){
+				var num=($(reduce_this).val()*1);
+				//商品的单价
+				price=($(reduce_this).parents(".product_body").find(".price").html()*1);
+				price=price*num;
+				console.info(prices);
+				prices=(prices+price-coupon_capital).toFixed(2);
+				$(".all_price1").text(prices);
+				var price2=((prices*1+freight)).toFixed(2);
+				$(".all_price2").text(price2);
+			}
+			//返回上一页
+			function back(){
+				var order_state=session.getItem("order_state");
+				console.info(order_state)
+				if (order_state==0){
+					window.location.href="commodity_details.html";
+				}else if(order_state==1){
+					window.location.href="shopping_cart.html";
+				}else if(order_state==2){
+					window.location.href="my_order.html";
+				}
+			}
+
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,86 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>卡号设置密码</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script>
+		    document.documentElement.style.fontSize =document.documentElement.clientWidth/750*40 +"px";
+		</script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/common.css" />
+		<link rel="stylesheet" href="css/card_set_pwd.css" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class=" mui-icon mui-icon-left-nav mui-pull-left" href="set_up.html"></a>
+		    <h1 class="mui-title">设置密码</h1>
+		</header>
+		<div class="mui-content">
+		    <div class="set_body">
+		    	<div class="set_content">
+		    		<div class="set_content_left">输入密码</div>
+		    		<input type="password" placeholder="请输入6位密码" oninput="if(value.length>6)value=value.slice(0,6)" class="pwd"/>
+		    	</div>
+		    	<div class="set_content">
+		    		<div class="set_content_left">确认密码</div>
+		    		<input type="password" placeholder="请再次输入密码" oninput="if(value.length>16)value=value.slice(0,6)" class="rpwd"/>
+		    	</div>
+		    </div>
+		    <div class="div_button">
+		    	<button type="button" onclick="sub()">提交</button>
+		    </div>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript" src="js/common.js" ></script>
+		<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			var user_info;
+			var session=window.sessionStorage;
+			$(function(){
+				user_info=session.getItem("user_info");
+                user_info=JSON.parse(user_info);
+			})
+			function sub(){
+				var pwd=$(".pwd").val();
+				var rpwd=$(".rpwd").val();
+				if(pwd!=rpwd ){
+					mui.toast("密码不一致~");
+				}else if (pwd=="" || rpwd==""){
+					mui.toast("密码不能为空~");
+				}else if(pwd.length<6 || rpwd.length<6){
+					mui.toast("密码不能小于六位数~~");
+				}else{
+					$.ajax({
+	                	url:"http://qipei.liebianzhe.com/api/user/set_user",
+						data:{
+							type:5,
+							token:user_info.token,
+							tpass:rpwd
+						},
+						type:"post",
+						dataType:"json",
+						success:function(data){
+	                	    if(data.state == 1){
+	                            mui.toast(data.msg);
+	                            setTimeout("jump()",2500);
+							}else{
+	                            mui.toast(data.msg);
+							}
+						},
+	                    error:function(data){
+	                        console.info("未知错误");
+	                    }
+	                })
+				}
+			}
+			function jump(){
+				window.location.href="set_up.html";
+			}
+		</script>
+	</body>
+
+</html>
